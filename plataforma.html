@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SICAE | Sitio Web Oficial</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/6062/6062646.png">
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-solid: #0a2540; --primary-light: #0d3b66; --secondary: #00b4d8; --accent: #ffb703; 
+            --bg-body: #f1f5f9; --bg-card: #ffffff; --heading-color: #0a2540; --text-main: #0f172a; 
+            --text-muted: #475569; --border-light: #e2e8f0; --glass-bg: rgba(255, 255, 255, 0.75); 
+            --navbar-scrolled: rgba(10, 37, 64, 0.95);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05); --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1); 
+            --shadow-hover: 0 30px 60px -12px rgba(0, 180, 216, 0.2); --transition-fast: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        [data-theme="dark"] {
+            --bg-body: #020617; --bg-card: #0f172a; --heading-color: #f8fafc; --text-main: #cbd5e1; 
+            --text-muted: #94a3b8; --border-light: #1e293b; --glass-bg: rgba(15, 23, 42, 0.75); --navbar-scrolled: rgba(2, 6, 23, 0.95);
+        }
+
+        /* --- OVERLAYS Y EFECTOS --- */
+        #blackout-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:10000000; display:none; flex-direction:column; justify-content:center; align-items:flex-start; padding:5%; font-family:monospace; color:#ef4444; overflow:hidden;}
+        body.low-power { --bg-body: #110000; --bg-card: #220000; --primary-solid:#330000; --secondary:#ef4444; --accent:#ef4444; --text-main:#ffb3b3; --heading-color:#ff4d4d; --border-light:#550000; }
+        .crt-off { animation: crtOff 0.5s ease-out forwards; }
+        @keyframes crtOff { 0% { transform: scale(1, 1); opacity: 1; filter: brightness(1); } 40% { transform: scale(1, 0.005); opacity: 1; filter: brightness(5); } 100% { transform: scale(0, 0.005); opacity: 0; filter: brightness(10); } }
+
+        body.god-mode { background-color: #1a0505 !important; color: #ff4d4d !important; }
+        body.god-mode .navbar { background-color: #000 !important; border-bottom: 2px solid #ff0000 !important; }
+        body.god-mode h1, body.god-mode h2, body.god-mode h3, body.god-mode p, body.god-mode span { text-shadow: 0 0 5px rgba(255,0,0,0.8) !important; color: #ff4d4d !important;}
+        body.god-mode .btn-main { background-color: #ff0000 !important; box-shadow: 0 0 20px red !important;}
+        .god-mode-overlay { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; box-shadow: inset 0 0 150px rgba(255,0,0,0.8); z-index:99999; display:none; animation: pulseAlarm 1.5s infinite; }
+        body.god-mode .god-mode-overlay { display:block; }
+        @keyframes pulseAlarm { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
+
+        #ddos-overlay { position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999999; background:rgba(0,0,0,0.9); display:none; flex-direction:column; justify-content:center; align-items:center; }
+
+        /* --- BASE --- */
+        ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--primary-solid); } ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-main); background-color: var(--bg-body); overflow-x: hidden; transition: background-color 0.4s, color 0.4s; }
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: var(--heading-color); transition: color 0.4s;}
+        .text-gradient { background: linear-gradient(135deg, var(--secondary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+        .cursor-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1000000; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, background 0.2s; }
+        .cursor-outline { width: 40px; height: 40px; border: 2px solid var(--secondary); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 999999; transform: translate(-50%, -50%); transition: transform 0.15s ease-out, width 0.2s, height 0.2s, border-color 0.2s; }
+        .cursor-hover .cursor-dot { width: 12px; height: 12px; background: var(--secondary); } .cursor-hover .cursor-outline { width: 60px; height: 60px; border-color: var(--accent); background: rgba(255,183,3,0.1); }
+
+        .glow-text { position: relative; display: inline-block; }
+        .glow-text::after { content: attr(data-text); position: absolute; left: 0; top: 0; background: radial-gradient(circle 60px at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--secondary), transparent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .glow-text:hover::after { opacity: 1; }
+
+        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary-solid); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        .loader-icon { font-size: 5rem; color: var(--secondary); margin-bottom: 20px; animation: pulseGlow 1.5s infinite alternate; }
+        .loader-bar { width: 250px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; position: relative; }
+        .loader-progress { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: linear-gradient(90deg, var(--secondary), var(--accent)); animation: loadProgress 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        @keyframes pulseGlow { 0% { transform: scale(0.9); filter: drop-shadow(0 0 10px rgba(0,180,216,0.5)); } 100% { transform: scale(1.1); filter: drop-shadow(0 0 30px var(--secondary)); } }
+        @keyframes loadProgress { 0% { width: 0%; } 50% { width: 70%; } 100% { width: 100%; } }
+        .scroll-progress { position: fixed; top: 0; left: 0; width: 0%; height: 5px; background: linear-gradient(90deg, var(--secondary), var(--accent)); z-index: 10001; transition: width 0.1s; }
+
+        /* --- UI COMPONENTES --- */
+        .topbar { background: #061727; color: #ffffff; padding: 8px 5%; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; z-index: 1001; position: relative; }
+        .topbar-right { display: flex; align-items: center; gap: 20px;}
+        .topbar-social a { color: #ffffff; margin-right: 15px; transition: var(--transition-fast); } .topbar-social a:hover { color: var(--accent); transform: translateY(-2px); display: inline-block; }
+        .lang-switch select { background: rgba(255,255,255,0.1); color: #ffffff; border: 1px solid rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 6px; outline: none; transition: var(--transition-fast); font-family: 'Inter'; cursor: pointer;}
+        .lang-switch select:hover { border-color: var(--secondary); background: rgba(0,0,0,0.3);} .lang-switch select option { color: #000; }
+        .theme-toggle { background: transparent; border: none; color: #ffb703; font-size: 1.1rem; cursor: pointer; transition: var(--transition-fast); display: flex; align-items: center;} .theme-toggle:hover { transform: rotate(30deg) scale(1.1); color: var(--white);}
+
+        .navbar { position: sticky; top: 0; width: 100%; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 5%; z-index: 1000; transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); border-bottom: 1px solid rgba(255, 255, 255, 0.15); }
+        .navbar.scrolled { padding: 0.8rem 5%; box-shadow: 0 10px 30px rgba(0,0,0,0.3); background: var(--navbar-scrolled); border-bottom: 1px solid rgba(0, 180, 216, 0.3); }
+        .logo-container { display: flex; align-items: center; gap: 12px; font-size: 2rem; font-weight: 900; color: #ffffff; transition: var(--transition-fast); letter-spacing: -1px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .navbar.scrolled .logo-container { color: #ffffff; text-shadow: none; } .logo-container i { color: var(--secondary); background: linear-gradient(135deg, var(--secondary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+        .nav-links a { font-weight: 600; color: rgba(255,255,255,0.9); transition: var(--transition-fast); position: relative; font-size: 1rem; text-shadow: 0 2px 5px rgba(0,0,0,0.4); }
+        .navbar.scrolled .nav-links a { color: rgba(255,255,255,0.9); text-shadow: none; }
+        .nav-links a::after { content: ''; position: absolute; width: 0; height: 3px; bottom: -6px; left: 0; background: linear-gradient(90deg, var(--secondary), var(--accent)); border-radius: 2px; transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; } .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+        .navbar.scrolled .nav-links a:hover, .navbar.scrolled .nav-links a.active { color: var(--secondary); }
+        
+        .nav-actions { display: flex; gap: 20px; align-items: center; }
+        .cart-btn { background: none; border: none; font-size: 1.4rem; color: #ffffff; position: relative; transition: var(--transition-fast); filter: drop-shadow(0 2px 5px rgba(0,0,0,0.4));}
+        .navbar.scrolled .cart-btn { color: #ffffff; filter: none;} .cart-btn:hover { color: var(--accent); transform: scale(1.1); } .navbar.scrolled .cart-btn:hover { color: var(--secondary); }
+        .cart-badge { position: absolute; top: -8px; right: -12px; background: var(--accent); color: var(--primary-solid); font-size: 0.75rem; font-weight: 800; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(255,183,3,0.4); text-shadow: none;}
+
+        .btn-main { background: var(--primary-solid); color: #ffffff; padding: 0.9rem 2rem; border-radius: 30px; font-weight: 700; transition: var(--transition-fast); border: none; box-shadow: 0 10px 20px rgba(10, 37, 64, 0.2); position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 10px; z-index: 1; cursor: pointer;}
+        .btn-main::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--secondary), var(--primary-light)); z-index: -1; transition: opacity 0.4s; opacity: 0; }
+        .btn-main:hover::before { opacity: 1; } .btn-main:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0, 180, 216, 0.3); color: #ffffff; }
+        .btn-outline { background: transparent; color: #ffffff; border: 2px solid rgba(255,255,255,0.5); padding: 0.9rem 2rem; border-radius: 30px; font-weight: 700; transition: var(--transition-fast); display: inline-flex; align-items: center; gap: 10px; backdrop-filter: blur(5px); }
+        .btn-outline:hover { background: #ffffff; color: var(--primary-solid); border-color: #ffffff; transform: translateY(-4px); box-shadow: 0 15px 30px rgba(255,255,255,0.2); }
+        .ripple { position: absolute; border-radius: 50%; transform: scale(0); animation: ripple 0.6s linear; background-color: rgba(255, 255, 255, 0.7); }
+        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+
+        /* --- SECCIONES --- */
+        section { padding: 8rem 10%; position: relative; transition: background 0.4s; }
+        .section-title { text-align: center; font-size: 3.5rem; color: var(--heading-color); margin-bottom: 5rem; font-weight: 900; letter-spacing: -1.5px; }
+
+        .hero { min-height: 100vh; height: auto; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 20px 80px 20px; position: relative; overflow: hidden; background: var(--primary-solid); margin-top: -100px; padding-top: 140px; }
+        .hero-bg { position: absolute; top: -5%; left: -5%; width: 110%; height: 110%; background: linear-gradient(rgba(10, 37, 64, 0.85), rgba(10, 37, 64, 0.95)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover; z-index: 1; transition: transform 0.1s ease-out; }
+        #hero-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; }
+        .hero-content { max-width: 1000px; z-index: 3; position: relative; }
+        
+        .badge-utu { background: rgba(0,180,216,0.1); padding: 8px 25px; border-radius: 30px; font-size: 1rem; font-weight: 600; display: inline-block; margin-bottom: 25px; border: 1px solid rgba(0,180,216,0.3); color: var(--secondary); animation: fadeInDown 1s ease forwards; box-shadow: 0 0 20px rgba(0,180,216,0.2); }
+        .hero h1 { font-size: 6rem; margin-bottom: 10px; letter-spacing: -2px; color: #ffffff; line-height: 1.1; animation: fadeInUp 1s 0.2s forwards; opacity: 0; }
+        .hero h2 { font-size: 2.2rem; font-weight: 400; color: #cbd5e1; margin-bottom: 30px; animation: fadeInUp 1s 0.4s forwards; opacity: 0; }
+        .hero p { font-size: 1.3rem; color: rgba(255,255,255,0.7); margin-bottom: 40px; min-height: 35px; animation: fadeInUp 1s 0.6s forwards; opacity: 0; }
+        .typewriter-text { border-right: 3px solid var(--accent); padding-right: 8px; animation: blinkCursor 0.7s infinite; color: #ffffff; font-weight: 500; }
+        .hero-buttons { display: flex; gap: 20px; justify-content: center; animation: fadeInUp 1s 0.8s forwards; opacity: 0; flex-wrap: wrap;}
+
+        .biometric-simulator { margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 15px; animation: fadeInUp 1s 1s forwards; opacity: 0;}
+        .fingerprint-btn { width: 90px; height: 90px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 2px solid var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; color: var(--secondary); position: relative; overflow: hidden; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 20px rgba(0,180,216,0.2); backdrop-filter: blur(10px); }
+        .fingerprint-btn i { z-index: 2; transition: color 0.3s; }
+        .scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: var(--accent); box-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent); z-index: 3; opacity: 0; pointer-events: none; }
+        .fingerprint-btn.scanning .scan-line { opacity: 1; animation: scanAnim 1.5s linear infinite; }
+        .fingerprint-btn.scanning { transform: scale(0.95); box-shadow: 0 0 40px rgba(0,180,216,0.6); border-color: var(--accent); color: var(--accent); }
+        .fingerprint-btn.success { border-color: #10b981; color: #10b981; background: rgba(16, 185, 129, 0.1); box-shadow: 0 0 40px rgba(16, 185, 129, 0.5); transform: scale(1.05);}
+        .scan-status { font-size: 0.95rem; font-weight: 600; color: #ffffff; transition: color 0.3s; font-family: 'Inter'; text-shadow: 0 2px 4px rgba(0,0,0,0.5); margin: 0;}
+        @keyframes scanAnim { 0% { top: -10%; } 50% { top: 100%; } 100% { top: -10%; } }
+
+        .marquee-section { background: var(--bg-card); padding: 2rem 0; border-bottom: 1px solid var(--border-light); overflow: hidden; display: flex; align-items: center; transition: background 0.4s;}
+        .marquee-title { padding-left: 5%; font-weight: 700; color: var(--text-muted); font-size: 1.1rem; white-space: nowrap; margin-right: 30px; }
+        .marquee-content { display: flex; gap: 4rem; animation: scrollMarquee 25s linear infinite; white-space: nowrap; align-items: center; }
+        .marquee-item { font-size: 1.5rem; font-weight: 800; color: var(--border-light); display: flex; align-items: center; gap: 10px; transition: var(--transition-fast); }
+        [data-theme="dark"] .marquee-item { color: #334155; } .marquee-item:hover { color: var(--heading-color); transform: scale(1.05); } .marquee-item i { color: var(--secondary); }
+        @keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+        .about-text p { margin-bottom: 2rem; font-size: 1.2rem; color: var(--text-muted); line-height: 1.8; }
+        .stat-box { background: var(--bg-card); padding: 3rem; border-radius: 30px; box-shadow: var(--shadow-lg); text-align: center; display: flex; flex-direction: column; align-items: center; border: 1px solid var(--border-light); position: relative; overflow: hidden; transition: background 0.4s;}
+        .stat-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, var(--secondary), var(--accent)); }
+        
+        .chart-box { width: 100%; margin-top: 20px; padding: 20px; background: var(--bg-body); border-radius: 16px; border: 1px solid var(--border-light);}
+        .chart-container { display: flex; align-items: flex-end; gap: 30px; height: 160px; border-bottom: 2px solid var(--border-light); padding-bottom: 10px; justify-content: center;}
+        .chart-bar { flex: 1; max-width: 80px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; position: relative;}
+        .bar-fill { width: 100%; border-radius: 8px 8px 0 0; height: 0; transition: height 1.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative; display: flex; justify-content: center; align-items: flex-start;}
+        .bar-fill span { margin-top: -25px; font-weight: 800; color: var(--heading-color); opacity: 0; transition: opacity 0.5s 1.5s;}
+        .bar-fill.active span { opacity: 1; }
+        .bar-fill.traditional { background: #ef4444; background: linear-gradient(180deg, #ef4444, #fca5a5); } .bar-fill.sicae { background: var(--secondary); background: linear-gradient(180deg, var(--secondary), #93c5fd); }
+        .chart-bar-label { margin-top: 15px; font-weight: 700; font-size: 0.9rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px;}
+
+        .quick-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; margin-top: 4rem; padding-top: 4rem; border-top: 1px solid var(--border-light); }
+        .q-stat { text-align: center; } .q-num { font-size: 4rem; font-weight: 900; color: var(--heading-color); line-height: 1; margin-bottom: 10px; font-family: 'Poppins'; display: flex; justify-content: center; align-items: center;}
+        .q-num span { background: linear-gradient(135deg, var(--secondary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } .q-desc { font-size: 1.1rem; color: var(--text-muted); font-weight: 500; }
+
+        .tabs-container { max-width: 1100px; margin: 0 auto; background: var(--bg-card); border-radius: 30px; box-shadow: var(--shadow-lg); overflow: hidden; display: flex; min-height: auto; border: 1px solid var(--border-light); transition: background 0.4s;}
+        .tabs-sidebar { width: 320px; background: var(--primary-solid); padding: 3rem 0; display: flex; flex-direction: column; position: relative; z-index: 10; }
+        .tab-btn { padding: 1.8rem 2.5rem; border: none; background: transparent; font-size: 1.3rem; font-weight: 600; color: rgba(255,255,255,0.4); text-align: left; transition: var(--transition-fast); position: relative; z-index: 2; display: flex; align-items: center; gap: 20px; }
+        .tab-btn:hover { color: #ffffff; } .tab-btn.active { color: var(--primary-solid); }
+        .tab-indicator { position: absolute; left: 0; width: 100%; height: 86px; background: var(--bg-card); border-radius: 30px 0 0 30px; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s; z-index: 1; }
+        .tabs-content-area { flex: 1; padding: 4rem 5rem; background: var(--bg-card); }
+        .tab-content { display: none; animation: slideInTab 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; } .tab-content.active { display: block; }
+        @keyframes slideInTab { from { opacity: 0; transform: translateX(30px) scale(0.98); } to { opacity: 1; transform: translateX(0) scale(1); } }
+        .tab-content h3 { font-size: 2.5rem; color: var(--heading-color); margin-bottom: 25px; letter-spacing: -1px;}
+        
+        .values-list-accordion { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; margin-top: 25px; }
+        .val-item { background: var(--bg-body); border-radius: 12px; border-left: 5px solid var(--secondary); overflow: hidden; transition: var(--transition-fast); cursor: pointer; border-right: 1px solid var(--border-light); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);}
+        .val-item:hover { transform: translateX(5px); background: rgba(0, 180, 216, 0.05); } .val-item.active { background: var(--bg-card); box-shadow: var(--shadow-sm); border-left-color: var(--accent); transform: translateX(5px); }
+        .val-header { padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 1.05rem; color: var(--text-main); }
+        .val-title { display: flex; align-items: center; gap: 15px; } .val-title i { color: var(--secondary); font-size: 1.2rem; transition: var(--transition-fast); } .val-item.active .val-title i { color: var(--accent); }
+        .val-icon { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); color: var(--text-muted); } .val-item.active .val-icon { transform: rotate(180deg); color: var(--accent); }
+        .val-body { max-height: 0; padding: 0 1.5rem; opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); } .val-item.active .val-body { max-height: 150px; padding: 0 1.5rem 1rem; opacity: 1; }
+        .val-body p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; margin: 0; font-weight: 400; font-family: 'Inter', sans-serif;}
+
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; perspective: 1000px; }
+        .feature-card { background: var(--bg-card); padding: 3rem 2.5rem; border-radius: 24px; text-align: center; box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); position: relative; transform-style: preserve-3d; display: flex; flex-direction: column; transition: background 0.4s, border 0.4s;}
+        .feature-glow { position: absolute; width: 200px; height: 200px; background: radial-gradient(circle, rgba(0,180,216,0.15) 0%, rgba(255,255,255,0) 70%); border-radius: 50%; pointer-events: none; opacity: 0; z-index: 0; transform: translate(-50%, -50%); } .feature-card:hover .feature-glow { opacity: 1; }
+        .feature-content { position: relative; z-index: 1; transform: translateZ(40px); display: flex; flex-direction: column; flex-grow: 1; }
+        .feature-icon-box { width: 90px; height: 90px; background: var(--bg-body); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 2.5rem; font-size: 3rem; color: var(--secondary); box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), 0 8px 15px rgba(0,0,0,0.05); transition: var(--transition-fast); }
+        .feature-card:hover .feature-icon-box { background: linear-gradient(135deg, var(--secondary), var(--primary-solid)); color: #ffffff; transform: scale(1.15) rotate(10deg); box-shadow: 0 15px 30px rgba(0,180,216,0.3); }
+        .feature-card h3 { font-size: 1.6rem; margin-bottom: 15px; color: var(--heading-color); } .feature-card p { color: var(--text-muted); font-size: 1.05rem; flex-grow: 1; margin-bottom: 25px; line-height: 1.7;}
+
+        .showcase-container { display: grid; grid-template-columns: 1fr auto 1fr; gap: 3rem; align-items: center; max-width: 1300px; margin: 0 auto; }
+        .showcase-center { width: 400px; height: 400px; background: var(--bg-card); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 25px 50px rgba(0,180,216,0.15); border: 15px solid var(--bg-body); position: relative; z-index: 2; transition: background 0.4s;}
+        .showcase-center i { font-size: 10rem; color: var(--primary-solid); background: linear-gradient(135deg, var(--primary-solid), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pulseGlow 3s infinite alternate; }
+        .showcase-center::after { content: ''; position: absolute; width: 120%; height: 120%; border: 2px dashed var(--secondary); border-radius: 50%; animation: rotate 25s linear infinite; z-index: -1;}
+        .showcase-center::before { content: ''; position: absolute; width: 140%; height: 140%; border: 1px solid var(--accent); border-radius: 50%; animation: rotate 35s linear infinite reverse; z-index: -1; opacity: 0.3;}
+        
+        .feature-item { margin-bottom: 3rem; background: var(--bg-card); padding: 2rem; border-radius: 20px; box-shadow: var(--shadow-sm); transition: var(--transition-fast); border: 1px solid var(--border-light); position: relative; overflow: hidden;}
+        .feature-item::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 0%; background: var(--secondary); transition: var(--transition-smooth); } .feature-item:hover::before { height: 100%; }
+        .feature-item:hover { transform: translateX(10px) translateY(-5px); box-shadow: var(--shadow-hover); } .feature-left .feature-item:hover { transform: translateX(-10px) translateY(-5px); }
+        .feature-item h4 { font-size: 1.3rem; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; color: var(--heading-color); } .feature-item p { color: var(--text-muted); font-size: 1rem; line-height: 1.6; }
+        .feature-left .feature-item h4 { justify-content: flex-end; } .feature-left .feature-item { text-align: right; }
+        .showcase-icon { width: 50px; height: 50px; background: rgba(0,180,216,0.1); color: var(--secondary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: var(--transition-fast);} .feature-item:hover .showcase-icon { background: var(--secondary); color: #ffffff; transform: scale(1.1) rotate(5deg); }
+
+        .rfid-demo-box { margin-top: 5rem; background: var(--bg-body); padding: 40px; border-radius: 30px; border: 2px dashed var(--secondary); text-align: center; box-shadow: var(--shadow-sm); transition: background 0.4s;}
+        .rfid-card { width: 140px; height: 200px; background: linear-gradient(135deg, var(--primary-solid), var(--primary-light)); border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); padding: 20px; color: white; display: inline-flex; flex-direction: column; justify-content: space-between; cursor: grab; transition: transform 0.2s; position: relative; z-index: 10;}
+        .rfid-card:active { cursor: grabbing; transform: scale(0.95) rotate(-5deg); } .rfid-card-img { width: 60px; height: 60px; background: #cbd5e1; border-radius: 50%; margin: 0 auto; border: 2px solid white; display: flex; align-items:center; justify-content:center; color: var(--primary-solid); overflow: hidden;}
+        .rfid-dropzone { width: 140px; height: 200px; background: var(--bg-card); border-radius: 12px; border: 3px solid var(--border-light); display: inline-flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s ease; position: relative;} .rfid-dropzone.hover { background: rgba(0,180,216,0.1); border-color: var(--secondary); transform: scale(1.05); }
+        .reader-light { width: 20px; height: 20px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 10px #ef4444; margin-bottom: 20px; transition: all 0.3s ease;} .reader-light.granted { background: #10b981; box-shadow: 0 0 20px #10b981; }
+
+        .test-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; }
+        .test-card { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--border-light); padding: 2.5rem; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); transition: var(--transition-smooth); } .test-card:hover { background: var(--bg-card); transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+        .stars { color: var(--accent); margin-bottom: 15px; font-size: 1.2rem; } .test-text { font-size: 1.1rem; color: var(--text-main); font-style: italic; margin-bottom: 25px; line-height: 1.7; }
+        .test-user { display: flex; align-items: center; gap: 15px; } .test-avatar { width: 50px; height: 50px; background: var(--primary-light); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; } .test-info h5 { font-size: 1.1rem; color: var(--heading-color); } .test-info p { font-size: 0.9rem; color: var(--text-muted); }
+
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; max-width: 1200px; margin: 0 auto; }
+        .price-card { background: var(--bg-card); border-radius: 24px; padding: 3rem; text-align: center; border: 1px solid var(--border-light); transition: var(--transition-smooth); position: relative; }
+        .price-card.popular { border: 2px solid var(--secondary); box-shadow: var(--shadow-lg); transform: scale(1.05); } .price-card.popular::before { content: 'Producto Estrella'; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--secondary); color: #ffffff; padding: 5px 20px; border-radius: 20px; font-weight: 700; font-size: 0.9rem; letter-spacing: 1px;}
+        .price-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-hover); } .price-card.popular:hover { transform: scale(1.05) translateY(-10px); }
+        .p-tier { font-size: 1.5rem; color: var(--heading-color); font-weight: 800; margin-bottom: 15px; } .p-price { font-size: 3rem; font-weight: 900; color: var(--text-main); margin-bottom: 20px; display: flex; justify-content: center; align-items: baseline;} .p-price span { font-size: 1.2rem; color: var(--text-muted); font-weight: 500; margin-left: 5px;}
+        .p-features { margin: 30px 0; text-align: left; } .p-features li { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-weight: 500;} .p-features i { color: #10b981; font-size: 1.2rem;}
+
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 4rem; }
+        .team-card { background: var(--bg-card); border-radius: 30px; overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition-smooth); border: 1px solid var(--border-light); } .team-card:hover { transform: translateY(-15px); box-shadow: var(--shadow-hover); }
+        .photo-upload-container { width: 100%; height: 350px; background: var(--bg-body); display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--text-muted); position: relative; overflow: hidden; border-bottom: 1px solid var(--border-light); }
+        .photo-upload-container::before { content: ''; position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; border: 2px dashed var(--border-light); border-radius: 20px; transition: var(--transition-fast); } .photo-upload-container:hover::before { border-color: var(--secondary); background: rgba(0,180,216,0.03); transform: scale(0.95); }
+        .photo-upload-container input[type="file"] { position: absolute; width: 100%; height: 100%; opacity: 0; z-index: 3; cursor: pointer;} .photo-preview { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; display: none; transition: transform 0.8s ease; filter: grayscale(20%); } .team-card:hover .photo-preview { transform: scale(1.1); filter: grayscale(0%); }
+        .upload-content { position: relative; z-index: 1; text-align: center; transition: var(--transition-fast); } .photo-upload-container:hover .upload-content { transform: scale(1.1); color: var(--secondary); } .upload-content i { font-size: 3.5rem; margin-bottom: 15px; } .upload-content span { font-weight: 700; font-family: 'Poppins'; font-size: 1.1rem;}
+        .team-info { padding: 3rem 2rem; text-align: center; } .team-info h3 { font-size: 1.8rem; color: var(--heading-color); margin-bottom: 8px; } .team-info p { color: var(--secondary); font-weight: 700; font-size: 1rem; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1.5px;}
+        .social-links { display: flex; justify-content: center; gap: 15px; } .social-btn { width: 45px; height: 45px; border-radius: 50%; background: var(--bg-body); color: var(--heading-color); display: flex; align-items: center; justify-content: center; transition: var(--transition-fast); font-size: 1.2rem;} .social-btn:hover { background: var(--secondary); color: #ffffff; transform: translateY(-5px) rotate(360deg); }
+
+        .accordion { max-width: 1000px; margin: 3rem auto 0; }
+        .accordion-item { background: var(--bg-card); border-radius: 20px; box-shadow: var(--shadow-sm); overflow: hidden; border: 1px solid var(--border-light); margin-bottom: 20px;}
+        .accordion-header { padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; font-size: 1.4rem; font-weight: 700; font-family: 'Poppins'; color: var(--heading-color); transition: var(--transition-fast); cursor: pointer;} .accordion-header:hover { background: var(--bg-body); color: var(--secondary); }
+        .icon-toggle { width: 40px; height: 40px; border-radius: 50%; background: var(--bg-body); display: flex; align-items: center; justify-content: center; transition: var(--transition-smooth); color: var(--heading-color); } .accordion-header.active .icon-toggle { transform: rotate(180deg); background: var(--secondary); color: white; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .teachers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 0 3rem 3rem; }
+        .teacher-item { padding: 18px; background: var(--bg-body); border-radius: 14px; border-left: 4px solid var(--secondary); opacity: 0; transform: translateY(15px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column;} .teacher-item:hover { background: var(--bg-card); box-shadow: var(--shadow-sm); transform: translateX(8px) scale(1.02) !important; border-left-color: var(--accent); } .teacher-item span { font-weight: 800; color: var(--heading-color); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; } .teacher-item strong { font-size: 1.1rem; color: var(--text-muted); }
+        .faq-text { padding: 0 3rem 3rem; color: var(--text-muted); font-size: 1.1rem; line-height: 1.7; opacity: 0; transform: translateY(15px); transition: all 0.4s; }
+        
+        .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; max-width: 1200px; margin: 0 auto; align-items: center;}
+        .contact-info { display: flex; flex-direction: column; gap: 30px; } .contact-item { display: flex; align-items: center; gap: 20px; font-size: 1.2rem; background: var(--bg-card); padding: 20px; border-radius: 20px; transition: var(--transition-fast); border: 1px solid var(--border-light);} .contact-item:hover { transform: translateX(10px); border-color: var(--secondary); box-shadow: var(--shadow-sm);} .contact-item i { width: 60px; height: 60px; background: rgba(0,180,216,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--secondary); }
+        .contact-form { background: var(--bg-card); padding: 4rem 3rem; border-radius: 30px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-light); } .contact-form input, .contact-form textarea { width: 100%; padding: 18px 20px; margin-bottom: 20px; border: 2px solid var(--border-light); border-radius: 12px; font-family: 'Inter'; font-size: 1.05rem; transition: var(--transition-fast); background: var(--bg-body); color: var(--text-main);} .contact-form input:focus, .contact-form textarea:focus { border-color: var(--secondary); background: var(--bg-card); outline: none; box-shadow: 0 0 0 4px rgba(0,180,216,0.1); }
+
+        /* --- Footer (DISEÑO RESTAURADO) --- */
+        footer { background: var(--primary-solid); color: #ffffff; text-align: center; padding: 6rem 10% 6rem; position: relative; overflow: hidden; }
+        footer::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); }
+        .footer-logos { display: flex; justify-content: center; gap: 4rem; margin-bottom: 3.5rem; font-size: 3.5rem; }
+        .footer-logos i { color: rgba(255,255,255,0.3); transition: var(--transition-fast); cursor: pointer; } .footer-logos i:hover { color: var(--accent); transform: scale(1.2) rotate(10deg); filter: drop-shadow(0 0 10px rgba(255,183,3,0.5)); }
+
+        /* --- Modales Externos --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 37, 64, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 10002; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); } .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-box { background: var(--bg-card); width: 90%; max-width: 450px; border-radius: 30px; padding: 4rem 3rem; box-shadow: 0 30px 60px rgba(0,0,0,0.5); position: relative; transform: translateY(50px) scale(0.95); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid var(--border-light);} .modal-overlay.active .modal-box { transform: translateY(0) scale(1); }
+        .close-btn { position: absolute; top: 25px; right: 25px; background: var(--bg-body); border: none; width: 45px; height: 45px; border-radius: 50%; color: var(--text-main); transition: var(--transition-fast); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; z-index: 10;} .close-btn:hover { background: #fee2e2; color: #ef4444; transform: rotate(90deg) scale(1.1); }
+        .modal-header { text-align: center; margin-bottom: 2.5rem; } .modal-header i { font-size: 4rem; color: var(--secondary); margin-bottom: 20px; background: linear-gradient(135deg, var(--secondary), var(--primary-solid)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;} .modal-header h3 { font-size: 2rem; color: var(--heading-color); margin-bottom: 10px; }
+        .login-form .input-group { position: relative; margin-bottom: 1.5rem;} .login-form .input-group i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.2rem; transition: var(--transition-fast); } .login-form input { width: 100%; padding: 18px 20px 18px 55px; border: 2px solid var(--border-light); border-radius: 14px; font-size: 1.05rem; background: var(--bg-body); color: var(--text-main); transition: var(--transition-fast); outline: none; } .login-form input:focus { border-color: var(--secondary); background: var(--bg-card); box-shadow: 0 0 0 4px rgba(0,180,216,0.1); } .login-form input:focus + i { color: var(--secondary); }
+        .video-box { max-width: 1000px; width: 95%; background: transparent; padding: 0; box-shadow: none; border: none;} .video-container { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 24px; overflow: hidden; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border: 2px solid rgba(255,255,255,0.1);}
+
+        /* Cart Offcanvas */
+        .cart-panel { position: fixed; top: 0; right: -450px; width: 450px; height: 100vh; background: var(--bg-card); box-shadow: -10px 0 40px rgba(0,0,0,0.5); z-index: 10000; transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; border-left: 1px solid var(--border-light);} .cart-panel.active { right: 0; }
+        .cart-header { padding: 30px; background: var(--primary-solid); color: #ffffff; display: flex; justify-content: space-between; align-items: center; } .cart-body { flex-grow: 1; padding: 30px; overflow-y: auto; background: var(--bg-body); }
+        .cart-item { display: flex; justify-content: space-between; padding: 20px; background: var(--bg-card); border-radius: 16px; margin-bottom: 15px; align-items: center; box-shadow: var(--shadow-sm); border: 1px solid var(--border-light);} .cart-item-title { font-weight: 700; font-size: 1rem; color: var(--heading-color); margin-bottom: 5px;}
+        .cart-item-remove { color: #ef4444; width: 40px; height: 40px; border-radius: 12px; background: #fee2e2; display: flex; align-items: center; justify-content: center; border: none; transition: var(--transition-fast); cursor: pointer;} .cart-item-remove:hover { background: #ef4444; color: white; transform: scale(1.1); }
+        .cart-footer { padding: 30px; background: var(--bg-card); border-top: 1px solid var(--border-light); box-shadow: 0 -10px 20px rgba(0,0,0,0.02);}
+
+        /* Chatbot */
+        .chatbot-btn { position: fixed; bottom: 40px; right: 40px; width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, var(--secondary), var(--primary-solid)); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 15px 30px rgba(0,180,216,0.4); z-index: 9998; transition: var(--transition-fast); border: none; cursor: pointer;} .chatbot-btn:hover { transform: scale(1.1) translateY(-5px); }
+        .chatbot-window { position: fixed; bottom: 130px; right: 40px; width: 420px; height: 550px; background: var(--bg-card); border-radius: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); display: flex; flex-direction: column; overflow: hidden; z-index: 9999; opacity: 0; visibility: hidden; transform: translateY(20px) scale(0.95); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid var(--border-light); } .chatbot-window.active { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+        .chat-header { background: var(--primary-solid); color: #ffffff; padding: 20px; display: flex; justify-content: space-between; align-items: center; } .chat-body { flex-grow: 1; padding: 25px 20px; overflow-y: auto; background: var(--bg-body); display: flex; flex-direction: column; gap: 15px; }
+        .chat-msg { max-width: 85%; padding: 15px 20px; border-radius: 20px; font-size: 0.95rem; line-height: 1.5; box-shadow: var(--shadow-sm);} .msg-bot { background: var(--bg-card); border-bottom-left-radius: 4px; color: var(--text-main); border: 1px solid var(--border-light);} .msg-user { background: var(--secondary); color: #ffffff; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-footer { padding: 15px 20px; background: var(--bg-card); display: flex; gap: 10px; border-top: 1px solid var(--border-light); align-items: center;} .chat-footer input { flex-grow: 1; padding: 15px; border: 1px solid var(--border-light); border-radius: 30px; outline: none; font-family: 'Inter'; background: var(--bg-body); color: var(--text-main); transition: var(--transition-fast);} .chat-footer input:focus { border-color: var(--secondary); background: var(--bg-card);}
+        .chat-footer button { background: var(--secondary); color: #ffffff; border: none; width: 45px; height: 45px; border-radius: 50%; transition: var(--transition-fast); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;} .chat-footer button:hover { background: var(--primary-solid); transform: scale(1.1); }
+        .mic-btn { background: transparent !important; border: 1px solid var(--border-light) !important; color: var(--text-muted) !important;} .mic-btn:hover { background: rgba(0,180,216,0.1) !important; color: var(--secondary) !important; border-color: var(--secondary) !important;}
+
+        .typing-dots { display: flex; gap: 5px; align-items: center; padding: 5px;} .typing-dots span { display: inline-block; width: 8px; height: 8px; background: var(--text-muted); border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; } .typing-dots span:nth-child(1) { animation-delay: -0.32s; } .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        /* Toast & Cookie */
+        .cookie-banner { position: fixed; bottom: -100px; left: 0; width: 100%; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border-light); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 9997; transition: bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 -10px 30px rgba(0,0,0,0.1);} .cookie-banner.show { bottom: 0; }
+        .cookie-content { display: flex; align-items: center; gap: 20px; color: var(--text-main); font-weight: 500;} .cookie-content i { font-size: 2rem; color: var(--accent); } .cookie-content a { color: var(--secondary); text-decoration: underline; font-weight: 700; cursor: pointer;}
+        .toast { position: fixed; bottom: 100px; left: 40px; background: #10b981; color: white; padding: 20px 30px; border-radius: 16px; font-weight: 600; display: flex; align-items: center; gap: 18px; box-shadow: 0 15px 30px rgba(0,0,0,0.3); transform: translateX(-150%); transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 10000; font-size: 1.05rem;} .toast.show { transform: translateX(0); } .toast.error { background: #ef4444; }
+
+        /* Animations */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .reveal { opacity: 0; transform: translateY(60px) scale(0.95); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); } .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+        .delay-100 { transition-delay: 100ms; } .delay-200 { transition-delay: 200ms; } .delay-300 { transition-delay: 300ms; }
+
+        @media (max-width: 991px) {
+            .about-grid, .showcase-container, .contact-grid, .pricing-grid { grid-template-columns: 1fr; gap: 4rem; text-align: center; }
+            .tabs-container { flex-direction: column; min-height: auto; } .tabs-sidebar { width: 100%; flex-direction: row; padding: 1rem; overflow-x: auto; }
+            .tab-btn { padding: 1.5rem; white-space: nowrap; flex: 1; justify-content: center; } .tab-indicator { height: 5px; width: 33.33%; top: auto; bottom: 0; border-radius: 5px 5px 0 0; }
+            .tab-content { position: relative; top: 0; left: 0; right: 0; padding: 3rem 2rem;} .feature-left .feature-item h4, .feature-right h4 { justify-content: center; }
+            .feature-left .feature-item, .feature-right { text-align: center; } .showcase-center { margin: 0 auto; width: 300px; height: 300px; }
+            .contact-info { align-items: center; } .hero h1 { font-size: 4rem; }
+            * { cursor: auto !important; } .cursor-dot, .cursor-outline { display: none; } 
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; } .hero h1 { font-size: 3rem; } .hero h2 { font-size: 1.5rem; } .section-title { font-size: 2.5rem; }
+            section { padding: 5rem 5%; } .cart-panel { width: 100%; right: -100%; } .topbar { flex-direction: column; gap: 10px; } .hero-buttons { flex-direction: column; } .cookie-banner { flex-direction: column; gap: 15px; text-align: center; padding: 20px;}
+        }
+    </style>
+</head>
+<body>
+<!-- ========================================== -->
+<!-- 3. WIDGET DE ACCESIBILIDAD (CORREGIDO) -->
+<!-- ========================================== -->
+<style>
+    /* Alto Contraste (Truco de cristal invisible) */
+    body.high-contrast::after {
+        content: ""; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        z-index: 9999998; pointer-events: none;
+        backdrop-filter: contrast(150%) saturate(120%) grayscale(20%);
+        -webkit-backdrop-filter: contrast(150%) saturate(120%) grayscale(20%);
+    }
+    
+    /* Aumentar Texto (Aplicado a la raíz HTML para que escale TODO en proporción) */
+    html.large-text { font-size: 120% !important; }
+    
+    /* Fuente Dislexia (El asterisco * obliga a que TODOS los textos cambien sin excepción) */
+    /* Fuente Dislexia (Excluyendo a los iconos para que no se rompan) */
+    .dyslexia-font *:not(i) { font-family: 'Comic Sans MS', 'OpenDyslexic', sans-serif !important; }
+</style>
+
+<div style="position: fixed; bottom: 20px; left: 20px; z-index: 9999;">
+    <button id="btn-accesibilidad" class="magnetic-btn" style="width: 50px; height: 50px; border-radius: 50%; background: #2563eb; color: white; border: none; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.4);"><i class="fa-solid fa-universal-access"></i></button>
+    <div id="menu-accesibilidad" style="display: none; position: absolute; bottom: 60px; left: 0; background: #1e293b; padding: 15px; border-radius: 10px; width: 200px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid #334155;">
+        <button onclick="document.body.classList.toggle('high-contrast')" style="width: 100%; margin-bottom: 10px; padding: 8px; background: #0f172a; color: white; border: 1px solid #475569; border-radius: 5px; cursor: pointer; transition: 0.3s;">Alto Contraste</button>
+        <!-- Nota: Aquí cambiamos document.body por document.documentElement para que escale la raíz de la web -->
+        <button onclick="document.documentElement.classList.toggle('large-text')" style="width: 100%; margin-bottom: 10px; padding: 8px; background: #0f172a; color: white; border: 1px solid #475569; border-radius: 5px; cursor: pointer; transition: 0.3s;">Aumentar Texto</button>
+        <button onclick="document.body.classList.toggle('dyslexia-font')" style="width: 100%; padding: 8px; background: #0f172a; color: white; border: 1px solid #475569; border-radius: 5px; cursor: pointer; transition: 0.3s;">Fuente Dislexia</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('btn-accesibilidad').addEventListener('click', () => {
+        const menu = document.getElementById('menu-accesibilidad');
+        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    });
+</script>
+<!-- ========================================== -->
+    <!-- INTRO ASISTENTE VIRTUAL (CARA IA)          -->
+    <!-- ========================================== -->
+    <div id="movie-intro" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#020617; z-index:999999999; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#00b4d8; font-family:'Inter', sans-serif; overflow:hidden; transition: opacity 1.5s ease-in-out;">
+        
+        <!-- Botón para iniciar (obligatorio para que el navegador permita hablar a la IA) -->
+        <button id="start-intro-btn" class="magnetic-btn" style="padding:15px 40px; font-size:1.2rem; background:rgba(0,180,216,0.1); color:#00b4d8; border:2px solid #00b4d8; border-radius: 30px; cursor:pointer; text-transform:uppercase; letter-spacing:2px; box-shadow: 0 0 20px rgba(0,180,216,0.4); transition: all 0.3s; z-index: 10;">
+            <i class="fa-solid fa-power-off"></i> Iniciar S.I.C.A.E.
+        </button>
+
+        <!-- Contenedor de la Cara IA y el Texto -->
+        <div id="ai-container" style="display:none; flex-direction:column; align-items:center; z-index: 5;">
+            <!-- Referencia a tu video holograma.mp4 -->
+           <video id="ai-face" src="Holograma.mp4" style="width: 250px; height: 250px; object-fit: cover; border-radius: 50%; box-shadow: 0 0 50px rgba(0,180,216,0.4); filter: brightness(0.9) contrast(1.2) hue-rotate(10deg); border: 2px solid rgba(0,180,216,0.5);" playsinline></video>
+            
+            <div id="ai-text" style="margin-top: 40px; font-size: 1.5rem; font-weight: 500; text-align: center; max-width: 800px; line-height: 1.6; color: #e0f2fe; text-shadow: 0 0 15px rgba(0,180,216,0.8); min-height: 80px; padding: 0 20px;"></div>
+        </div>
+        
+        <!-- Luz de fondo holográfica -->
+        <div style="position:absolute; background: radial-gradient(circle, rgba(0,180,216,0.15) 0%, rgba(2,6,23,0) 60%); width: 800px; height: 800px; z-index: 1; pointer-events: none;"></div>
+    </div>
+    <!-- OVERLAYS GLOBALES (Apagón, God Mode, DDoS) -->
+    <div id="blackout-overlay"><div id="blackout-text"></div></div>
+    <div class="god-mode-overlay"></div>
+    <div id="ddos-overlay">
+        <canvas id="ddos-canvas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1; opacity:0.6;"></canvas>
+        <div id="ddos-message" style="z-index:2; color:red; font-size:3rem; font-weight:900; font-family:monospace; text-shadow:0 0 20px red; text-align:center;">⚠️ ATAQUE EN PROGRESO ⚠️<br><span style="font-size:1.5rem; color:white;">Intentando vulnerar base de datos...</span></div>
+        <div id="ddos-shield" style="z-index:3; font-size:10rem; color:#10b981; display:none; filter:drop-shadow(0 0 50px #10b981);"><i class="fa-solid fa-shield-halved"></i></div>
+    </div>
+
+    <!-- UI Elements Fijos -->
+        <div id="preloader">
+        <i class="fa-solid fa-fingerprint loader-icon"></i>
+        <div class="loader-bar"><div class="loader-progress"></div></div>
+    </div>
+    <div class="scroll-progress" id="scroll-progress"></div>
+
+    <!-- 0. Topbar & Navbar -->
+    <div class="topbar">
+        <div class="topbar-social">
+            <span style="margin-right: 15px; font-weight: 600; letter-spacing: 1px;" id="topbar-contact">Contáctenos</span>
+            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+        <div class="topbar-right">
+            <button class="theme-toggle" id="theme-toggle" title="Cambiar Tema"><i class="fa-solid fa-moon"></i></button>
+            <div class="lang-switch">
+                <i class="fa-solid fa-globe" style="margin-right: 5px; color: var(--secondary);"></i>
+                <select id="language-selector" onchange="changeLanguage()">
+                    <option value="es">ES - Español</option>
+                    <option value="en">EN - English</option>
+                    <option value="pt">PT - Português</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar" id="navbar">
+        <div class="logo-container magnetic-btn">
+            <i class="fa-solid fa-fingerprint"></i> <span id="nav-logo">SICAE</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#inicio" class="nav-item active" id="nav-home">Inicio</a></li>
+            <li><a href="#proyecto" class="nav-item" id="nav-data">Idea</a></li>
+            <li><a href="#institucional" class="nav-item" id="nav-core">Institucional</a></li>
+            <li><a href="#tecnologia" class="nav-item" id="nav-tech">Hardware</a></li>
+            <li><a href="#ventajas" class="nav-item" id="nav-arch">Arquitectura</a></li>
+            <li><a href="#planes" class="nav-item" id="nav-plans">Planes</a></li>
+            <li><a href="#equipo" class="nav-item" id="nav-team">Equipo</a></li>
+        </ul>
+        <div class="nav-actions">
+            <a href="#" id="open-login" class="btn-outline magnetic-btn" style="border-color: var(--primary-solid); color: var(--primary-solid); padding: 0.6rem 1.5rem;">
+                <i class="fa-solid fa-user-shield"></i> <span id="nav-portal">Portal</span>
+            </a>
+            <button class="cart-btn magnetic-btn" onclick="toggleCart()">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="cart-badge" id="cart-count">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 1. Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="hero-bg" id="hero-bg"></div>
+        <canvas id="hero-canvas"></canvas>
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        
+        <div class="hero-content">
+            <div class="badge-utu" id="hero-badge"><i class="fa-solid fa-microchip" style="margin-right: 8px;"></i> ANEP • UTU Las Piedras 2 • 3°DC</div>
+            <h1 id="hero-title"><span class="text-gradient">S.I.C.A.E.</span></h1>
+            <h2 id="hero-subtitle">Sistema Inteligente de Control de Asistencias Estudiantil</h2>
+            <p><span class="typewriter-text" id="typewriter"></span></p>
+            
+            <div class="hero-buttons">
+                <a href="#" class="btn-outline magnetic-btn" id="open-video">
+                    <i class="fa-solid fa-play"></i> <span id="btn-demo-text">Ver Demo</span>
+                </a>
+                <button class="btn-main magnetic-btn" style="background: rgba(255,255,255,0.1); border: 1px solid var(--secondary);" id="open-voice">
+                    <i class="fa-solid fa-microphone-lines"></i> <span id="btn-voice-text">Autenticación Voz</span>
+                </button>
+                <button id="btn-tour" class="btn-outline magnetic-btn" style="border-color:#10b981; color:#10b981;">
+                    <i class="fa-solid fa-route"></i> <span id="btn-tour-text">Tour Guiado</span>
+                </button>
+            </div>
+
+            <div class="biometric-simulator">
+                <div class="fingerprint-btn magnetic-btn" id="fingerprint-btn">
+                    <i class="fa-solid fa-fingerprint"></i>
+                    <div class="scan-line" id="scan-line"></div>
+                </div>
+                <p class="scan-status" id="scan-status">Mantén presionado para simular acceso</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Infinite Marquee -->
+    <div class="marquee-section">
+        <div class="marquee-title" id="marquee-title"></div>
+        <div class="marquee-content">
+            <div class="marquee-item"><i class="fa-solid fa-shield-check"></i> <span id="mq1">Cifrado AES-256</span></div>
+            <div class="marquee-item"><i class="fa-solid fa-building-columns"></i> <span id="mq2">Integración ANEP</span></div>
+            <div class="marquee-item"><i class="fa-solid fa-server"></i> <span id="mq3">Soporte LATU</span></div>
+            <div class="marquee-item"><i class="fa-solid fa-file-contract"></i> <span id="mq4">Ley N°18331</span></div>
+            <div class="marquee-item"><i class="fa-solid fa-shield-check"></i> <span>Cifrado AES-256</span></div>
+            <div class="marquee-item"><i class="fa-solid fa-building-columns"></i> <span>Integración ANEP</span></div>
+            <div class="marquee-item"><i class="fa-solid fa-server"></i> <span>Soporte LATU</span></div>
+            <div class="marquee-item"><i class="fa-solid fa-file-contract"></i> <span>Ley N°18331</span></div>
+        </div>
+    </div>
+
+    <!-- 2. Análisis de Negocio (Fondo Gris) -->
+    <section id="proyecto" style="background-color: var(--bg-body);">
+        <h2 class="section-title reveal glow-text" data-text="Análisis de Negocio" id="metrics-title">Análisis de <span>Negocio</span></h2>
+        <div class="about-grid">
+            <div class="about-text reveal delay-100">
+                <p id="metrics-p1">El pase de lista tradicional es un protocolo analógico obsoleto. Se pierde tiempo valioso de instrucción y los datos no se sincronizan en la red institucional, generando latencia y errores.</p>
+                <p id="metrics-p2">Los algoritmos detectaron una falla crítica: el <strong>ausentismo escolar crónico</strong>. En 2024, el porcentaje de estudiantes con ausentismo severo encendió las alarmas, comprometiendo el rendimiento académico.</p>
+                <p id="metrics-p3">SICAE se implementa como una actualización masiva: una red interconectada que une institución y familia en milisegundos, garantizando la trazabilidad absoluta del alumno.</p>
+                <button class="btn-main magnetic-btn" style="margin-top: 20px; background: #020617; border: 1px solid var(--secondary);" id="open-anep">
+                    <i class="fa-solid fa-satellite-dish"></i> <span id="btn-anep-text">Simular Red ANEP (Live)</span>
+                </button>
+            </div>
+            
+            <div class="stat-box reveal delay-200" style="padding-top: 2rem;">
+                <h4 style="color: var(--heading-color); margin-bottom: 30px; font-size: 1.3rem; font-weight: 700;" id="chart-title">Parámetro crítico (%)</h4>
+                <div class="chart-box">
+                    <div class="chart-container" id="bar-chart">
+                        <div class="chart-bar"><div class="bar-fill traditional" data-height="64%"><span>64,4%</span></div><div class="chart-bar-label" id="chart-l1">Tradicional</div></div>
+                        <div class="chart-bar"><div class="bar-fill sicae" data-height="99%"><span>99%</span></div><div class="chart-bar-label" id="chart-l2">Con SICAE</div></div>
+                    </div>
+                </div>
+                <p style="font-size: 1.05rem; color: var(--text-muted); font-weight: 500; margin-top: 20px;" id="metrics-target">Tasa de precisión en la asistencia.<br><strong style="color: var(--secondary); margin-top: 5px; display: block;">Objetivo de SICAE: erradicación absoluta.</strong></p>
+            </div>
+        </div>
+
+        <div class="quick-stats reveal delay-300">
+            <div class="q-stat"><div class="q-num"><span class="counter-up" data-target="50">0</span>+</div><div class="q-desc" id="stat1">Centros Integrados</div></div>
+            <div class="q-stat"><div class="q-num"><span class="counter-up" data-target="10000">0</span>+</div><div class="q-desc" id="stat2">Alumnos Protegidos</div></div>
+            <div class="q-stat"><div class="q-num"><span class="counter-up" data-target="99.9">0</span>%</div><div class="q-desc" id="stat3">Uptime del Servidor</div></div>
+        </div>
+    </section>
+
+    <!-- 3. Core Institucional (Fondo Blanco) -->
+    <section id="institucional" style="background-color: var(--bg-card);">
+        <h2 class="section-title reveal glow-text" data-text="Nuestros Objetivos" id="core-title">Nuestros <span>Objetivos</span></h2>
+        <div class="tabs-container reveal delay-100">
+            <div class="tabs-sidebar">
+                <button class="tab-btn active" onclick="openTab(event, 'mision', 0)" id="tab-1"><i class="fa-solid fa-terminal" style="width:25px;"></i> <span id="tab-1-text">Misión</span></button>
+                <button class="tab-btn" onclick="openTab(event, 'vision', 1)" id="tab-2"><i class="fa-solid fa-satellite-dish" style="width:25px;"></i> <span id="tab-2-text">Visión</span></button>
+                <button class="tab-btn" onclick="openTab(event, 'valores', 2)" id="tab-3"><i class="fa-solid fa-shield-halved" style="width:25px;"></i> <span id="tab-3-text">Valores</span></button>
+                <div class="tab-indicator" id="tab-indicator" style="transform: translateY(0);"></div>
+            </div>
+            
+            <div class="tabs-content-area">
+                <div id="mision" class="tab-content active">
+                    <h3 id="mision-title">Misión</h3>
+                    <p style="font-size: 1.2rem; color: var(--text-muted); line-height: 1.8;" id="mision-desc">SICAE busca proveer un sistema eficiente, seguro y accesible para el control de asistencia en diferentes organizaciones educativas y laborales del ámbito público y privado a nivel regional. Promoviendo la puntualidad, responsabilidad y transparencia en la gestión aplicando tecnología IoT de vanguardia.</p>
+                </div>
+                
+                <div id="vision" class="tab-content">
+                    <h3 id="vision-title">Visión</h3>
+                    <p style="font-size: 1.2rem; color: var(--text-muted); line-height: 1.8;" id="vision-desc">Ser el framework nacional estándar en Uruguay para la gestión inteligente de asistencia. En el ámbito educativo, el fin es disminuir la deserción escolar y optimizar la inversión pública, iterando constantemente sobre la base de la innovación y el compromiso social.</p>
+                </div>
+                
+                <div id="valores" class="tab-content">
+                    <h3 id="valores-title">Nuestros Valores</h3>
+                    <ul class="values-list-accordion">
+                        <li class="val-item" onclick="toggleValue(this)">
+                            <div class="val-header"><div class="val-title"><i class="fa-solid fa-check"></i> <span id="val-1">Responsabilidad</span></div><i class="fa-solid fa-chevron-down val-icon"></i></div>
+                            <div class="val-body"><p id="val-1-desc">Cumplimos rigurosamente con los compromisos asumidos con nuestros clientes e instituciones en tiempo y forma.</p></div>
+                        </li>
+                        <li class="val-item" onclick="toggleValue(this)">
+                            <div class="val-header"><div class="val-title"><i class="fa-solid fa-lock"></i> <span id="val-2">Transparencia y Ética</span></div><i class="fa-solid fa-chevron-down val-icon"></i></div>
+                            <div class="val-body"><p id="val-2-desc">Garantizamos un manejo ético de la información, protegiendo la privacidad y manteniendo una comunicación clara y sincera.</p></div>
+                        </li>
+                        <li class="val-item" onclick="toggleValue(this)">
+                            <div class="val-header"><div class="val-title"><i class="fa-solid fa-network-wired"></i> <span id="val-3">Trabajo en Equipo</span></div><i class="fa-solid fa-chevron-down val-icon"></i></div>
+                            <div class="val-body"><p id="val-3-desc">Trabajamos de manera colaborativa, con respeto a usuarios y colaboradores, para lograr los mejores resultados posibles.</p></div>
+                        </li>
+                        <li class="val-item" onclick="toggleValue(this)">
+                            <div class="val-header"><div class="val-title"><i class="fa-solid fa-microchip"></i> <span id="val-4">Innovación Constante</span></div><i class="fa-solid fa-chevron-down val-icon"></i></div>
+                            <div class="val-body"><p id="val-4-desc">Nos mantenemos en constante evolución para actualizar permanentemente la tecnología utilizada en nuestros ecosistemas.</p></div>
+                        </li>
+                        <li class="val-item" onclick="toggleValue(this)">
+                            <div class="val-header"><div class="val-title"><i class="fa-solid fa-award"></i> <span id="val-5">Calidad Superior</span></div><i class="fa-solid fa-chevron-down val-icon"></i></div>
+                            <div class="val-body"><p id="val-5-desc">Aseguramos la máxima durabilidad, precisión y excelencia en todos nuestros dispositivos biométricos y servicios asociados.</p></div>
+                        </li>
+                        <li class="val-item" onclick="toggleValue(this)">
+                            <div class="val-header"><div class="val-title"><i class="fa-solid fa-heart-pulse"></i> <span id="val-6">Fiabilidad y Empatía</span></div><i class="fa-solid fa-chevron-down val-icon"></i></div>
+                            <div class="val-body"><p id="val-6-desc">Generamos confianza absoluta a través de la empatía, comprendiendo las necesidades de las familias y la institución.</p></div>
+                        </li>
+                        <li class="val-item" onclick="toggleValue(this)">
+                            <div class="val-header"><div class="val-title"><i class="fa-solid fa-universal-access"></i> <span id="val-7">Inclusión Universal</span></div><i class="fa-solid fa-chevron-down val-icon"></i></div>
+                            <div class="val-body"><p id="val-7-desc">Garantizamos que nuestra tecnología sea accesible para todos los alumnos mediante biometría vocal e interfaces adaptables.</p></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Tecnología & Catálogo B2B (Fondo Gris) -->
+        <section id="tecnologia" style="background-color: var(--bg-body);">
+            <h2 class="section-title reveal glow-text" data-text="Infraestructura Hardware & Software" id="tech-title">Infraestructura <span>Hardware & Software</span></h2>
+            <div class="features-grid">
+                <div class="feature-card reveal" data-tilt>
+                    <div class="feature-glow"></div>
+                    <div class="feature-content">
+                        <div class="feature-icon-box"><i class="fa-solid fa-fingerprint"></i></div>
+                        <h3 id="prod1-title">Hub Biométrico</h3>
+                        <p id="prod1-desc">Terminal de alta velocidad para escaneo dactilar. Procesamiento neural para registro masivo en accesos principales.</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal delay-100" data-tilt>
+                    <div class="feature-glow"></div>
+                    <div class="feature-content">
+                        <div class="feature-icon-box"><i class="fa-solid fa-id-badge"></i></div>
+                        <h3 id="prod2-title">Nodos de Aula (RFID)</h3>
+                        <p id="prod2-desc">Lectores de proximidad para instalación en salones. Pase de lista instantáneo por aproximación de gafete.</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal delay-200" data-tilt>
+                    <div class="feature-glow"></div>
+                    <div class="feature-content">
+                        <div class="feature-icon-box"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                        <h3 id="prod3-title">App Control Parental</h3>
+                        <p id="prod3-desc">Aplicación móvil iOS/Android para tutores. Notificaciones push cifradas de ingresos, egresos y ausencias.</p>
+                        <button class="btn-outline magnetic-btn" style="border-color: var(--secondary); color: var(--text-main); margin-top:10px; width:100%;" id="btn-qr">
+                            <i class="fa-solid fa-qrcode"></i> <span id="btn-qr-text">Vincular Celular</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="feature-card reveal delay-300" data-tilt>
+                    <div class="feature-glow"></div>
+                    <div class="feature-content">
+                        <div class="feature-icon-box"><i class="fa-solid fa-server"></i></div>
+                        <h3 id="prod4-title">Firewall Institucional</h3>
+                        <p id="prod4-desc">Servidor local o cloud híbrido. Cumplimiento estricto con la Ley N°18331 de protección de datos personales.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Arquitectura & SIMULADOR RFID (Fondo Blanco) -->
+        <section id="ventajas" style="background-color: var(--bg-card);">
+            <h2 class="section-title reveal glow-text" data-text="Arquitectura del Sistema" id="showcase-title">Arquitectura del <span>Sistema</span></h2>
+            <div class="showcase-container reveal delay-100">
+                <div class="feature-left">
+                    <div class="feature-item">
+                        <h4><span id="show-1-title">Privacidad Intranet</span> <div class="showcase-icon"><i class="fa-solid fa-lock"></i></div></h4>
+                        <p id="show-1-desc">Los patrones biométricos se encriptan y nunca se exponen a internet abierto.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4><span id="show-2-title">Prevención de Deserción</span> <div class="showcase-icon"><i class="fa-solid fa-user-shield"></i></div></h4>
+                        <p id="show-2-desc">Algoritmos de alerta temprana vinculan a las familias antes de que el ausentismo sea crónico.</p>
+                    </div>
+                </div>
+                <div class="showcase-center" style="flex-direction: column;">
+                    <i class="fa-solid fa-microchip"></i>
+                    <button id="btn-ddos" class="btn-main magnetic-btn" style="background:#ef4444; margin-top:20px; box-shadow:0 0 15px rgba(239,68,68,0.5); border: none; font-size: 0.9rem;">
+                        <i class="fa-solid fa-skull"></i> <span id="btn-ddos-text">Simular Ataque DDoS</span>
+                    </button>
+                </div>
+                <div class="feature-right">
+                    <div class="feature-item">
+                        <h4><div class="showcase-icon"><i class="fa-solid fa-bolt"></i></div> <span id="show-3-title">Latencia Cero</span></h4>
+                        <p id="show-3-desc">Sincronización vía WebSockets para que administración y padres vean el estado en el acto.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4><div class="showcase-icon"><i class="fa-solid fa-toolbox"></i></div> <span id="show-4-title">Despliegue Técnico</span></h4>
+                        <p id="show-4-desc">Ingeniería llave en mano: cableado, montaje de racks y configuración de red interna.</p>
+                    </div>
+                </div>
+            </div>
+<!-- ========================================== -->
+<!-- 2. DASHBOARD DIRECTIVO (HTML + JS) -->
+<!-- ========================================== -->
+<div class="dashboard-stats" style="display: flex; justify-content: space-around; flex-wrap: wrap; background: rgba(15, 23, 42, 0.8); padding: 30px; border-radius: 15px; border: 1px solid #10b981; margin: 40px 0;">
+    <div style="text-align: center; padding: 10px;">
+        <h2 style="font-size: 3rem; color: #10b981; margin: 0;"><span class="contador" data-target="98">0</span>%</h2>
+        <p style="color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">Asistencia Promedio</p>
+    </div>
+    <div style="text-align: center; padding: 10px;">
+        <h2 style="font-size: 3rem; color: #3b82f6; margin: 0;"><span class="contador" data-target="14">0</span></h2>
+        <p style="color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">Deserciones Prevenidas</p>
+    </div>
+    <div style="text-align: center; padding: 10px;">
+        <h2 style="font-size: 3rem; color: #f59e0b; margin: 0;"><span class="contador" data-target="450">0</span>+</h2>
+        <p style="color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">Becas MEC Optimizadas</p>
+    </div>
+</div>
+
+<script>
+    // Animación de los contadores numéricos
+    const contadores = document.querySelectorAll('.contador');
+    const animarContadores = () => {
+        contadores.forEach(contador => {
+            const actualizarCuenta = () => {
+                const objetivo = +contador.getAttribute('data-target');
+                const actual = +contador.innerText;
+                const incremento = objetivo / 50; 
+                if (actual < objetivo) {
+                    contador.innerText = Math.ceil(actual + incremento);
+                    setTimeout(actualizarCuenta, 30);
+                } else {
+                    contador.innerText = objetivo;
+                }
+            };
+            actualizarCuenta();
+        });
+    };
+    // Iniciar cuando pasas el ratón o tocas (para demostración rápida)
+    document.querySelector('.dashboard-stats').addEventListener('mouseenter', animarContadores);
+</script>
+            <!-- SIMULADOR RFID CON CÁMARA -->
+            <div class="reveal delay-200" style="max-width: 900px; margin: 5rem auto 0; background: var(--bg-body); padding: 40px; border-radius: 30px; border: 2px dashed var(--secondary); text-align: center; box-shadow: var(--shadow-sm); transition: background 0.4s;">
+                <h3 style="color: var(--heading-color); font-size: 1.8rem; margin-bottom: 10px;" id="rfid-title">Simulador RFID en Vivo</h3>
+                <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 30px;" id="rfid-desc">Tómate una foto para generar tu credencial y arrástrala para fichar.</p>
+                <button id="btn-webcam" class="btn-outline magnetic-btn" style="border-color:var(--secondary); color:var(--secondary); margin-bottom: 40px;">
+                    <i class="fa-solid fa-camera"></i> <span id="btn-webcam-text">Emitir Credencial con Cámara</span>
+                </button>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 50px; flex-wrap: wrap;">
+                    <div class="rfid-card magnetic-btn" draggable="true" id="drag-card" onclick="simulateRFIDDrop()">
+                        <div class="rfid-card-img" id="rfid-card-img-container"><i class="fa-solid fa-user"></i></div>
+                        <div style="margin-top: auto;">
+                            <strong style="font-size: 1.1rem;" id="rfid-card-name">Estudiante</strong><br>
+                            <small style="opacity: 0.8;" id="rfid-card-role">UTU Las Piedras 2</small>
+                        </div>
+                    </div>
+                    <div style="font-size: 3rem; color: var(--border-light);"><i class="fa-solid fa-arrow-right-long"></i></div>
+                    <div class="rfid-dropzone" id="drop-reader">
+                        <div class="reader-light" id="reader-light"></div>
+                        <i class="fa-solid fa-wifi" style="font-size: 3rem; color: var(--text-muted);"></i>
+                        <p style="color: var(--text-muted); font-weight: bold; margin-top: 15px;" id="rfid-node">NODO AULA 3DC</p>
+                    </div>
+                </div>
+                <div id="rfid-result" style="margin-top: 30px; font-weight: 900; font-size: 1.5rem; min-height: 35px; color: #10b981; text-transform: uppercase;"></div>
+            </div>
+        </section>
+
+        <!-- 6. Testimonios (Fondo Oscuro) -->
+        <section id="testimonios" style="background: linear-gradient(135deg, var(--primary-solid), var(--primary-light)); position: relative; overflow: hidden;">
+            <div class="blob blob-1" style="background: var(--secondary);"></div>
+            <h2 class="section-title reveal glow-text" data-text="Casos de éxito" style="color: white;" id="test-title">Casos de <span>éxito</span></h2>
+            <div class="test-grid">
+                <div class="test-card reveal">
+                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="test-text" id="test-1">"Desde que instalamos los Hubs de SICAE, el tiempo administrativo se redujo un 80%. Los padres están encantados con las notificaciones de la App."</p>
+                    <div class="test-user"><div class="test-avatar" style="color: #fff;">C</div><div class="test-info"><h5 style="color: #fff;">Carlos M.</h5><p style="color: #cbd5e1;" id="test-1-rol">Director, Liceo N°4</p></div></div>
+                </div>
+                <div class="test-card reveal delay-100">
+                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="test-text" id="test-2">"El pase de lista por RFID en las aulas cambió nuestra dinámica. Cero fricción para los docentes y control total del ausentismo por materia."</p>
+                    <div class="test-user"><div class="test-avatar" style="color: #fff;">L</div><div class="test-info"><h5 style="color: #fff;">Laura G.</h5><p style="color: #cbd5e1;" id="test-2-rol">Adscripta General, UTU</p></div></div>
+                </div>
+                <div class="test-card reveal delay-200">
+                    <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="test-text" id="test-3">"La seguridad de los datos biométricos era nuestra mayor preocupación. La arquitectura Intranet de SICAE nos dio total tranquilidad legal."</p>
+                    <div class="test-user"><div class="test-avatar" style="color: #fff;">M</div><div class="test-info"><h5 style="color: #fff;">Martín S.</h5><p style="color: #cbd5e1;" id="test-3-rol">Ingeniero IT, Colegio Privado</p></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Pricing (Fondo Gris) -->
+        <section id="planes" style="background-color: var(--bg-body);">
+            <h2 class="section-title reveal glow-text" data-text="Escalabilidad a tu Medida" id="plans-title">Escalabilidad a tu <span>Medida</span></h2>
+            <div class="pricing-grid">
+                <div class="price-card reveal">
+                    <div class="p-tier" id="plan-1">Básico</div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;" id="plan-1-desc">Ideal para empresas pequeñas</p>
+                    <ul class="p-features">
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-1-1">1 Hub Biométrico Central marca VEOQUIERO</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-1-2">Chip inteligente y de bajo consumo</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-1-3">Hasta 200 colaboradores</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-1-4">Instalacion incluida</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-1-5">Soporte 24/7</span></li>
+                    </ul>
+                    <button class="btn-outline magnetic-btn" style="color: var(--text-main); border-color: var(--border-light); width: 100%; justify-content: center;" onclick="addToCart('Plan Básico')" id="btn-quote-1">Cotizar</button>
+                </div>
+                <div class="price-card popular reveal delay-100">
+                    <div class="p-tier" id="plan-2">Institucional</div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;" id="plan-2-desc">Ideal para escuelas, liceos y Universidades</p>
+                    <ul class="p-features">
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-2-1">Hub Biométrico k14 - ZKteco</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-2-2">App Control Parental</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-2-3">Hasta 2000 Alumnos</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-2-4">Gafete Qr y lector por proximidad</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-2-5">Soporte 24/7</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-2-6">Instalacion incluida</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-2-7">Servidor Local Dedicado</span></li>
+                    </ul>
+                    <button class="btn-main magnetic-btn" style="width: 100%; justify-content: center;" onclick="addToCart('Plan Institucional')" id="btn-quote-2">Solicitar Auditoría</button>
+                </div>
+                <div class="price-card reveal delay-200">
+                    <div class="p-tier" id="plan-3">Intermedio</div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;" id="plan-3-desc">Ideal para empresas medianas</p>
+                    <ul class="p-features">
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-3-1">1 Hub Biométrico Central marca VEOQUIERO</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-3-2">Chip inteligente y de bajo consumo</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-3-3">Hasta 600 colaboradores</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-3-4">Soporte 24/7</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-3-5">Instalacion incluida</span></li>
+                    </ul>
+                    <button class="btn-outline magnetic-btn" style="color: var(--text-main); border-color: var(--border-light); width: 100%; justify-content: center;" onclick="addToCart('Plan Intermedio')" id="btn-quote-3">Contactar Ventas</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Equipo S.I.C.A.E (Fondo Blanco) -->
+        <section id="equipo" style="background-color: var(--bg-card);">
+            <h2 class="section-title reveal glow-text" data-text="Equipo de Desarrollo" id="team-title">Equipo de <span>Desarrollo</span></h2>
+            <div class="team-grid">
+                <div class="team-card reveal">
+                    <div class="photo-upload-container">
+                        <input type="file" accept="image/*" onchange="previewImage(event, 'img1', 'Facundo')">
+                        <div class="upload-content"><i class="fa-solid fa-cloud-arrow-up"></i><br><span class="upload-text" id="upload-text-1">Upload Avatar</span></div>
+                        <img id="img1" class="photo-preview" src="" alt="Avatar">
+                    </div>
+                    <div class="team-info">
+                        <h3>Facundo Lauradrid</h3>
+                        <p id="role-1">Desarrollador de Software</p>
+                    </div>
+                </div>
+                <div class="team-card reveal delay-100">
+                    <div class="photo-upload-container">
+                        <input type="file" accept="image/*" onchange="previewImage(event, 'img2', 'Jennifer')">
+                        <div class="upload-content"><i class="fa-solid fa-cloud-arrow-up"></i><br><span class="upload-text" id="upload-text-2">Upload Avatar</span></div>
+                        <img id="img2" class="photo-preview" src="" alt="Avatar">
+                    </div>
+                    <div class="team-info">
+                        <h3>Jennifer Martínez</h3>
+                        <p id="role-2">Administrativa/R.R.H.H.</p>
+                    </div>
+                </div>
+                <div class="team-card reveal delay-200">
+                    <div class="photo-upload-container">
+                        <input type="file" accept="image/*" onchange="previewImage(event, 'img3', 'Miriam')">
+                        <div class="upload-content"><i class="fa-solid fa-cloud-arrow-up"></i><br><span class="upload-text" id="upload-text-3">Upload Avatar</span></div>
+                        <img id="img3" class="photo-preview" src="" alt="Avatar">
+                    </div>
+                    <div class="team-info">
+                        <h3>Miriam Méndez</h3>
+                        <p id="role-3">Marketing/Relaciones publicas</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion reveal delay-300">
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span><i class="fa-solid fa-database" style="margin-right: 15px; color: var(--secondary);"></i> <span id="accordion-title">Plantel Docente 3°DC</span></span>
+                        <div class="icon-toggle"><i class="fa-solid fa-chevron-down"></i></div>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="teachers-grid" id="teachers-grid">
+                            <div class="teacher-item"><span id="subj-1">Act. Económicas</span> <strong>Barrere Juan</strong></div>
+                            <div class="teacher-item"><span id="subj-2">APT</span> <strong>Camps Cristina</strong></div>
+                            <div class="teacher-item"><span id="subj-3">Ges. Talento Humano</span> <strong>De Armas Valentina</strong></div>
+                            <div class="teacher-item"><span id="subj-4">Ges. Empresarial</span> <strong>De Armas Valentina</strong></div>
+                            <div class="teacher-item"><span id="subj-5">Ges. Inventarios</span> <strong>Alvarez Betania</strong></div>
+                            <div class="teacher-item"><span id="subj-6">Inglés Técnico</span> <strong>Tripodi Valeria</strong></div>
+                            <div class="teacher-item"><span id="subj-7">Lógicas Territoriales</span> <strong>Moreira Diego</strong></div>
+                            <div class="teacher-item"><span id="subj-8">Mark. Digital</span> <strong>Cavia Marly</strong></div>
+                            <div class="teacher-item"><span id="subj-9">Mat. Aplicada</span> <strong>Susaya Sergio</strong></div>
+                            <div class="teacher-item"><span id="subj-10">Pensamiento Filosófico</span> <strong>Latepon Sandra</strong></div>
+                            <div class="teacher-item"><span id="subj-11">Negociación</span> <strong>Centurión Mario</strong></div>
+                            <div class="teacher-item"><span id="subj-12">UTU LAB</span> <strong>Da Silva Andrés</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. FAQ (Fondo Gris) -->
+        <section id="faq" style="background-color: var(--bg-body); padding-top: 4rem;">
+            <h2 class="section-title reveal glow-text" data-text="Preguntas Frecuentes" id="faq-title">Preguntas <span>Frecuentes</span></h2>
+            <div class="accordion reveal delay-100" style="margin-top: 2rem;">
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleFAQ(this)"><span id="faq-1-q">¿Qué sucede si se corta el suministro eléctrico?</span><div class="icon-toggle"><i class="fa-solid fa-plus"></i></div></div>
+                    <div class="accordion-content"><div class="faq-text" id="faq-1-a">Nuestros Hubs Biométricos cuentan con una batería de respaldo interna (UPS) que garantiza hasta 6 horas de autonomía continua, asegurando que ningún registro se pierda.</div></div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleFAQ(this)"><span id="faq-2-q">¿Cómo se protegen las huellas dactilares de los alumnos?</span><div class="icon-toggle"><i class="fa-solid fa-plus"></i></div></div>
+                    <div class="accordion-content"><div class="faq-text" id="faq-2-a">SICAE no guarda imágenes de las huellas. El escáner convierte la huella en un código matemático cifrado (Hash) irreversible. Es imposible reconstruir la huella a partir de este código.</div></div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleFAQ(this)"><span id="faq-3-q">¿La App para padres tiene algún costo extra?</span><div class="icon-toggle"><i class="fa-solid fa-plus"></i></div></div>
+                    <div class="accordion-content"><div class="faq-text" id="faq-3-a">No. Las licencias de la aplicación móvil Parent Connect están incluidas de forma ilimitada en nuestro plan institucional académico.</div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. Contacto (Fondo Blanco) -->
+        <section class="contact-section" id="contacto" style="background-color: var(--bg-card); border-top: 1px solid var(--border-light);">
+            <h2 class="section-title reveal glow-text" data-text="Integración de Sistemas" id="contact-title">Integración de <span>Sistemas</span></h2>
+            <div class="contact-grid reveal delay-100">
+                <div class="contact-info">
+                    <h3 id="contact-sub1" style="color: var(--heading-color); font-size: 1.8rem; font-family: 'Poppins';">Contacto Directo</h3>
+                    <p style="margin-bottom: 10px; color: var(--text-muted); font-size: 1.1rem;" id="contact-desc">¿Requieres un presupuesto a medida o tienes dudas sobre la arquitectura de red? Nuestros ingenieros están listos.</p>
+                    <div class="contact-item"><i class="fa-brands fa-whatsapp"></i><div><strong style="color: var(--heading-color);" id="contact-wpp">WhatsApp Business</strong><br><span style="color: var(--text-muted);">+598 99 176 046</span></div></div>
+                    <div class="contact-item"><i class="fa-solid fa-envelope"></i><div><strong style="color: var(--heading-color);" id="contact-email">Email Sales</strong><br><span style="color: var(--text-muted);">sicaeapp@gmail.com</span></div></div>
+                    <div class="contact-item"><i class="fa-solid fa-location-dot"></i><div><strong style="color: var(--heading-color);" id="contact-hq">Headquarters</strong><br><span style="color: var(--text-muted);" id="contact-hq-desc">Av. Artigas 573, Las Piedras, Uruguay</span></div></div>
+                </div>
+                <div class="contact-form">
+                    <h3 style="color: var(--heading-color); margin-bottom: 25px; font-family: 'Poppins'; font-size: 1.8rem;" id="contact-sub2">Solicitar Demo</h3>
+                    <form onsubmit="event.preventDefault(); showToast('Datos encriptados y enviados. Nos contactaremos.', 'success'); this.reset();">
+                        <input type="text" id="ph-1" placeholder="Institución / Empresa" required>
+                        <input type="email" id="ph-2" placeholder="Correo corporativo" required>
+                        <input type="number" id="ph-3" placeholder="Volumen de alumnos">
+                        <textarea rows="4" id="ph-4" placeholder="Especificaciones técnicas requeridas..."></textarea>
+                        <button type="submit" class="btn-main magnetic-btn" id="btn-submit" style="width: 100%; justify-content: center; font-size: 1.1rem; padding: 1.2rem;">Enviar Solicitud Segura</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-logos">
+                <i class="fa-solid fa-school"></i><i class="fa-solid fa-microchip"></i><i class="fa-solid fa-fingerprint"></i><i class="fa-solid fa-satellite-dish"></i><i class="fa-solid fa-shield-check"></i>
+            </div>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <h3 style="font-size: 2.2rem; margin-bottom: 10px; font-weight: 900; letter-spacing: 2px; color: #ffffff;">S.I.C.A.E. S.A.S.</h3>
+                <p style="font-weight: 500; font-size: 1.2rem; margin-bottom: 5px; color: var(--secondary);" id="footer-desc-1">ANEP • Escuela Técnica Las Piedras 2</p>
+                <p style="font-weight: 300; font-size: 1rem; color: #cbd5e1;" id="footer-desc-2">BTP Comercio y Ventas • Grupo: 3°DC • Año: 2026</p>
+                <p style="margin-top: 40px; font-size: 0.9rem; color: #cbd5e1; opacity: 0.6;" id="footer-rights">&copy; SICAE todos los derechos reservados. Creado con fines pedagógicos.</p>
+            </div>
+        </footer>
+
+    <!-- MODALES EXTERNOS (QR, Login, Video, Voice, Webcam, Anep) -->
+    <div class="modal-overlay" id="qr-modal">
+        <div class="modal-box" style="text-align: center; max-width: 400px;">
+            <button class="close-btn" id="close-qr"><i class="fa-solid fa-xmark"></i></button>
+            <h3 style="color: var(--heading-color); margin-bottom:15px;" id="qr-modal-title"><i class="fa-solid fa-mobile-screen-button"></i> Escanea el Código</h3>
+            <p style="color: var(--text-muted); margin-bottom: 20px;" id="qr-modal-desc">Use su cámara para sincronizar una Demo remota.</p>
+            <div style="width: 250px; height: 250px; background: url('https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg') center/cover; margin: 0 auto 20px; border: 10px solid white; border-radius: 10px;"></div>
+            <p style="font-family:monospace; color:var(--secondary); font-weight:bold; margin-top:20px; animation: pulseAlarm 2s infinite;" id="qr-modal-wait">Esperando conexión...</p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal-box">
+            <button class="close-btn" id="close-login"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-header">
+                <i class="fa-solid fa-fingerprint"></i><h3 id="login-title">Acceso Administrativo</h3><p id="login-desc">Ingrese sus credenciales</p>
+            </div>
+            <form class="login-form" id="login-form">
+                <div class="input-group"><input type="email" id="login-ph1" placeholder="Correo institucional" required><i class="fa-solid fa-envelope"></i></div>
+                <div class="input-group"><input type="password" id="login-ph2" placeholder="Contraseña" required><i class="fa-solid fa-lock"></i></div>
+                <button type="submit" class="btn-main magnetic-btn" id="btn-login-submit" style="width: 100%; justify-content: center; margin-top: 20px;">Autenticar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="video-modal">
+        <div class="modal-box video-box">
+            <button class="close-btn" id="close-video" style="top: -50px; right: 0; background: white; color: black;"><i class="fa-solid fa-xmark"></i></button>
+            <div class="video-container"><video id="mi-video" width="100%" height="100%" controls style="position: absolute; top: 0; left: 0; object-fit: cover;"><source src="Video SICAE.mp4" type="video/mp4"></video></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="voice-auth-modal">
+        <div class="modal-box" style="text-align: center; max-width: 500px;">
+            <button class="close-btn" id="close-voice"><i class="fa-solid fa-xmark"></i></button>
+            <h3 style="color: var(--secondary); font-size: 1.8rem; margin-bottom: 10px;" id="voice-modal-title"><i class="fa-solid fa-microphone-lines"></i> Biometría Vocal</h3>
+            <p style="color: var(--text-muted); margin-bottom: 20px;" id="voice-modal-desc">Hable para verificar su patrón de voz</p>
+            <div style="background: var(--primary-solid); border-radius: 16px; padding: 20px; box-shadow: inset 0 0 20px rgba(0,0,0,0.5);"><canvas id="voice-canvas" width="400" height="150" style="width: 100%;"></canvas></div>
+            <div id="voice-status" style="margin-top: 20px; font-weight: bold; font-size: 1.2rem; color: var(--text-main);">Esperando señal de audio...</div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="webcam-modal">
+        <div class="modal-box" style="text-align: center;">
+            <button class="close-btn" id="close-webcam"><i class="fa-solid fa-xmark"></i></button>
+            <h3 style="color: var(--heading-color); margin-bottom:15px;" id="webcam-modal-title"><i class="fa-solid fa-face-viewfinder"></i> Escaneo Facial VIP</h3>
+            <p style="color: var(--text-muted); margin-bottom: 20px;" id="webcam-modal-desc">Posiciona tu rostro en el centro del cuadro.</p>
+            <video id="webcam-video" width="100%" autoplay playsinline style="border-radius:15px; border:2px dashed var(--secondary); box-shadow:0 0 20px rgba(0,180,216,0.3);"></video><canvas id="webcam-canvas" style="display:none;"></canvas>
+            <button id="take-snap-btn" class="btn-main magnetic-btn" style="margin-top:20px; width:100%; justify-content:center;"><i class="fa-solid fa-camera"></i> <span id="btn-snap-text">Generar Credencial</span></button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="anep-map-modal">
+        <div class="modal-box" style="max-width: 95%; width: 1400px; height: 90vh; background: #020617; overflow: hidden; position: relative; border: 1px solid #00b4d8; padding: 0;">
+            <button class="close-btn" id="close-anep" style="z-index: 100; top: 20px; right: 20px; background: rgba(255,255,255,0.1); color: #fff;"><i class="fa-solid fa-xmark"></i></button>
+            <div style="position: absolute; top: 30px; left: 40px; color: #00b4d8; font-family: monospace; z-index: 10; text-align: left;">
+                <h2 style="color: #00b4d8; text-shadow: 0 0 10px #00b4d8; font-family: 'Inter'; font-weight: 900; font-size: 2rem;" id="anep-modal-title"><i class="fa-solid fa-network-wired"></i> ANEP SECURE NETWORK</h2>
+                <p style="color: #cbd5e1; font-size: 1.1rem; margin-top: 5px;" id="anep-modal-sub1">> MONITOREO NACIONAL EN TIEMPO REAL</p>
+                <div style="margin-top: 40px;">
+                    <div style="font-size: 5rem; font-weight: 900; color: #10b981; text-shadow: 0 0 20px #10b981; line-height: 1;" id="anep-counter-live">0</div>
+                    <p style="color: #10b981; font-size: 1.2rem; font-weight: bold; text-transform: uppercase;" id="anep-modal-sub2">Accesos Validados en Red</p>
+                </div>
+                <div id="anep-logs" style="margin-top: 40px; color: #cbd5e1; font-size: 0.9rem; line-height: 1.8; max-height: 200px; overflow: hidden;"></div>
+            </div>
+            <canvas id="anep-canvas" style="width: 100%; height: 100%; background: radial-gradient(circle at center, #0a2540 0%, #020617 100%);"></canvas>
+        </div>
+    </div>
+
+    <!-- Chatbot Widget -->
+    <button class="chatbot-btn magnetic-btn" onclick="toggleChat()"><i class="fa-solid fa-robot"></i></button>
+    <div class="chatbot-window" id="chatbot-window">
+        <div class="chat-header">
+            <div style="display: flex; align-items: center; gap: 10px;"><div style="width: 12px; height: 12px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981;"></div><strong id="chat-title" style="font-family: 'Poppins';">SICAE AI Assistant</strong></div>
+            <i class="fa-solid fa-xmark" style="cursor: pointer; font-size: 1.2rem;" onclick="toggleChat()"></i>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <div class="chat-msg msg-bot" id="chat-welcome">¡Hola! Bienvenido a la plataforma SICAE. 👋 Soy la IA de soporte. ¿En qué te ayudo?</div>
+            <div class="chat-msg msg-bot" id="typing-indicator" style="display: none; padding: 15px 20px;"><div class="typing-dots"><span></span><span></span><span></span></div></div>
+        </div>
+        <div class="chat-footer">
+            <button id="mic-btn" class="mic-btn magnetic-btn" title="Hablar"><i class="fa-solid fa-microphone"></i></button>
+            <input type="text" id="chat-input" placeholder="Ingresa un prompt..." onkeypress="handleChatEnter(event)">
+            <button class="magnetic-btn" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <!-- Cart Offcanvas -->
+    <div class="cart-panel" id="cart-panel">
+        <div class="cart-header"><h3 style="font-family: 'Poppins';"><i class="fa-solid fa-file-invoice-dollar" style="margin-right: 10px;"></i> <span id="cart-title-text">Cotización B2B</span></h3><button class="close-cart" onclick="toggleCart()"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="cart-body" id="cart-body">
+            <div class="cart-empty" id="cart-empty"><i class="fa-solid fa-server" style="font-size: 4rem; margin-bottom: 20px; color: var(--text-muted);"></i><p style="font-size: 1.1rem; color: var(--text-muted); font-weight: 500;" id="cart-empty-text">No hay hardware seleccionado.</p></div>
+        </div>
+        <div class="cart-footer">
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; text-align: center; line-height: 1.5;" id="cart-footer-text">Seleccione la infraestructura necesaria.</p>
+            <button class="btn-main magnetic-btn" style="width: 100%; justify-content: center;" onclick="alert('Iniciando contacto. Serás redirigido.')" id="btn-cart-submit">Solicitar Auditoría</button>
+        </div>
+    </div>
+
+    <!-- FAB & Cookie -->
+        <div class="cookie-banner" id="cookie-banner">
+        <div class="cookie-content"><i class="fa-solid fa-cookie-bite"></i><p id="cookie-text">Utilizamos cookies para mejorar la experiencia de usuario. <a href="#">Política de Privacidad</a></p></div>
+        <button class="btn-main magnetic-btn" onclick="acceptCookies()" id="cookie-btn">Aceptar Cookies</button>
+    </div>
+
+    <!-- Toast UI -->
+    <div class="toast" id="toast"><i class="fa-solid fa-circle-check" style="font-size: 1.5rem;" id="toast-icon"></i><span id="toast-message" style="font-family: 'Inter';"></span></div>
+
+    <!-- JAVASCRIPT MAESTRO Y DEFINITIVO -->
+    <script>
+        // 1. FUNCIONES GLOBALES (TOAST Y AUDIO)
+        function showToast(message, type = "success") {
+            const toast = document.getElementById('toast'); const icon = document.getElementById('toast-icon');
+            document.getElementById('toast-message').innerText = message;
+            if (type === "error") { toast.style.background = "#ef4444"; icon.className = "fa-solid fa-triangle-exclamation"; } else { toast.style.background = "#10b981"; icon.className = "fa-solid fa-circle-check"; }
+            toast.classList.add('show'); setTimeout(() => { toast.classList.remove('show'); }, 3500);
+        }
+        function playBeep(freq = 800, type = 'sine', duration = 0.15) {
+            try { const AudioContext = window.AudioContext || window.webkitAudioContext; if(!AudioContext) return; const ctx = new AudioContext(); const osc = ctx.createOscillator(); osc.type = type; osc.frequency.setValueAtTime(freq, ctx.currentTime); osc.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + duration); } catch(e) {}
+        }
+
+        // 2. TRUCO MENTAL QR
+        const btnQR = document.getElementById('btn-qr'); const qrModal = document.getElementById('qr-modal');
+        if(btnQR) { btnQR.addEventListener('click', () => { qrModal.classList.add('active'); }); document.getElementById('close-qr').addEventListener('click', () => { qrModal.classList.remove('active'); }); }
+
+        // 3. MODO BLACKOUT & MODO DIOS (Teclado)
+        let secretKeys = []; const godCode = ['a','d','m','i','n'];
+        window.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowRight' && qrModal && qrModal.classList.contains('active')) {
+                qrModal.classList.remove('active'); playBeep(1000, 'sine', 0.3); showToast("NUEVO DISPOSITIVO VINCULADO: Dispositivo del espectador", "success"); setTimeout(() => { showToast("Transfiriendo Demo de App Parent Connect...", "success"); }, 2000);
+            }
+            if(e.key.toLowerCase() === 'b' && !document.body.classList.contains('low-power')) {
+                const bOverlay = document.getElementById('blackout-overlay'); playBeep(100, 'sawtooth', 0.5); document.body.classList.add('crt-off');
+                setTimeout(() => { bOverlay.style.display = 'flex'; }, 500);
+                setTimeout(() => {
+                    const logs = ["[CRÍTICO] Falla masiva en red eléctrica de UTE detectada.", "[SISTEMA] Activando protocolo de emergencia SICAE.", "[HARDWARE] Baterías UPS de Hubs Biométricos al 100%.", "[ESTADO] PÉRDIDA DE DATOS: 0%. SISTEMA ONLINE."];
+                    let i = 0; const bText = document.getElementById('blackout-text'); bText.innerHTML = '';
+                    let interval = setInterval(() => {
+                        bText.innerHTML += logs[i] + '<br>'; playBeep(600, 'square', 0.05); i++;
+                        if(i >= logs.length) { clearInterval(interval); setTimeout(() => { document.body.classList.remove('crt-off'); document.body.classList.add('low-power'); bOverlay.style.display = 'none'; showToast("Corriendo en baterías UPS.", "error"); }, 2000); }
+                    }, 800);
+                }, 1500);
+            }
+            if(e.key.toLowerCase() === 'n') { document.body.classList.remove('low-power'); }
+
+            secretKeys.push(e.key.toLowerCase()); if (secretKeys.length > godCode.length) secretKeys.shift();
+            if (secretKeys.join('') === godCode.join('')) {
+                document.body.classList.toggle('god-mode');
+                if(document.body.classList.contains('god-mode')) {
+                    document.getElementById('hero-title').innerHTML = 'ACCESO <span class="text-gradient" style="background:red;-webkit-text-fill-color:red;">CLASIFICADO</span>'; document.getElementById('hero-subtitle').innerText = "MODO SUPERVISOR DESBLOQUEADO: Acceso total a base de datos UTU."; playBeep(); showToast("ALERTA DE SEGURIDAD: Protocolo ADMIN activado.", "error");
+                } else { document.getElementById('hero-title').innerHTML = '<span class="text-gradient">S.I.C.A.E.</span>'; document.getElementById('hero-subtitle').innerText = "Sistema Inteligente de Control de Asistencias Estudiantil"; }
+                secretKeys = []; 
+            }
+        });
+
+        // 4. TOUR GUIADO
+        const tourBtn = document.getElementById('btn-tour'); let isTourActive = false;
+        const tourSteps = [
+            { id: 'inicio', text: 'Bienvenidos a Sicae. Suelte el mouse, yo lo guiaré por nuestro proyecto.' }, { id: 'proyecto', text: 'El problema actual es el ausentismo crónico. Nuestro sistema elimina la latencia y los errores del pase de lista en papel, garantizando un 99 por ciento de eficacia.' }, { id: 'institucional', text: 'Nuestra misión es proveer un sistema seguro para las familias. Cumpliendo estrictamente con la ley de protección de datos.' }, { id: 'tecnologia', text: 'Nuestra infraestructura de hardware cuenta con Hubs biométricos dactilares, Nodos RFID para aulas y una aplicación móvil para padres.' }, { id: 'ventajas', text: 'A nivel de software, garantizamos privacidad Intranet. Puede probar nuestro simulador de credenciales en pantalla o usar su propia cámara para crear un pase de visitante.' }, { id: 'planes', text: 'Nuestros planes institucionales son escalables, diseñados para abarcar desde pequeñas empresas hasta todo el sistema nacional.' }, { id: 'equipo', text: 'Desarrollado orgullosamente por el equipo de tercero de bachillerato técnico de la UTU Las Piedras 2. Gracias por acompañarnos.' }
+        ];
+        if(tourBtn) {
+            tourBtn.addEventListener('click', async () => {
+                if(isTourActive) { window.speechSynthesis.cancel(); isTourActive = false; tourBtn.innerHTML = '<i class="fa-solid fa-route"></i> <span id="btn-tour-text">Tour Guiado</span>'; return; }
+                isTourActive = true; tourBtn.innerHTML = '<i class="fa-solid fa-stop"></i> <span id="btn-tour-text">Detener Tour</span>';
+                for(let i=0; i<tourSteps.length; i++) {
+                    if(!isTourActive) break; const targetEl = document.getElementById(tourSteps[i].id); if(targetEl) targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    await new Promise((resolve) => { const utterance = new SpeechSynthesisUtterance(tourSteps[i].text); utterance.lang = 'es-UY'; utterance.rate = 1.0; utterance.onend = resolve; utterance.onerror = resolve; window.speechSynthesis.speak(utterance); }); await new Promise(r => setTimeout(r, 800)); 
+                }
+                isTourActive = false; tourBtn.innerHTML = '<i class="fa-solid fa-route"></i> <span id="btn-tour-text">Tour Guiado</span>';
+            });
+        }
+
+        // 5. CREDENCIAL WEBCAM (FACE SCAN)
+        const webcamModal = document.getElementById('webcam-modal'); const videoElement = document.getElementById('webcam-video'); const canvasElement = document.getElementById('webcam-canvas'); const snapBtn = document.getElementById('take-snap-btn'); const btnOpenWebcam = document.getElementById('btn-webcam'); let streamRef = null;
+        if(btnOpenWebcam) { btnOpenWebcam.addEventListener('click', async (e) => { e.preventDefault(); webcamModal.classList.add('active'); try { streamRef = await navigator.mediaDevices.getUserMedia({ video: true }); videoElement.srcObject = streamRef; } catch(e) { showToast("Error al acceder a la cámara", "error"); } }); }
+        if(document.getElementById('close-webcam')){ document.getElementById('close-webcam').addEventListener('click', () => { webcamModal.classList.remove('active'); if(streamRef) streamRef.getTracks().forEach(t => t.stop()); }); }
+        if(snapBtn) {
+            snapBtn.addEventListener('click', () => {
+                const ctx = canvasElement.getContext('2d'); canvasElement.width = videoElement.videoWidth; canvasElement.height = videoElement.videoHeight;
+                ctx.translate(canvasElement.width, 0); ctx.scale(-1, 1); ctx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+                const dataUrl = canvasElement.toDataURL('image/jpeg');
+                document.getElementById('rfid-card-img-container').innerHTML = `<img src="${dataUrl}" style="width:100%; height:100%; object-fit:cover;">`; document.getElementById('rfid-card-name').innerText = "Alumno/a"; document.getElementById('rfid-card-role').innerText = "Estudiante de UTU Las Piedras 2";
+                webcamModal.classList.remove('active'); if(streamRef) streamRef.getTracks().forEach(t => t.stop()); showToast("Credencial biométrica generada con éxito.", "success");
+            });
+        }
+
+        // 6. SIMULADOR DDOS
+        const ddosBtn = document.getElementById('btn-ddos'); const ddosOverlay = document.getElementById('ddos-overlay'); const ddosCanvas = document.getElementById('ddos-canvas'); const ddosCtx = ddosCanvas ? ddosCanvas.getContext('2d') : null; const ddosMsg = document.getElementById('ddos-message'); const ddosShield = document.getElementById('ddos-shield'); let ddosInterval;
+        if(ddosBtn) {
+            ddosBtn.addEventListener('click', () => {
+                ddosOverlay.style.display = 'flex'; ddosMsg.style.display = 'block'; ddosShield.style.display = 'none';
+                if(ddosCtx) {
+                    ddosCanvas.width = window.innerWidth; ddosCanvas.height = window.innerHeight; const chars = '01#@%&'.split(''); const fontSize = 16; const drops = Array.from({length: ddosCanvas.width / fontSize}).fill(1);
+                    ddosInterval = setInterval(() => { ddosCtx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ddosCtx.fillRect(0, 0, ddosCanvas.width, ddosCanvas.height); ddosCtx.fillStyle = '#ef4444'; ddosCtx.font = fontSize + 'px monospace'; for(let i=0; i<drops.length; i++) { ddosCtx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fontSize, drops[i] * fontSize); if(drops[i] * fontSize > ddosCanvas.height && Math.random() > 0.975) drops[i] = 0; drops[i]++; } }, 30);
+                }
+                playBeep(200, 'sawtooth', 0.8); 
+                setTimeout(() => { ddosMsg.innerHTML = "🛡️ FIREWALL ACTIVADO 🛡️<br><span style='font-size:1.5rem; color:#10b981;'>AES-256 Bloqueando intrusiones...</span>"; ddosMsg.style.color = "#10b981"; ddosMsg.style.textShadow = "0 0 20px #10b981"; ddosShield.style.display = "block"; playBeep(800, 'sine', 0.5); }, 3000);
+                setTimeout(() => { clearInterval(ddosInterval); ddosOverlay.style.display = 'none'; showToast("Ataque DDoS repelido con éxito. Sistema blindado.", "success"); ddosMsg.innerHTML = "⚠️ ATAQUE EN PROGRESO ⚠️<br><span style='font-size:1.5rem; color:white;'>Intentando vulnerar base de datos...</span>"; ddosMsg.style.color = "red"; ddosMsg.style.textShadow = "0 0 20px red"; }, 6000);
+            });
+        }
+
+        // 7. FUNCIONALIDAD BASE (Dark Mode, Navbar, Preloader)
+        const themeToggle = document.getElementById('theme-toggle'); let isDark = false;
+        themeToggle.addEventListener('click', () => { isDark = !isDark; if(isDark) { document.documentElement.setAttribute('data-theme', 'dark'); themeToggle.innerHTML = '<i class="fa-solid fa-sun" style="color: white;"></i>'; } else { document.documentElement.removeAttribute('data-theme'); themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>'; } });
+        document.querySelectorAll('.glow-text').forEach(el => { el.addEventListener('mousemove', e => { const rect = el.getBoundingClientRect(); el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`); }); });
+                const interactables = document.querySelectorAll('a, button, input, textarea, select, .magnetic-btn, .accordion-header, .val-item, .marquee-item, .fingerprint-btn, .rfid-card');
+        interactables.forEach(el => { el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover')); el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover')); });
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => { btn.addEventListener('mousemove', (e) => { const rect = btn.getBoundingClientRect(); const x = e.clientX - rect.left - (rect.width / 2); const y = e.clientY - rect.top - (rect.height / 2); btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) scale(1.05)`; }); btn.addEventListener('mouseleave', () => btn.style.transform = `translate(0px, 0px) scale(1)`); });
+
+        window.addEventListener('DOMContentLoaded', () => { setTimeout(() => { const preloader = document.getElementById('preloader'); preloader.style.opacity = '0'; setTimeout(() => preloader.style.visibility = 'hidden', 800); setTimeout(() => { document.getElementById('cookie-banner').classList.add('show'); }, 2000); }, 1800); });
+        function acceptCookies() { document.getElementById('cookie-banner').classList.remove('show'); localStorage.setItem('cookiesAccepted', 'true'); }
+        const progressBar = document.getElementById('scroll-progress'); const navbar = document.getElementById('navbar'); const fab = document.getElementById('fab-top'); const sections = document.querySelectorAll('section'); const navItems = document.querySelectorAll('.nav-item');
+        window.addEventListener('scroll', () => { const winScroll = document.body.scrollTop || document.documentElement.scrollTop; const height = document.documentElement.scrollHeight - document.documentElement.clientHeight; progressBar.style.width = (winScroll / height) * 100 + "%"; if (winScroll > 50) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); if (winScroll > 500) fab.classList.add('visible'); else fab.classList.remove('visible'); let current = ''; sections.forEach(section => { if (scrollY >= (section.offsetTop - 300)) current = section.getAttribute('id'); }); navItems.forEach(item => { item.classList.remove('active'); if (item.getAttribute('href').substring(1) === current) item.classList.add('active'); }); });
+        document.querySelectorAll('.btn-main').forEach(btn => { btn.addEventListener('click', function(e) { let x = e.clientX - e.target.getBoundingClientRect().left; let y = e.clientY - e.target.getBoundingClientRect().top; let ripples = document.createElement('span'); ripples.style.left = x + 'px'; ripples.style.top = y + 'px'; ripples.classList.add('ripple'); this.appendChild(ripples); setTimeout(() => ripples.remove(), 600); }); });
+
+        const typeTarget = document.getElementById('typewriter'); const texts = [ "Arquitectura en la nube.", "Tecnología biométrica implementada.", "Cifrado de extremo a extremo." ]; let textIndex = 0, charIndex = 0, isDeleting = false;
+        function typeEffect() { const currentText = texts[textIndex]; if (isDeleting) { typeTarget.textContent = currentText.substring(0, charIndex - 1); charIndex--; } else { typeTarget.textContent = currentText.substring(0, charIndex + 1); charIndex++; } let typingSpeed = isDeleting ? 30 : 80; if (!isDeleting && charIndex === currentText.length) { typingSpeed = 2000; isDeleting = true; } else if (isDeleting && charIndex === 0) { isDeleting = false; textIndex = (textIndex + 1) % texts.length; typingSpeed = 500; } setTimeout(typeEffect, typingSpeed); } setTimeout(typeEffect, 2800); 
+
+        const heroBg = document.getElementById('hero-bg'); document.addEventListener('mousemove', (e) => { if(heroBg) heroBg.style.transform = `translateX(${(window.innerWidth - e.pageX * 2) / 90}px) translateY(${(window.innerHeight - e.pageY * 2) / 90}px)`; });
+
+        const loginModal = document.getElementById('login-modal'); const videoModal = document.getElementById('video-modal');
+        document.getElementById('open-login').addEventListener('click', (e) => { e.preventDefault(); loginModal.classList.add('active'); }); document.getElementById('close-login').addEventListener('click', () => { loginModal.classList.remove('active'); }); document.getElementById('open-video').addEventListener('click', (e) => { e.preventDefault(); videoModal.classList.add('active'); }); document.getElementById('close-video').addEventListener('click', () => { videoModal.classList.remove('active'); let videoLocal = document.getElementById('mi-video'); if(videoLocal && videoLocal.pause) videoLocal.pause(); });
+        document.getElementById('login-form').addEventListener('submit', (e) => { e.preventDefault(); loginModal.classList.remove('active'); showToast("Error 401: Base de datos no autorizada para Demo.", "error"); e.target.reset(); });
+
+        // 8. SIMULADOR BIOMÉTRICO (HUELLA)
+        const fpBtn = document.getElementById('fingerprint-btn'); const fpStatus = document.getElementById('scan-status'); let scanTimer; let isScanned = false;
+        function startScan(e) { if(isScanned) return; fpBtn.classList.add('scanning'); fpStatus.innerText = "Escaneando biometría..."; fpStatus.style.color = "var(--secondary)"; scanTimer = setTimeout(() => { isScanned = true; fpBtn.classList.remove('scanning'); fpBtn.classList.add('success'); fpStatus.innerHTML = '<i class="fa-solid fa-unlock"></i> ACCESO CONCEDIDO: Bienvenido/a a SICAE'; fpStatus.style.color = "#10b981"; showToast("Acceso validado en red SICAE", "success"); playBeep(); setTimeout(() => { isScanned = false; fpBtn.classList.remove('success'); fpStatus.innerText = "Mantén presionado para simular acceso"; fpStatus.style.color = "#ffffff"; }, 4000); }, 2000); }
+        function stopScan() { if(isScanned) return; clearTimeout(scanTimer); fpBtn.classList.remove('scanning'); fpStatus.innerText = "Lectura cancelada. Intenta de nuevo."; fpStatus.style.color = "#ef4444"; setTimeout(() => { if(!isScanned) { fpStatus.innerText = "Mantén presionado para simular acceso"; fpStatus.style.color = "#ffffff"; } }, 1500); }
+        if(fpBtn) { fpBtn.addEventListener('mousedown', startScan); fpBtn.addEventListener('mouseup', stopScan); fpBtn.addEventListener('mouseleave', stopScan); fpBtn.addEventListener('touchstart', startScan, {passive: true}); fpBtn.addEventListener('touchend', stopScan); }
+
+        // 9. SIMULADOR RFID (DRAG & DROP)
+        const dragCard = document.getElementById('drag-card'); const dropReader = document.getElementById('drop-reader'); const rfidResult = document.getElementById('rfid-result'); const readerLight = document.getElementById('reader-light');
+        if(dragCard && dropReader) { dragCard.addEventListener('dragstart', (e) => { e.dataTransfer.setData('text/plain', 'card_auth'); setTimeout(() => { dragCard.style.opacity = '0.5'; }, 0); }); dragCard.addEventListener('dragend', () => { dragCard.style.opacity = '1'; }); dropReader.addEventListener('dragover', (e) => { e.preventDefault(); dropReader.classList.add('hover'); }); dropReader.addEventListener('dragleave', () => { dropReader.classList.remove('hover'); }); dropReader.addEventListener('drop', (e) => { e.preventDefault(); dropReader.classList.remove('hover'); if(e.dataTransfer.getData('text/plain') === 'card_auth') activateRFID(); }); }
+        function simulateRFIDDrop() { activateRFID(); }
+        function activateRFID() { playBeep(); if(readerLight) readerLight.classList.add('granted'); if(dropReader) dropReader.style.borderColor = '#10b981'; if(rfidResult) rfidResult.innerHTML = '✔️ PRESENTE - ' + new Date().toLocaleTimeString(); showToast("Registro RFID insertado en Base de Datos.", "success"); setTimeout(() => { if(readerLight) readerLight.classList.remove('granted'); if(dropReader) dropReader.style.borderColor = 'var(--border-light)'; if(rfidResult) rfidResult.innerHTML = ''; }, 3500); }
+
+        // 10. ESPECTROGRAMA DE VOZ
+        const voiceModal = document.getElementById('voice-auth-modal'); const voiceCanvas = document.getElementById('voice-canvas'); const voiceCtx = voiceCanvas ? voiceCanvas.getContext('2d') : null; const voiceStatus = document.getElementById('voice-status'); let audioCtx, analyser, dataArray, bufferLength, voiceAnimationId, authProgress = 0;
+        document.getElementById('open-voice').addEventListener('click', async (e) => { e.preventDefault(); voiceModal.classList.add('active'); voiceStatus.innerText = "Escuchando señal de audio..."; voiceStatus.style.color = "var(--text-main)"; authProgress = 0; try { const stream = await navigator.mediaDevices.getUserMedia({ audio: true }); const AudioContext = window.AudioContext || window.webkitAudioContext; audioCtx = new AudioContext(); const source = audioCtx.createMediaStreamSource(stream); analyser = audioCtx.createAnalyser(); analyser.fftSize = 256; source.connect(analyser); bufferLength = analyser.frequencyBinCount; dataArray = new Uint8Array(bufferLength); drawWaveform(); } catch (err) { voiceStatus.innerText = "Error: Permiso de micrófono denegado."; voiceStatus.style.color = "#ef4444"; drawMockWaveform(); } });
+        document.getElementById('close-voice').addEventListener('click', () => { voiceModal.classList.remove('active'); if(voiceAnimationId) cancelAnimationFrame(voiceAnimationId); if(audioCtx) audioCtx.close(); });
+        function drawWaveform() { if(!voiceCtx) return; voiceAnimationId = requestAnimationFrame(drawWaveform); analyser.getByteTimeDomainData(dataArray); voiceCtx.fillStyle = '#0a2540'; voiceCtx.fillRect(0, 0, voiceCanvas.width, voiceCanvas.height); voiceCtx.lineWidth = 4; voiceCtx.strokeStyle = '#00b4d8'; voiceCtx.beginPath(); let sliceWidth = voiceCanvas.width * 1.0 / bufferLength; let x = 0; let volumeSum = 0; for(let i = 0; i < bufferLength; i++) { let v = dataArray[i] / 128.0; let y = v * voiceCanvas.height / 2; if(i === 0) voiceCtx.moveTo(x, y); else voiceCtx.lineTo(x, y); x += sliceWidth; volumeSum += Math.abs(128 - dataArray[i]); } voiceCtx.lineTo(voiceCanvas.width, voiceCanvas.height / 2); voiceCtx.stroke(); if(volumeSum > 1000 && authProgress < 100) { authProgress += 0.5; voiceStatus.innerText = `Analizando patrón vocal... ${Math.floor(authProgress)}%`; voiceStatus.style.color = "var(--secondary)"; } else if (authProgress >= 100) { voiceStatus.innerText = "PATRÓN ACEPTADO. Juez validado."; voiceStatus.style.color = "#10b981"; voiceCtx.strokeStyle = '#10b981'; if(authProgress === 100) { playBeep(); authProgress = 101; } } }
+        function drawMockWaveform() { if(!voiceCtx) return; let offset = 0; function renderMock() { voiceAnimationId = requestAnimationFrame(renderMock); voiceCtx.fillStyle = '#0a2540'; voiceCtx.fillRect(0, 0, voiceCanvas.width, voiceCanvas.height); voiceCtx.lineWidth = 4; voiceCtx.strokeStyle = '#ef4444'; voiceCtx.beginPath(); for(let x = 0; x < voiceCanvas.width; x++) { let y = Math.sin((x + offset) * 0.05) * 20 + voiceCanvas.height / 2; if(x === 0) voiceCtx.moveTo(x, y); else voiceCtx.lineTo(x, y); } voiceCtx.stroke(); offset += 5; } renderMock(); }
+
+        // 11. MAPA ANEP DASHBOARD
+        const anepModal = document.getElementById('anep-map-modal'); const anepCanvas = document.getElementById('anep-canvas'); const anepCtx = anepCanvas ? anepCanvas.getContext('2d') : null; const anepCounter = document.getElementById('anep-counter-live'); const anepLogs = document.getElementById('anep-logs'); let anepAnimationId; let netParticles = [];
+        document.getElementById('open-anep').addEventListener('click', () => { anepModal.classList.add('active'); if(anepCanvas) { anepCanvas.width = anepModal.clientWidth; anepCanvas.height = anepModal.clientHeight; initAnepMap(); startAnepData(); } });
+        document.getElementById('close-anep').addEventListener('click', () => { anepModal.classList.remove('active'); if(anepAnimationId) cancelAnimationFrame(anepAnimationId); if(anepCounter) anepCounter.innerText = "0"; if(anepLogs) anepLogs.innerHTML = ""; });
+        function initAnepMap() { netParticles = []; for(let i=0; i<80; i++) netParticles.push({ x: Math.random() * anepCanvas.width, y: Math.random() * anepCanvas.height, vx: (Math.random() - 0.5) * 2, vy: (Math.random() - 0.5) * 2, active: false }); }
+        function drawAnepMap() { if(!anepCtx) return; anepCtx.clearRect(0, 0, anepCanvas.width, anepCanvas.height); netParticles.forEach(p => { p.x += p.vx; p.y += p.vy; if(p.x < 0 || p.x > anepCanvas.width) p.vx *= -1; if(p.y < 0 || p.y > anepCanvas.height) p.vy *= -1; anepCtx.beginPath(); anepCtx.arc(p.x, p.y, p.active ? 6 : 2, 0, Math.PI * 2); anepCtx.fillStyle = p.active ? '#10b981' : '#00b4d8'; anepCtx.fill(); if(p.active) { anepCtx.shadowBlur = 15; anepCtx.shadowColor = '#10b981'; } else { anepCtx.shadowBlur = 0; } }); anepCtx.lineWidth = 0.5; for(let i=0; i<netParticles.length; i++) { for(let j=i+1; j<netParticles.length; j++) { let d = Math.hypot(netParticles[i].x - netParticles[j].x, netParticles[i].y - netParticles[j].y); if(d < 150) { anepCtx.beginPath(); anepCtx.strokeStyle = `rgba(0, 180, 216, ${1 - d/150})`; if(netParticles[i].active || netParticles[j].active) anepCtx.strokeStyle = `rgba(16, 185, 129, ${1 - d/150})`; anepCtx.moveTo(netParticles[i].x, netParticles[i].y); anepCtx.lineTo(netParticles[j].x, netParticles[j].y); anepCtx.stroke(); } } } anepAnimationId = requestAnimationFrame(drawAnepMap); }
+        function startAnepData() { drawAnepMap(); let count = 1204; const logMessages = ["[WSS] Handshake completado en LATU.", "[RFID] Ingreso masivo detectado.", "[BIO] Nodo 4 sincronizando.", "[SECURE] Cifrado AES validando...", "[APP] Notificaciones push enviadas.", "[DB] Query 12ms. Latencia Cero."]; const interval = setInterval(() => { if(!anepModal.classList.contains('active')) { clearInterval(interval); return; } count += Math.floor(Math.random() * 50) + 10; anepCounter.innerText = count.toLocaleString(); netParticles.forEach(p => p.active = false); for(let k=0; k<15; k++) netParticles[Math.floor(Math.random() * netParticles.length)].active = true; if(Math.random() > 0.6) { const newLog = document.createElement('div'); newLog.innerText = `[${new Date().toLocaleTimeString()}] ${logMessages[Math.floor(Math.random() * logMessages.length)]}`; anepLogs.prepend(newLog); if(anepLogs.children.length > 5) anepLogs.removeChild(anepLogs.lastChild); } }, 300); }
+
+        // 12. ANIMACIONES ON-SCROLL
+        const revealObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add("active"); }); }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+        const chartBars = document.querySelectorAll('.bar-fill'); let hasChartAnimated = false; const saasCounters = document.querySelectorAll('.counter-up'); let hasCountedSaaS = false;
+        const statObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                if(!hasChartAnimated) { hasChartAnimated = true; chartBars.forEach(bar => { setTimeout(() => { bar.style.height = bar.getAttribute('data-height'); bar.classList.add('active'); }, 300); }); }
+                if(!hasCountedSaaS) {
+                    hasCountedSaaS = true;
+                    saasCounters.forEach(counter => { const target = +counter.getAttribute('data-target'); const duration = 2000; let startTimestamp = null; const stepCounter = (timestamp) => { if (!startTimestamp) startTimestamp = timestamp; const progress = Math.min((timestamp - startTimestamp) / duration, 1); const easeProgress = 1 - Math.pow(1 - progress, 4); if(target % 1 !== 0) { counter.innerText = (easeProgress * target).toFixed(1); } else { counter.innerText = Math.floor(easeProgress * target); } if (progress < 1) window.requestAnimationFrame(stepCounter); }; window.requestAnimationFrame(stepCounter); });
+                }
+            }
+        });
+        const metricsSection = document.getElementById('proyecto'); if(metricsSection) statObserver.observe(metricsSection);
+
+        // 13. TABS Y ACORDEONES
+        function openTab(evt, tabName, index) {
+            let tabcontent = document.getElementsByClassName("tab-content"); for (let i = 0; i < tabcontent.length; i++) tabcontent[i].classList.remove("active");
+            let tablinks = document.getElementsByClassName("tab-btn"); for (let i = 0; i < tablinks.length; i++) tablinks[i].classList.remove("active");
+            document.getElementById(tabName).classList.add("active"); evt.currentTarget.classList.add("active");
+            const indicator = document.getElementById('tab-indicator'); if(window.innerWidth > 991) indicator.style.transform = `translateY(${index * 100}%)`; else indicator.style.transform = `translateX(${index * 100}%)`;
+        }
+        window.addEventListener('resize', () => { const activeTab = document.querySelector('.tab-btn.active'); if(!activeTab) return; const index = Array.from(document.querySelectorAll('.tab-btn')).indexOf(activeTab); const indicator = document.getElementById('tab-indicator'); if(window.innerWidth > 991) indicator.style.transform = `translateY(${index * 100}%)`; else indicator.style.transform = `translateX(${index * 100}%)`; });
+        function previewImage(event, imgId, name) { const reader = new FileReader(); reader.onload = function(){ document.getElementById(imgId).src = reader.result; document.getElementById(imgId).style.display = 'block'; showToast(`Perfil neural de ${name} sincronizado.`, "success"); }; if(event.target.files[0]) reader.readAsDataURL(event.target.files[0]); }
+        function toggleAccordion(element) { const content = element.nextElementSibling; const items = content.querySelectorAll('.teacher-item'); element.classList.toggle('active'); const icon = element.querySelector('.icon-toggle i'); if (content.style.maxHeight) { content.style.maxHeight = null; if(icon) icon.className = "fa-solid fa-chevron-down"; items.forEach(item => { item.style.opacity = '0'; item.style.transform = 'translateY(15px)'; }); } else { content.style.maxHeight = content.scrollHeight + "px"; if(icon) icon.className = "fa-solid fa-chevron-up"; items.forEach((item, i) => { setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 60 * i); }); } }
+        function toggleFAQ(element) { const content = element.nextElementSibling; const text = content.querySelector('.faq-text'); element.classList.toggle('active'); const icon = element.querySelector('.icon-toggle i'); if (content.style.maxHeight) { content.style.maxHeight = null; icon.className = "fa-solid fa-plus"; icon.style.transform = "rotate(0deg)"; text.style.opacity = '0'; text.style.transform = 'translateY(15px)'; } else { content.style.maxHeight = content.scrollHeight + "px"; icon.className = "fa-solid fa-minus"; icon.style.transform = "rotate(180deg)"; setTimeout(() => { text.style.opacity = '1'; text.style.transform = 'translateY(0)'; }, 150); } }
+        function toggleValue(element) { const allItems = document.querySelectorAll('.val-item'); allItems.forEach(item => { if(item !== element) item.classList.remove('active'); }); element.classList.toggle('active'); }
+
+        // 14. RED NEURONAL DEL INICIO
+        const canvasNet = document.getElementById('hero-canvas'); const ctxNet = canvasNet.getContext('2d'); canvasNet.width = window.innerWidth; canvasNet.height = window.innerHeight;
+        let particlesNetArray = []; let mouseNet = { x: null, y: null, radius: 150 }
+        window.addEventListener('mousemove', (e) => { mouseNet.x = e.x; mouseNet.y = e.y; });
+        class ParticleNet { constructor() { this.x = Math.random() * canvasNet.width; this.y = Math.random() * canvasNet.height; this.size = Math.random() * 2 + 1; this.speedX = Math.random() * 1 - 0.5; this.speedY = Math.random() * 1 - 0.5; } update() { this.x += this.speedX; this.y += this.speedY; if(this.x < 0 || this.x > canvasNet.width) this.speedX *= -1; if(this.y < 0 || this.y > canvasNet.height) this.speedY *= -1; } draw() { ctxNet.fillStyle = 'rgba(0, 180, 216, 0.8)'; ctxNet.beginPath(); ctxNet.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctxNet.fill(); } }
+        function initParticlesNet() { particlesNetArray = []; let numberOfParticles = (canvasNet.height * canvasNet.width) / 12000; for(let i=0; i<numberOfParticles; i++) particlesNetArray.push(new ParticleNet()); }
+        function animateParticlesNet() { ctxNet.clearRect(0, 0, canvasNet.width, canvasNet.height); for(let i=0; i<particlesNetArray.length; i++) { particlesNetArray[i].update(); particlesNetArray[i].draw(); for (let j = i; j < particlesNetArray.length; j++){ let dx = particlesNetArray[i].x - particlesNetArray[j].x; let dy = particlesNetArray[i].y - particlesNetArray[j].y; let distance = Math.sqrt(dx * dx + dy * dy); if (distance < 100){ ctxNet.beginPath(); ctxNet.strokeStyle = `rgba(0, 180, 216, ${1 - distance/100})`; ctxNet.lineWidth = 0.5; ctxNet.moveTo(particlesNetArray[i].x, particlesNetArray[i].y); ctxNet.lineTo(particlesNetArray[j].x, particlesNetArray[j].y); ctxNet.stroke(); ctxNet.closePath(); } } if(mouseNet.x != null) { let dxMouse = particlesNetArray[i].x - mouseNet.x; let dyMouse = particlesNetArray[i].y - mouseNet.y; let distanceMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse); if (distanceMouse < mouseNet.radius) { ctxNet.beginPath(); ctxNet.strokeStyle = `rgba(255, 183, 3, ${1 - distanceMouse/mouseNet.radius})`; ctxNet.lineWidth = 1; ctxNet.moveTo(particlesNetArray[i].x, particlesNetArray[i].y); ctxNet.lineTo(mouseNet.x, mouseNet.y); ctxNet.stroke(); ctxNet.closePath(); } } } requestAnimationFrame(animateParticlesNet); }
+        initParticlesNet(); animateParticlesNet(); window.addEventListener('resize', () => { canvasNet.width = window.innerWidth; canvasNet.height = window.innerHeight; initParticlesNet();}); window.addEventListener('mouseout', () => { mouseNet.x = null; mouseNet.y = null; });
+
+        // 15. CARRITO B2B
+        let cart = []; const cartPanel = document.getElementById('cart-panel'); const cartCount = document.getElementById('cart-count'); const cartBody = document.getElementById('cart-body'); const cartEmpty = document.getElementById('cart-empty');
+        function toggleCart() { cartPanel.classList.toggle('active'); }
+        function addToCart(productName) { cart.push(productName); updateCartUI(); const btn = document.querySelector('.cart-btn'); btn.style.transform = 'scale(1.4)'; setTimeout(() => btn.style.transform = 'scale(1)', 200); if(!cartPanel.classList.contains('active')) toggleCart(); }
+        function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
+        function updateCartUI() { cartCount.innerText = cart.length; if(cart.length === 0) { cartBody.innerHTML = ''; cartBody.appendChild(cartEmpty); cartEmpty.style.display = 'block'; return; } cartEmpty.style.display = 'none'; cartBody.innerHTML = ''; cart.forEach((item, index) => { const div = document.createElement('div'); div.className = 'cart-item'; div.innerHTML = `<div><div class="cart-item-title">${item}</div><small style="color: var(--text-muted);">Hardware B2B</small></div><button class="cart-item-remove" onclick="removeFromCart(${index})"><i class="fa-solid fa-trash"></i></button>`; cartBody.appendChild(div); }); }
+
+        // 16. CHATBOT Y VOZ
+        const chatWindow = document.getElementById('chatbot-window'); const chatBody = document.getElementById('chat-body'); const chatInput = document.getElementById('chat-input'); const typingIndicator = document.getElementById('typing-indicator'); const micBtn = document.getElementById('mic-btn');
+        function toggleChat() { chatWindow.classList.toggle('active'); } function handleChatEnter(e) { if(e.key === 'Enter') sendChatMessage(); }
+        function sendChatMessage() {
+            const text = chatInput.value.trim(); if(!text) return; const userMsg = document.createElement('div'); userMsg.className = 'chat-msg msg-user'; userMsg.innerText = text; chatBody.insertBefore(userMsg, typingIndicator); chatInput.value = ''; chatBody.scrollTop = chatBody.scrollHeight; typingIndicator.style.display = 'block'; chatBody.appendChild(typingIndicator); chatBody.scrollTop = chatBody.scrollHeight;
+            setTimeout(() => {
+                typingIndicator.style.display = 'none'; const botMsg = document.createElement('div'); botMsg.className = 'chat-msg msg-bot'; let userText = text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); let botResponse = "";
+                if (userText.includes("hola") || userText.includes("buenos") || userText.includes("buenas") || userText.includes("que tal")) botResponse = "¡Hola! Qué gusto verte por acá. 👋 Soy la IA integrada de SICAE. Podés preguntarme sobre cómo funciona nuestra tecnología, qué pasa si se corta la luz, o sobre el equipo desarrollador. ¿En qué te ayudo?";
+                else if (userText.includes("precio") || userText.includes("costo") || userText.includes("plan") || userText.includes("pagar") || userText.includes("sale")) botResponse = "Ofrecemos infraestructura escalable. Nuestros planes B2B empiezan en $490/mes, adaptándose desde colegios chicos hasta toda la red de ANEP. 💸 Podés ir a la sección 'Planes' o pedir una auditoría gratuita con nuestros ingenieros.";
+                else if (userText.includes("funciona") || userText.includes("informacion") || userText.includes("que es") || userText.includes("sicae")) botResponse = "SICAE revoluciona el pase de lista tradicional. Combinamos Hubs Biométricos (huella), nodos RFID en las aulas y una App Móvil para padres. Todo sincronizado en milisegundos con 'Latencia Cero'. ¡Pura eficiencia! 🚀";
+                else if (userText.includes("voz") || userText.includes("hablar") || userText.includes("microfono") || userText.includes("espectrograma")) botResponse = "¡Excelente pregunta! Implementamos la biometría vocal por 4 motivos: 1) Inclusión para alumnos con discapacidad física, 2) Higiene sin contacto (Contactless), 3) Doble factor de seguridad para directores y 4) Detección de vida para evitar fraudes. 🎙️ ¿Viste qué completo?";
+                else if (userText.includes("luz") || userText.includes("internet") || userText.includes("corte") || userText.includes("wifi") || userText.includes("apaga")) botResponse = "¡No hay de qué preocuparse! ⚡ Nuestros Hubs Biométricos tienen baterías UPS integradas con hasta 6 horas de autonomía. Si se cae el WiFi, guardan los datos localmente y los sincronizan automáticamente al recuperar la conexión. A prueba de todo.";
+                else if (userText.includes("uptime") || userText.includes("servidor") || userText.includes("cae") || userText.includes("disponibilidad")) botResponse = "Garantizamos un Uptime del 99.9%. En términos simples: nuestra arquitectura en la nube es un tanque de guerra. Aseguramos que el sistema estará operativo para soportar el tráfico extremo durante el horario pico de entrada a los liceos. 🛡️";
+                else if (userText.includes("privacidad") || userText.includes("seguridad") || userText.includes("ley") || userText.includes("datos") || userText.includes("huella")) botResponse = "La protección de datos es nuestra prioridad. No guardamos fotos de las huellas, las convertimos en un código matemático (Hash) usando cifrado AES-256 Intranet. Cumplimos al 100% con la Ley N°18331 de Uruguay. Tus datos están blindados. 🔒";
+                else if (userText.includes("equipo") || userText.includes("creadores") || userText.includes("hizo") || userText.includes("utu") || userText.includes("piedras")) botResponse = "SICAE es un proyecto orgullosamente desarrollado por Facundo Lauradrid, Jennifer Martínez y Miriam Méndez, estudiantes de 3°DC de la UTU Las Piedras 2 (Generación 2026). ¡Mentes brillantes trabajando juntas! 🎓";
+                else if (userText.includes("contacto") || userText.includes("asesor") || userText.includes("telefono") || userText.includes("whatsapp")) botResponse = "¡Nos encantaría hablar con vos! Podés mandarnos un WhatsApp al +598 99 176 046 o bajar hasta la sección 'Contacto' y enviarnos un mensaje seguro desde ahí. Nuestros técnicos responden súper rápido. 📞";
+                else if (userText.includes("gracias") || userText.includes("excelente") || userText.includes("perfecto") || userText.includes("genial")) botResponse = "¡A las órdenes! Gracias a vos por tu interés. Ojalá que los jueces de la feria del LATU queden tan fascinados con el proyecto como nosotros al crearlo. ¡Que tengas un gran día! ✨";
+                else botResponse = "Mmm, qué interesante... 🤔 Como soy una IA en versión Beta, todavía estoy procesando ese tipo de consultas. Te invito a preguntarme sobre: '¿Qué pasa si se corta la luz?', '¿Para qué sirve la voz?', 'Precios' o sobre 'El equipo creador'.";
+                botMsg.innerHTML = botResponse; chatBody.insertBefore(botMsg, typingIndicator); chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1200); 
+        }
+
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRec) {
+            const recognition = new SpeechRec(); recognition.lang = 'es-UY'; recognition.interimResults = false; recognition.maxAlternatives = 1;
+            recognition.onstart = function() { micBtn.style.color = '#ef4444'; chatInput.placeholder = "Escuchando voz..."; };
+            recognition.onresult = function(event) { chatInput.value = event.results[0][0].transcript; sendChatMessage(); };
+            recognition.onspeechend = function() { recognition.stop(); };
+            recognition.onend = function() { micBtn.style.color = 'var(--text-muted)'; chatInput.placeholder = "Ingresa un prompt..."; };
+            recognition.onerror = function(event) { micBtn.style.color = 'var(--text-muted)'; chatInput.placeholder = "Error de micro. Escriba."; setTimeout(() => { chatInput.placeholder = "Ingresa un prompt..."; }, 3000); };
+            micBtn.addEventListener('click', () => { recognition.start(); });
+        } else { micBtn.style.display = 'none'; }
+
+        // 17. TRADUCTOR MULTI-IDIOMA TOTAL
+        const translations = {
+            es: {
+                "topbar-contact": "Contáctenos",
+                "nav-home": "Inicio", "nav-data": "Idea", "nav-core": "Institucional", "nav-tech": "Hardware", "nav-arch": "Arquitectura", "nav-plans": "Planes", "nav-faq-link": "FAQ", "nav-portal": "Portal", "nav-team": "Equipo", 
+                "marquee-title": "", "mq1": "Cifrado AES-256", "mq2": "Integración ANEP", "mq3": "Soporte LATU", "mq4": "Ley N°18331",
+                "hero-title": "<span class='text-gradient'>S.I.C.A.E.</span>", "hero-subtitle": "Sistema Inteligente de Control de Asistencias Estudiantil", "scan-status": "Mantén presionado para simular acceso",
+                "btn-demo-text": "Ver Demo", "btn-voice-text": "Autenticación Voz", "btn-tour-text": "Tour Guiado",
+                "metrics-title": "Análisis de <span>Negocio</span>", "chart-title": "Parámetro crítico (%)", "chart-l1": "Tradicional", "chart-l2": "Con SICAE", "btn-anep-text": "Simular Red ANEP (Live)",
+                "metrics-p1": "El pase de lista tradicional es un protocolo analógico obsoleto. Se pierde tiempo valioso de instrucción y los datos no se sincronizan en la red institucional, generando latencia y errores.",
+                "metrics-p2": "Los algoritmos detectaron una falla crítica: el <strong>ausentismo escolar crónico</strong>. En 2024, el porcentaje de estudiantes con ausentismo severo encendió las alarmas, comprometiendo el rendimiento académico.",
+                "metrics-p3": "SICAE se implementa como una actualización masiva: una red interconectada que une institución y familia en milisegundos, garantizando la trazabilidad absoluta del alumno.",
+                "metrics-target": "Tasa de precisión en la asistencia.<br><strong style='color: var(--secondary); margin-top: 5px; display: block;'>Objetivo de SICAE: erradicación absoluta.</strong>",
+                "stat1": "Centros Integrados", "stat2": "Alumnos Protegidos", "stat3": "Uptime del Servidor",
+                "core-title": "Nuestros <span>Objetivos</span>", "tab-1-text": "Misión", "tab-2-text": "Visión", "tab-3-text": "Valores",
+                "mision-title": "Misión", "mision-desc": "SICAE busca proveer un sistema eficiente, seguro y accesible para el control de asistencia en diferentes organizaciones educativas y laborales del ámbito público y privado a nivel regional. Promoviendo la puntualidad, responsabilidad y transparencia en la gestión aplicando tecnología IoT de vanguardia.",
+                "vision-title": "Visión", "vision-desc": "Ser el framework nacional estándar en Uruguay para la gestión inteligente de asistencia. En el ámbito educativo, el fin es disminuir la deserción escolar y optimizar la inversión pública, iterando constantemente sobre la base de la innovación y el compromiso social.",
+                "valores-title": "Nuestros Valores",
+                "val-1": "Responsabilidad", "val-1-desc": "Cumplimos rigurosamente con los compromisos asumidos con nuestros clientes e instituciones en tiempo y forma.",
+                "val-2": "Transparencia y Ética", "val-2-desc": "Garantizamos un manejo ético de la información, protegiendo la privacidad y manteniendo una comunicación clara y sincera.",
+                "val-3": "Trabajo en Equipo", "val-3-desc": "Trabajamos de manera colaborativa, con respeto a usuarios y colaboradores, para lograr los mejores resultados posibles.",
+                "val-4": "Innovación Constante", "val-4-desc": "Nos mantenemos en constante evolución para actualizar permanentemente la tecnología utilizada en nuestros ecosistemas.",
+                "val-5": "Calidad Superior", "val-5-desc": "Aseguramos la máxima durabilidad, precisión y excelencia en todos nuestros dispositivos biométricos y servicios asociados.",
+                "val-6": "Fiabilidad y Empatía", "val-6-desc": "Generamos confianza absoluta a través de la empatía, comprendiendo las necesidades de las familias y la institución.",
+                "val-7": "Inclusión Universal", "val-7-desc": "Garantizamos que nuestra tecnología sea accesible para todos los alumnos mediante biometría vocal e interfaces adaptables.",
+                "tech-title": "Infraestructura <span>Hardware</span>", "btn-qr-text": "Vincular Celular",
+
+                "prod1-title": "Hub Biométrico", "prod1-desc": "Terminal de alta velocidad para escaneo dactilar. Procesamiento neural para registro masivo en accesos principales.",
+                "prod2-title": "Nodos de Aula (RFID)", "prod2-desc": "Lectores de proximidad para instalación en salones. Pase de lista instantáneo por aproximación de gafete.",
+                "prod3-title": "App Control Parental", "prod3-desc": "Aplicación móvil iOS/Android para tutores. Notificaciones push cifradas de ingresos, egresos y ausencias.",
+                "prod4-title": "Firewall Institucional", "prod4-desc": "Servidor local o cloud híbrido. Cumplimiento estricto con la Ley N°18331 de protección de datos personales.",
+
+                "showcase-title": "Arquitectura del <span>Sistema</span>", "btn-ddos-text": "Simular Ataque DDoS",
+                "show-1-title": "Privacidad Intranet", "show-1-desc": "Los patrones biométricos se encriptan y nunca se exponen a internet abierto.",
+                "show-2-title": "Prevención de Deserción", "show-2-desc": "Algoritmos de alerta temprana vinculan a las familias antes de que el ausentismo sea crónico.",
+                "show-3-title": "Latencia Cero", "show-3-desc": "Sincronización vía WebSockets para que administración y padres vean el estado en el acto.",
+                "show-4-title": "Despliegue Técnico", "show-4-desc": "Ingeniería llave en mano: cableado, montaje de racks y configuración de red interna.",
+                "rfid-title": "Simulador RFID en Vivo", "rfid-desc": "Tómate una foto para generar tu credencial y arrástrala para fichar.",
+                "btn-webcam-text": "Emitir Credencial con Cámara", "rfid-card-name": "Estudiante", "rfid-card-role": "UTU Las Piedras 2", "rfid-node": "NODO AULA 3DC",
+                "test-title": "Casos de <span>éxito</span>", 
+                "test-1": '"Desde que instalamos los Hubs de SICAE, el tiempo administrativo se redujo un 80%. Los padres están encantados con las notificaciones de la App."', "test-1-rol": "Director, Liceo N°4",
+                "test-2": '"El pase de lista por RFID en las aulas cambió nuestra dinámica. Cero fricción para los docentes y control total del ausentismo por materia."', "test-2-rol": "Adscripta General, UTU",
+                "test-3": '"La seguridad de los datos biométricos era nuestra mayor preocupación. La arquitectura Intranet de SICAE nos dio total tranquilidad legal."', "test-3-rol": "Ingeniero IT, Colegio Privado",
+                "plans-title": "Escalabilidad a tu <span>Medida</span>",
+                "plan-1": "Básico", "plan-1-desc": "Ideal para empresas pequeñas", "btn-quote-1": "Cotizar",
+                "plan-2": "Institucional", "plan-2-desc": "Ideal para escuelas, liceos y Universidades", "btn-quote-2": "Solicitar Auditoría",
+                "plan-3": "Intermedio", "plan-3-desc": "Ideal para empresas medianas", "btn-quote-3": "Contactar Ventas",
+                "team-title": "Equipo de <span>Desarrollo</span>", "role-1": "Desarrollador de Software", "role-2": "Administrativa/R.R.H.H.", "role-3": "Marketing/Relaciones publicas",
+                "upload-text-1": "Upload Avatar", "upload-text-2": "Upload Avatar", "upload-text-3": "Upload Avatar",
+                "accordion-title": "Plantel Docente 3°DC",
+                "subj-1": "Act. Económicas", "subj-2": "APT", "subj-3": "Ges. Talento Humano", "subj-4": "Ges. Empresarial", "subj-5": "Ges. Inventarios", "subj-6": "Inglés Técnico", "subj-7": "Lógicas Terr.", "subj-8": "Mark. Digital", "subj-9": "Mat. Aplicada", "subj-10": "Pensamiento Filosófico", "subj-11": "Negociación", "subj-12": "UTU LAB",
+                "faq-title": "Preguntas <span>Frecuentes</span>",
+                "faq-1-q": "¿Qué sucede si se corta el suministro eléctrico?", "faq-1-a": "Nuestros Hubs Biométricos cuentan con una batería de respaldo interna (UPS) que garantiza hasta 6 horas de autonomía continua, asegurando que ningún registro se pierda.",
+                "faq-2-q": "¿Cómo se protegen las huellas dactilares de los alumnos?", "faq-2-a": "SICAE no guarda imágenes de las huellas. El escáner convierte la huella en un código matemático cifrado (Hash) irreversible. Es imposible reconstruir la huella a partir de este código.",
+                "faq-3-q": "¿La App para padres tiene algún costo extra?", "faq-3-a": "No. Las licencias de la aplicación móvil Parent Connect están incluidas de forma ilimitada en cualquiera de nuestros planes institucionales.",
+                "contact-title": "Integración de <span>Sistemas</span>", "contact-sub1": "Contacto Directo", "contact-desc": "¿Requieres un presupuesto a medida o tienes dudas sobre la arquitectura de red? Nuestros ingenieros están listos.",
+                "contact-wpp": "WhatsApp Business", "contact-email": "Email Sales", "contact-hq": "Headquarters", "contact-hq-desc": "Av. Artigas 573, Las Piedras, Uruguay",
+                "contact-sub2": "Solicitar Demo", "btn-submit": "Enviar Solicitud Segura",
+                "ph-1": "Institución / Empresa", "ph-2": "Correo corporativo", "ph-3": "Volumen de alumnos", "ph-4": "Especificaciones técnicas requeridas...",
+                "footer-desc-1": "ANEP • Escuela Técnica Las Piedras 2", "footer-desc-2": "BTP Comercio y Ventas • Grupo: 3°DC • Año: 2026", "footer-rights": "&copy; SICAE todos los derechos reservados. Creado con fines pedagógicos.",
+                "cart-title-text": "Cotización B2B", "cart-empty-text": "No hay hardware seleccionado.", "cart-footer-text": "Seleccione la infraestructura necesaria.", "btn-cart-submit": "Solicitar Auditoría",
+                "chat-title": "SICAE AI Assistant", "chat-welcome": "¡Hola! Bienvenido a la plataforma SICAE. 👋 Soy la IA de soporte. ¿En qué te ayudo?",
+                "cookie-text": "Utilizamos cookies para mejorar la experiencia de usuario. <a href='#'>Política de Privacidad</a>", "cookie-btn": "Aceptar Cookies",
+                "login-title": "Acceso Administrativo", "login-desc": "Ingrese sus credenciales", "login-ph1": "Correo institucional", "login-ph2": "Contraseña", "btn-login-submit": "Autenticar",
+                "qr-modal-title": "Escanea el Código", "qr-modal-desc": "Use su cámara para sincronizar una Demo remota.", "qr-modal-wait": "Esperando conexión...",
+                "voice-modal-title": "Biometría Vocal", "voice-modal-desc": "Hable para verificar su patrón de voz", "voice-status": "Esperando señal de audio...",
+                "webcam-modal-title": "Escaneo Facial VIP", "webcam-modal-desc": "Posiciona tu rostro en el centro del cuadro.", "btn-snap-text": "Generar Credencial",
+                "anep-modal-title": "ANEP SECURE NETWORK", "anep-modal-sub1": "> MONITOREO NACIONAL EN TIEMPO REAL", "anep-modal-sub2": "Accesos Validados en Red"
+            },
+            en: {
+                "topbar-contact": "Contact Us",
+                "nav-home": "Home", "nav-data": "Metrics", "nav-core": "Institutional", "nav-tech": "Hardware", "nav-arch": "Architecture", "nav-plans": "Plans", "nav-faq-link": "FAQ", "nav-portal": "Portal", "nav-team": "Team", 
+                "marquee-title": "", "mq1": "AES-256 Encryption", "mq2": "ANEP Integration", "mq3": "LATU Support", "mq4": "Law N°18331",
+                "hero-badge": "<i class='fa-solid fa-microchip' style='margin-right: 8px;'></i> ANEP • UTU Las Piedras 2 • 3°DC",
+                "hero-title": "<span class='text-gradient'>S.I.C.A.E.</span>",
+                "hero-subtitle": "Intelligent Student Attendance Management System",
+                "btn-demo-text": "Watch Demo", "btn-voice-text": "Voice Auth", "btn-tour-text": "Guided Tour", "scan-status": "Press and hold to simulate access",
+                "metrics-title": "Business <span>Analysis</span>", "metrics-p1": "Traditional roll call is an obsolete analog protocol. Valuable instruction time is lost and data is not synchronized on the institutional network, generating latency and errors.",
+                "metrics-p2": "Algorithms detected a critical flaw: <strong>chronic student absenteeism</strong>. In 2024, the percentage of students with severe absenteeism set off alarms, compromising academic performance.",
+                "metrics-p3": "SICAE is deployed as a massive upgrade: an interconnected network that unites institution and family in milliseconds, guaranteeing absolute traceability of the student.",
+                "btn-anep-text": "Simulate ANEP Network", "chart-title": "Critical Parameter (%)", "chart-l1": "Traditional", "chart-l2": "With SICAE",
+                "metrics-target": "Attendance accuracy rate.<br><strong style='color: var(--secondary); margin-top: 5px; display: block;'>SICAE Goal: Absolute eradication.</strong>",
+                "stat1": "Integrated Centers", "stat2": "Protected Students", "stat3": "Server Uptime",
+                "core-title": "Our <span>Objectives</span>", "tab-1-text": "Mission", "tab-2-text": "Vision", "tab-3-text": "Values",
+                "mision-title": "Mission", "mision-desc": "SICAE seeks to provide an efficient, secure, and accessible system for attendance control in different educational and labor organizations in the public and private spheres at a regional level. Promoting punctuality, responsibility, and transparency in management by applying cutting-edge IoT technology.",
+                "vision-title": "Vision", "vision-desc": "To be the standard national framework in Uruguay for intelligent attendance management. In the educational field, the aim is to reduce school dropout rates and optimize public investment, iterating constantly based on innovation and social commitment.",
+                "valores-title": "Our Values",
+                "val-1": "Responsibility", "val-1-desc": "We strictly comply with the commitments made to our clients and institutions in a timely manner.",
+                "val-2": "Transparency and Ethics", "val-2-desc": "We guarantee ethical handling of information, protecting privacy and maintaining clear and sincere communication.",
+                "val-3": "Teamwork", "val-3-desc": "We work collaboratively, with respect for users and collaborators, to achieve the best possible results.",
+                "val-4": "Constant Innovation", "val-4-desc": "We are constantly evolving to permanently update the technology used in our ecosystems.",
+                "val-5": "Superior Quality", "val-5-desc": "We ensure maximum durability, precision, and excellence in all our biometric devices and associated services.",
+                "val-6": "Reliability and Empathy", "val-6-desc": "We generate absolute trust through empathy, understanding the needs of families and the institution.",
+                "val-7": "Universal Inclusion", "val-7-desc": "We guarantee that our technology is accessible to all students through vocal biometrics and adaptable interfaces.",
+                "tech-title": "Hardware <span>Infrastructure</span>", "btn-qr-text": "Link Smartphone",
+                "prod1-title": "Biometric Hub", "prod1-desc": "High-speed terminal for fingerprint scanning. Neural processing for massive registration at main entrances.",
+                "prod2-title": "Classroom Nodes (RFID)", "prod2-desc": "Proximity readers for installation in classrooms. Instant roll call by approaching the badge.",
+                "prod3-title": "Parental Control App", "prod3-desc": "iOS/Android mobile application for guardians. Encrypted push notifications of entries, exits, and absences.",
+                "prod4-title": "Institutional Firewall", "prod4-desc": "Local or hybrid cloud server. Strict compliance with Law N°18331 on personal data protection.",
+                "showcase-title": "System <span>Architecture</span>", "btn-ddos-text": "Simulate DDoS Attack",
+                "show-1-title": "Intranet Privacy", "show-1-desc": "Biometric patterns are encrypted and never exposed to the open internet.",
+                "show-2-title": "Dropout Prevention", "show-2-desc": "Early warning algorithms link families before absenteeism becomes chronic.",
+                "show-3-title": "Zero Latency", "show-3-desc": "WebSocket synchronization so administration and parents see the status instantly.",
+                "show-4-title": "Technical Deployment", "show-4-desc": "Turnkey engineering: wiring, rack mounting, and internal network configuration.",
+                "rfid-title": "Live RFID Simulator", "rfid-desc": "Take a photo to generate your credential and drag it to clock in.",
+                "btn-webcam-text": "Issue Credential via Camera", "rfid-card-name": "Student", "rfid-card-role": "UTU Las Piedras 2", "rfid-node": "CLASSROOM NODE",
+                "test-title": "Success <span>Stories</span>", 
+                "test-1": '"Since we installed the SICAE Hubs, administrative time was reduced by 80%. Parents are delighted with the App notifications."', "test-1-rol": "Principal, High School N°4",
+                "test-2": '"RFID roll call in the classrooms changed our dynamics. Zero friction for teachers and total control of absenteeism by subject."', "test-2-rol": "General Coordinator, UTU",
+                "test-3": '"Biometric data security was our biggest concern. SICAE\'s Intranet architecture gave us total legal peace of mind."', "test-3-rol": "IT Engineer, Private School",
+                "plans-title": "Scalability tailored for <span>You</span>",
+                "plan-1": "Basic", "plan-1-desc": "Ideal for small businesses", "btn-quote-1": "Get Quote",
+                "plan-2": "Institutional", "plan-2-desc": "Ideal for schools, high schools and Universities", "btn-quote-2": "Request Audit",
+                "plan-3": "Intermediate", "plan-3-desc": "Ideal for medium businesses", "btn-quote-3": "Contact Sales",
+                "team-title": "Development <span>Team</span>", "role-1": "Software Developer", "role-2": "Administrative/HR", "role-3": "Marketing/PR",
+                "upload-text-1": "Upload Avatar", "upload-text-2": "Upload Avatar", "upload-text-3": "Upload Avatar",
+                "accordion-title": "Teaching Staff 3°DC",
+                "subj-1": "Economics", "subj-2": "APT", "subj-3": "Human Talent Mgmt", "subj-4": "Business Mgmt", "subj-5": "Inventory Mgmt", "subj-6": "Technical English", "subj-7": "Logistics", "subj-8": "Digital Marketing", "subj-9": "Applied Math", "subj-10": "Philosophy", "subj-11": "Negotiation", "subj-12": "UTU LAB",
+                "faq-title": "Frequently Asked <span>Questions</span>",
+                "faq-1-q": "What happens if there is a power outage?", "faq-1-a": "Our Biometric Hubs have an internal backup battery (UPS) that guarantees up to 6 hours of continuous autonomy, ensuring that no records are lost.",
+                "faq-2-q": "How are students' fingerprints protected?", "faq-2-a": "SICAE does not store fingerprint images. The scanner converts the fingerprint into an irreversible encrypted mathematical code (Hash). It is impossible to reconstruct the fingerprint from this code.",
+                "faq-3-q": "Does the App for parents have any extra cost?", "faq-3-a": "No. The Parent Connect mobile application licenses are included indefinitely in any of our institutional plans.",
+                "contact-title": "Systems <span>Integration</span>", "contact-sub1": "Direct Contact", "contact-desc": "Need a custom quote or have questions about the network architecture? Our engineers are ready.",
+                "contact-wpp": "WhatsApp Business", "contact-email": "Email Sales", "contact-hq": "Headquarters", "contact-hq-desc": "Av. Artigas 573, Las Piedras, Uruguay",
+                "contact-sub2": "Request Demo", "btn-submit": "Send Secure Request",
+                "ph-1": "Institution / Company", "ph-2": "Corporate Email", "ph-3": "Volume of students", "ph-4": "Technical specifications required...",
+                "footer-desc-1": "ANEP • Escuela Técnica Las Piedras 2", "footer-desc-2": "BTP Commerce and Sales • Group: 3°DC • Year: 2026", "footer-rights": "&copy; SICAE all rights reserved. Created for pedagogical purposes.",
+                "cart-title-text": "B2B Quotation", "cart-empty-text": "No hardware selected.", "cart-footer-text": "Select the required infrastructure.", "btn-cart-submit": "Request Audit",
+                "chat-title": "SICAE AI Assistant", "chat-welcome": "Hello! Welcome to the SICAE platform. 👋 I'm the support AI. How can I help you?",
+                "cookie-text": "We use cookies to improve user experience. <a href='#'>Privacy Policy</a>", "cookie-btn": "Accept Cookies",
+                "login-title": "Administrative Access", "login-desc": "Enter your credentials", "login-ph1": "Institutional Email", "login-ph2": "Password", "btn-login-submit": "Authenticate",
+                "qr-modal-title": "Scan the Code", "qr-modal-desc": "Use your camera to sync a remote Demo.", "qr-modal-wait": "Waiting for connection...",
+                "voice-modal-title": "Vocal Biometrics", "voice-modal-desc": "Speak to verify your voice pattern", "voice-status": "Waiting for audio signal...",
+                "webcam-modal-title": "VIP Facial Scan", "webcam-modal-desc": "Position your face in the center of the frame.", "btn-snap-text": "Generate Credential",
+                "anep-modal-title": "ANEP SECURE NETWORK", "anep-modal-sub1": "> NATIONAL MONITORING IN REAL TIME", "anep-modal-sub2": "Valid Accesses in Network"
+            },
+            pt: {
+                "topbar-contact": "Contate-nos",
+                "nav-home": "Início", "nav-data": "Idea", "nav-core": "Institucional", "nav-tech": "Hardware", "nav-arch": "Arquitetura", "nav-plans": "Planos", "nav-faq-link": "FAQ", "nav-portal": "Portal",
+                "marquee-title": "", "mq1": "Criptografia AES-256", "mq2": "Integração ANEP", "mq3": "Suporte LATU", "mq4": "Lei N°18331",
+                "hero-badge": "<i class='fa-solid fa-microchip' style='margin-right: 8px;'></i> ANEP • UTU Las Piedras 2 • 3°DC",
+                "hero-title": "<span class='text-gradient'>S.I.C.A.E.</span>",
+                "hero-subtitle": "Sistema Inteligente de Controle de Presença de Estudantes",
+                "btn-demo-text": "Ver Demo", "btn-voice-text": "Autenticação de Voz", "btn-tour-text": "Tour Guiado", "scan-status": "Mantenha pressionado para simular o acesso",
+                "metrics-title": "Análise de <span>Negócios</span>", "metrics-p1": "A chamada tradicional é um protocolo analógico obsoleto. O valioso tempo de instrução é perdido e os dados não são sincronizados na rede institucional, gerando latência e erros.",
+                "metrics-p2": "Os algoritmos detectaram uma falha crítica: <strong>absenteísmo escolar crônico</strong>. Em 2024, a porcentagem de alunos com absenteísmo severo disparou os alarmes, comprometendo o desempenho acadêmico.",
+                "metrics-p3": "O SICAE é implementado como uma atualização massiva: uma rede interconectada que une instituição e família em milissegundos, garantindo a rastreabilidade absoluta do aluno.",
+                "btn-anep-text": "Simular Rede ANEP (Live)", "chart-title": "Parâmetro crítico (%)", "chart-l1": "Tradicional", "chart-l2": "Com SICAE",
+                "metrics-target": "Taxa de precisão no atendimento.<br><strong style='color: var(--secondary); margin-top: 5px; display: block;'>Objetivo do SICAE: erradicação absoluta.</strong>",
+                "stat1": "Centros Integrados", "stat2": "Alunos Protegidos", "stat3": "Uptime do Servidor",
+                "core-title": "Nossos <span>Objetivos</span>", "tab-1-text": "Missão", "tab-2-text": "Visão", "tab-3-text": "Valores",
+                "mision-title": "Missão", "mision-desc": "O SICAE busca fornecer um sistema eficiente, seguro e acessível para controle de presença em diferentes organizações educacionais e trabalhistas das esferas pública e privada em nível regional. Promover a pontualidade, responsabilidade e transparência na gestão através da aplicação de tecnologia IoT de ponta.",
+                "vision-title": "Visão", "vision-desc": "Ser o framework nacional padrão no Uruguai para a gestão inteligente de atendimento. No campo educacional, o objetivo é reduzir as taxas de evasão escolar e otimizar os investimentos públicos, iterando constantemente com base na inovação e no compromisso social.",
+                "valores-title": "Nossos Valores",
+                "val-1": "Responsabilidade", "val-1-desc": "Cumprimos rigorosamente os compromissos assumidos com os nossos clientes e instituições em tempo oportuno.",
+                "val-2": "Transparência e Ética", "val-2-desc": "Garantimos o tratamento ético da informação, protegendo a privacidade e mantendo uma comunicação clara e sincera.",
+                "val-3": "Trabalho em Equipe", "val-3-desc": "Trabalhamos de forma colaborativa, com respeito aos usuários e colaboradores, para alcançar os melhores resultados possíveis.",
+                "val-4": "Inovação Constante", "val-4-desc": "Estamos em constante evolução para atualizar permanentemente a tecnologia utilizada em nossos ecossistemas.",
+                "val-5": "Qualidade Superior", "val-5-desc": "Garantimos a máxima durabilidade, precisão e excelência em todos os nossos dispositivos biométricos e serviços associados.",
+                "val-6": "Confiabilidade e Empatia", "val-6-desc": "Geramos confiança absoluta através da empatia, compreendendo as necessidades das famílias e da instituição.",
+                "val-7": "Inclusão Universal", "val-7-desc": "Garantimos que a nossa tecnologia seja acessível a todos os alunos através de biometria vocal e interfaces adaptáveis.",
+                "tech-title": "Infraestrutura de <span>Hardware</span>", "btn-qr-text": "Vincular Celular",
+                "prod1-title": "Hub Biométrico", "prod1-desc": "Terminal de alta velocidade para digitalização de impressões digitais. Processamento neural para registro massivo em acessos principais.",
+                "prod2-title": "Nós de Sala (RFID)", "prod2-desc": "Leitores de proximidade para instalação em salas. Chamada instantânea por aproximação do crachá.",
+                "prod3-title": "App Controle Parental", "prod3-desc": "Aplicativo móvel iOS/Android para responsáveis. Notificações push criptografadas de entradas, saídas e ausências.",
+                "prod4-title": "Firewall Institucional", "prod4-desc": "Servidor local ou híbrido em nuvem. Estrita conformidade com a Lei N°18331 sobre a proteção de dados pessoais.",
+                "showcase-title": "Arquitetura do <span>Sistema</span>", "btn-ddos-text": "Simular Ataque DDoS",
+                "show-1-title": "Privacidade Intranet", "show-1-desc": "Os padrões biométricos são criptografados e nunca expostos à internet aberta.",
+                "show-2-title": "Prevenção de Evasão", "show-2-desc": "Algoritmos de alerta precoce vinculam as famílias antes que o absenteísmo se torne crônico.",
+                "show-3-title": "Latência Zero", "show-3-desc": "Sincronização via WebSockets para que a administração e os pais vejam o status instantaneamente.",
+                "show-4-title": "Implantação Técnica", "show-4-desc": "Engenharia chave na mão: cabeamento, montagem de racks e configuração de rede interna.",
+                "rfid-title": "Simulador RFID ao Vivo", "rfid-desc": "Tire uma foto para gerar sua credencial e arraste-a para registrar o ponto.",
+                "btn-webcam-text": "Emitir Credencial com Câmera", "rfid-card-name": "Estudante", "rfid-card-role": "UTU Las Piedras 2", "rfid-node": "NÓ SALA DE AULA",
+                "test-title": "Casos de <span>Sucesso</span>", 
+                "test-1": '"Desde que instalamos os Hubs SICAE, o tempo administrativo diminuiu em 80%. Os pais estão muito satisfeitos com as notificações."', "test-1-rol": "Diretor, Liceu N°4",
+                "test-2": '"A chamada por RFID nas salas mudou a nossa dinâmica. Atrito zero para os professores e controlo total das ausências."', "test-2-rol": "Coordenadora Geral, UTU",
+                "test-3": '"A segurança dos dados biométricos era a nossa maior preocupação. A arquitetura da Intranet do SICAE deu-nos total tranquilidade legal."', "test-3-rol": "Engenheiro TI, Colégio Privado",
+                "plans-title": "Escalabilidade sob <span>Medida</span>",
+                "plan-1": "Básico", "plan-1-desc": "Ideal para pequenas empresas", "btn-quote-1": "Citar",
+                "plan-2": "Institucional", "plan-2-desc": "Ideal para escolas, liceus e Universidades", "btn-quote-2": "Solicitar Auditoria",
+                "plan-3": "Intermédio", "plan-3-desc": "Ideal para empresas médias", "btn-quote-3": "Contatar Vendas",
+                "team-title": "Equipe de <span>Desenvolvimento</span>", "role-1": "Desenvolvedor de Software", "role-2": "Administrativa/RH", "role-3": "Marketing/Relações Públicas",
+                "upload-text-1": "Upload Avatar", "upload-text-2": "Upload Avatar", "upload-text-3": "Upload Avatar",
+                "accordion-title": "Corpo Docente 3°DC",
+                "subj-1": "Economia", "subj-2": "APT", "subj-3": "Gestão de Talentos", "subj-4": "Gestão Empresarial", "subj-5": "Gestão de Inventário", "subj-6": "Inglês Técnico", "subj-7": "Logística", "subj-8": "Marketing Digital", "subj-9": "Mat. Aplicada", "subj-10": "Filosofia", "subj-11": "Negociação", "subj-12": "UTU LAB",
+                "faq-title": "Perguntas <span>Frequentes</span>",
+                "faq-1-q": "O que acontece se houver um corte de energia?", "faq-1-a": "Nossos Hubs Biométricos possuem uma bateria interna de backup (UPS) que garante até 6 horas de autonomia contínua, garantindo que nenhum registro seja perdido.",
+                "faq-2-q": "Como as impressões digitais dos alunos são protegidas?", "faq-2-a": "O SICAE não armazena imagens de impressões digitais. O scanner converte a impressão digital em um código matemático criptografado irreversível (Hash). É impossível reconstruir a impressão digital a partir deste código.",
+                "faq-3-q": "O aplicativo para pais tem algum custo extra?", "faq-3-a": "Não. As licenças do aplicativo móvel Parent Connect estão incluídas indefinidamente em qualquer um de nossos planos institucionais.",
+                "contact-title": "Integração de <span>Sistemas</span>", "contact-sub1": "Contato Direto", "contact-desc": "Precisa de um orçamento personalizado ou tem dúvidas sobre a arquitetura da rede? Nossos engenheiros estão prontos.",
+                "contact-wpp": "WhatsApp Business", "contact-email": "Email Sales", "contact-hq": "Sede", "contact-hq-desc": "Av. Artigas 573, Las Piedras, Uruguai",
+                "contact-sub2": "Solicitar Demo", "btn-submit": "Enviar Solicitação Segura",
+                "ph-1": "Instituição / Empresa", "ph-2": "E-mail Corporativo", "ph-3": "Volume de alunos", "ph-4": "Especificações técnicas exigidas...",
+                "footer-desc-1": "ANEP • Escola Técnica Las Piedras 2", "footer-desc-2": "BTP Comércio e Vendas • Grupo: 3°DC • Ano: 2026", "footer-rights": "&copy; SICAE todos os direitos reservados. Criado para fins pedagógicos.",
+                "cart-title-text": "Cotação B2B", "cart-empty-text": "Nenhum hardware selecionado.", "cart-footer-text": "Selecione a infraestrutura necessária.", "btn-cart-submit": "Solicitar Auditoria",
+                "chat-title": "SICAE AI Assistant", "chat-welcome": "Olá! Bem-vindo à plataforma SICAE. 👋 Sou a IA de suporte. Como posso ajudar?",
+                "cookie-text": "Usamos cookies para melhorar a experiência do usuário. <a href='#'>Política de Privacidade</a>", "cookie-btn": "Aceitar Cookies",
+                "login-title": "Acesso Administrativo", "login-desc": "Insira suas credenciais", "login-ph1": "E-mail Institucional", "login-ph2": "Senha", "btn-login-submit": "Autenticar",
+                "qr-modal-title": "Escaneie o Código", "qr-modal-desc": "Use sua câmera para sincronizar uma Demo remota.", "qr-modal-wait": "Aguardando conexão...",
+                "voice-modal-title": "Biometria Vocal", "voice-modal-desc": "Fale para verificar seu padrão de voz", "voice-status": "Aguardando sinal de áudio...",
+                "webcam-modal-title": "Escaneamento Facial VIP", "webcam-modal-desc": "Posicione seu rosto no centro do quadro.", "btn-snap-text": "Gerar Credencial",
+                "anep-modal-title": "ANEP SECURE NETWORK", "anep-modal-sub1": "> MONITORAMENTO NACIONAL EM TEMPO REAL", "anep-modal-sub2": "Acessos Validados na Rede"
+            }
+        };
+
+        function changeLanguage() {
+            const lang = document.getElementById('language-selector').value; 
+            const text = translations[lang];
+            
+            // EL MOTOR DE TRADUCCIÓN AUTOMÁTICA Y ABSOLUTA
+            for (let id in text) {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = text[id];
+                    } else {
+                        el.innerHTML = text[id];
+                    }
+                }
+            }
+        }
+// --- MOTOR DE LA INTRO: HOLOGRAMA EN VIDEO (CORREGIDO) ---
+        const movieIntro = document.getElementById('movie-intro');
+        const startIntroBtn = document.getElementById('start-intro-btn');
+        const aiContainer = document.getElementById('ai-container');
+        const aiVideo = document.getElementById('ai-face');
+        const aiText = document.getElementById('ai-text');
+
+        // Nombre de variable único para evitar el Error 2
+        const textoSubtitulo = "Bienvenidos al sistema S.I.C.A.E. La plataforma que revolucionará y apoyará la pedagogía de manera biométricamente inteligente.";
+
+        startIntroBtn.addEventListener('click', () => {
+            // Ocultar botón y mostrar contenedor
+            startIntroBtn.style.display = 'none';
+            aiContainer.style.display = 'flex';
+            
+            // Seguro por si borraste la función de sonido
+            if (typeof playBeep === "function") playBeep(400, 'sine', 0.5); 
+            
+            // Efecto máquina de escribir para el subtítulo
+            let charIntroIndex = 0;
+            aiText.innerHTML = "";
+            
+            function typeCharIntro() {
+                if (charIntroIndex < textoSubtitulo.length) {
+                    aiText.innerHTML += textoSubtitulo.charAt(charIntroIndex);
+                    charIntroIndex++;
+                    setTimeout(typeCharIntro, 60); 
+                }
+            }
+
+            // Iniciar escritura
+            typeCharIntro();
+
+            // Seguro para el Error 1: Intenta reproducir el video, si no lo encuentra, avisa pero avanza
+            if(aiVideo && typeof aiVideo.play === "function") {
+                let playPromise = aiVideo.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log("Aún no tienes el archivo holograma.mp4. Se saltará al contenido de la web.", error);
+                        // Si falla porque no está el video, desvanece la intro tras 4 segundos
+                        setTimeout(cerrarIntro, 4000);
+                    });
+                }
+
+                // Cuando el video termina naturalmente
+                aiVideo.onended = () => {
+                    setTimeout(cerrarIntro, 1000);
+                };
+            } else {
+                // Si pusiste una <img> en vez de un <video>
+                setTimeout(cerrarIntro, 4000);
+            }
+
+            // Función para desaparecer la intro
+            function cerrarIntro() {
+                if (typeof playBeep === "function") playBeep(900, 'square', 0.2); 
+                movieIntro.style.opacity = '0'; 
+                setTimeout(() => {
+                    movieIntro.style.display = 'none'; 
+                }, 1500); 
+            }
+        });
+    </script>
+</body>
+</html>

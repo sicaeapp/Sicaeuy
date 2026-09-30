@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SICAE | Gestión Inteligente</title>
+    <!-- Fuentes y Web -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0a2540;
+            --secondary: #00b4d8;
+            --accent: #ffb703;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617;
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Fondo con diseño tecnológico */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at center, rgba(0, 180, 216, 0.1) 0%, rgba(2, 6, 23, 1) 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 4rem 0;
+            text-align: center;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        /* 1) Título */
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+        .highlight {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 2) Subtítulo */
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* 3 y 4) Propuesta de Valor */
+        .value-prop {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+        }
+
+        /* Formulario de Captura de Correo */
+        .capture-form {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            max-width: 600px;
+            margin: 0 auto 60px auto;
+            position: relative;
+        }
+        
+        .capture-form input {
+            flex: 1;
+            padding: 18px 25px;
+            border-radius: 30px;
+            border: 2px solid rgba(0, 180, 216, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .capture-form input:focus {
+            border-color: var(--secondary);
+            background: rgba(0, 180, 216, 0.1);
+            box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
+        }
+
+        .capture-form button {
+            padding: 18px 35px;
+            border-radius: 30px;
+            border: none;
+            background: var(--secondary);
+            color: #020617;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(0, 180, 216, 0.3);
+        }
+
+        .capture-form button:hover {
+            transform: translateY(-3px);
+            background: var(--accent);
+            box-shadow: 0 15px 25px rgba(255, 183, 3, 0.4);
+        }
+
+        /* 5, 6 y 7) Testimonios */
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--secondary);
+            background: rgba(0, 180, 216, 0.05);
+        }
+
+        .stars {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .quote {
+            font-size: 1.3rem;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        /* Mensaje de éxito al enviar correo */
+        #success-msg {
+            display: none;
+            color: #10b981;
+            font-weight: bold;
+            margin-top: -40px;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            .capture-form { flex-direction: column; }
+            .capture-form button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Puntos 1 y 2: Títulos -->
+        <h2>Biometría inteligente al alcance de todos</h2>
+        <h1>Gestione de manera inteligente la asistencia en su <span class="highlight">Organización</span></h1>
+        
+        <!-- Puntos 3 y 4: Propuesta de valor -->
+        <p class="value-prop">
+            Le invitamos a dar un paso adelante en el registro de asistencias inteligente. Descubra la eficiencia y practicidad de S.I.C.A.E. <br>
+            <strong>Automatice y optimice la administración de sus recursos.</strong>
+        </p>
+
+        <!-- Formulario de Captura de Correo -->
+        <form class="capture-form" id="emailForm">
+            <input type="email" id="userEmail" placeholder="Ingrese su correo electrónico..." required>
+            <button type="submit"><i class="fa-solid fa-paper-plane"></i> Prueba ya nuestro simulador en línea!</button>
+        </form>
+        <div id="success-msg"><i class="fa-solid fa-circle-check"></i> ¡Gracias! Te contactaremos a la brevedad.</div>
+
+        <!-- Puntos 5, 6 y 7: Testimonios -->
+        <div class="testimonials">
+            
+            <div class="testimonial-card">
+                <div class="stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="quote">"¡Es excelente!"</p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="quote">"¡Qué gran idea!"</p>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="stars">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="quote">"Ya quiero probarlo."</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Script cortito para que el formulario funcione visualmente -->
+    <script>
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            document.getElementById('emailForm').style.display = 'none';
+            document.getElementById('success-msg').style.display = 'block'; 
+            
+            // Redirige a la web grande después de 1 segundo y medio
+            setTimeout(() => {
+                window.location.href = "plataforma.html";
+            }, 2500);
+        });
+    </script>
+
+</body>
+</html>
