@@ -573,9 +573,7 @@
                         <div class="feature-icon-box"><i class="fa-solid fa-mobile-screen-button"></i></div>
                         <h3 id="prod3-title">App Control Parental</h3>
                         <p id="prod3-desc">Aplicación móvil iOS/Android para tutores. Notificaciones push cifradas de ingresos, egresos y ausencias.</p>
-                        <button class="btn-outline magnetic-btn" style="border-color: var(--secondary); color: var(--text-main); margin-top:10px; width:100%;" id="btn-qr">
-                            <i class="fa-solid fa-qrcode"></i> <span id="btn-qr-text">Vincular Celular</span>
-                        </button>
+                       
                     </div>
                 </div>
                 <div class="feature-card reveal delay-300" data-tilt>
@@ -875,15 +873,6 @@
         </footer>
 
     <!-- MODALES EXTERNOS (QR, Login, Video, Voice, Webcam, Anep) -->
-    <div class="modal-overlay" id="qr-modal">
-        <div class="modal-box" style="text-align: center; max-width: 400px;">
-            <button class="close-btn" id="close-qr"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="color: var(--heading-color); margin-bottom:15px;" id="qr-modal-title"><i class="fa-solid fa-mobile-screen-button"></i> Escanea el Código</h3>
-            <p style="color: var(--text-muted); margin-bottom: 20px;" id="qr-modal-desc">Use su cámara para sincronizar una Demo remota.</p>
-            <div style="width: 250px; height: 250px; background: url('https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg') center/cover; margin: 0 auto 20px; border: 10px solid white; border-radius: 10px;"></div>
-            <p style="font-family:monospace; color:var(--secondary); font-weight:bold; margin-top:20px; animation: pulseAlarm 2s infinite;" id="qr-modal-wait">Esperando conexión...</p>
-        </div>
-    </div>
 
     <div class="modal-overlay" id="login-modal">
         <div class="modal-box">
@@ -993,10 +982,6 @@
         function playBeep(freq = 800, type = 'sine', duration = 0.15) {
             try { const AudioContext = window.AudioContext || window.webkitAudioContext; if(!AudioContext) return; const ctx = new AudioContext(); const osc = ctx.createOscillator(); osc.type = type; osc.frequency.setValueAtTime(freq, ctx.currentTime); osc.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + duration); } catch(e) {}
         }
-
-        // 2. TRUCO MENTAL QR
-        const btnQR = document.getElementById('btn-qr'); const qrModal = document.getElementById('qr-modal');
-        if(btnQR) { btnQR.addEventListener('click', () => { qrModal.classList.add('active'); }); document.getElementById('close-qr').addEventListener('click', () => { qrModal.classList.remove('active'); }); }
 
         // 3. MODO BLACKOUT & MODO DIOS (Teclado)
         let secretKeys = []; const godCode = ['a','d','m','i','n'];
