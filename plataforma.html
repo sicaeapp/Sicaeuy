@@ -573,8 +573,7 @@
                         <div class="feature-icon-box"><i class="fa-solid fa-mobile-screen-button"></i></div>
                         <h3 id="prod3-title">App Control Parental</h3>
                         <p id="prod3-desc">Aplicación móvil iOS/Android para tutores. Notificaciones push cifradas de ingresos, egresos y ausencias.</p>
-                       
-                    </div>
+                                            </div>
                 </div>
                 <div class="feature-card reveal delay-300" data-tilt>
                     <div class="feature-glow"></div>
@@ -759,7 +758,7 @@
                 <!-- Tarjeta Facundo -->
                 <div class="team-card reveal">
                     <div class="photo-upload-container">
-                        <img class="photo-preview" src="facundo.jpg" alt="Facundo" style="display: block;">
+                        <img class="photo-preview" src="Facundo.jpg" alt="Facundo" style="display: block;">
                     </div>
                     <div class="team-info">
                         <h3>Facundo Lauradrid</h3>
@@ -770,7 +769,7 @@
                 <!-- Tarjeta Jennifer -->
                 <div class="team-card reveal delay-100">
                     <div class="photo-upload-container">
-                        <img class="photo-preview" src="jennifer.jpg" alt="Jennifer" style="display: block;">
+                        <img class="photo-preview" src="Jennifer.jpg" alt="Jennifer" style="display: block;">
                     </div>
                     <div class="team-info">
                         <h3>Jennifer Martínez</h3>
@@ -781,7 +780,7 @@
                 <!-- Tarjeta Miriam -->
                 <div class="team-card reveal delay-200">
                     <div class="photo-upload-container">
-                        <img class="photo-preview" src="miriam.jpg" alt="Miriam" style="display: block;">
+                        <img class="photo-preview" src="Miriam.jpg" alt="Miriam" style="display: block;">
                     </div>
                     <div class="team-info">
                         <h3>Miriam Méndez</h3>
@@ -789,7 +788,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="accordion reveal delay-300">
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
@@ -873,8 +872,7 @@
         </footer>
 
     <!-- MODALES EXTERNOS (QR, Login, Video, Voice, Webcam, Anep) -->
-
-    <div class="modal-overlay" id="login-modal">
+        <div class="modal-overlay" id="login-modal">
         <div class="modal-box">
             <button class="close-btn" id="close-login"><i class="fa-solid fa-xmark"></i></button>
             <div class="modal-header">
@@ -983,7 +981,7 @@
             try { const AudioContext = window.AudioContext || window.webkitAudioContext; if(!AudioContext) return; const ctx = new AudioContext(); const osc = ctx.createOscillator(); osc.type = type; osc.frequency.setValueAtTime(freq, ctx.currentTime); osc.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + duration); } catch(e) {}
         }
 
-        // 3. MODO BLACKOUT & MODO DIOS (Teclado)
+               // 3. MODO BLACKOUT & MODO DIOS (Teclado)
         let secretKeys = []; const godCode = ['a','d','m','i','n'];
         window.addEventListener('keydown', (e) => {
             if(e.key === 'ArrowRight' && qrModal && qrModal.classList.contains('active')) {
