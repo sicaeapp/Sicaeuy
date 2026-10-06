@@ -297,6 +297,60 @@
             .nav-links { display: none; } .hero h1 { font-size: 3rem; } .hero h2 { font-size: 1.5rem; } .section-title { font-size: 2.5rem; }
             section { padding: 5rem 5%; } .cart-panel { width: 100%; right: -100%; } .topbar { flex-direction: column; gap: 10px; } .hero-buttons { flex-direction: column; } .cookie-banner { flex-direction: column; gap: 15px; text-align: center; padding: 20px;}
         }
+
+        /* ===== RESPONSIVE: correcciones móvil / ventana angosta ===== */
+        html { -webkit-text-size-adjust: 100%; }
+        a { text-decoration: none; }
+        .nav-links { list-style: none; }
+        .section-title { line-height: 1.2; }
+        #testimonios .test-card, #testimonios .test-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
+        #testimonios .test-text { color: #e2e8f0; }
+        @media (max-width: 991px) {
+            .navbar .nav-links { display: none; }
+            .navbar .nav-links.open { display: flex; }
+            .nav-toggle { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; }
+            .tabs-sidebar { padding: 0; overflow: hidden; }
+            .tab-btn { padding: 1.1rem 0.4rem; gap: 8px; font-size: 1rem; }
+            .tab-btn.active { color: #ffffff; }
+            .tab-btn i { width: auto !important; }
+            .tab-indicator { background: var(--secondary); }
+            .tabs-content-area { padding: 2rem 1.25rem; }
+            .tab-content { padding: 0; }
+            .tab-content h3 { font-size: 1.8rem; }
+            .tab-content p { font-size: 1.05rem !important; line-height: 1.7 !important; }
+            .section-title { font-size: 2.3rem; margin-bottom: 3rem; }
+            .val-item.active .val-body { max-height: 260px; }
+            .quick-stats { grid-template-columns: 1fr; gap: 2rem; }
+            .q-num { font-size: 3rem; }
+            .footer-logos { flex-wrap: wrap; gap: 1.5rem; font-size: 2.2rem; }
+            .contact-form { padding: 2.5rem 1.5rem; }
+            .accordion-header { padding: 1.2rem 1.2rem; font-size: 1.1rem; gap: 10px; }
+            .teachers-grid { padding: 0 1.2rem 1.5rem; }
+            .faq-text { padding: 0 1.2rem 1.5rem; }
+            .team-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .features-grid, .test-grid, .pricing-grid { grid-template-columns: 1fr; }
+            .price-card.popular, .price-card.popular:hover { transform: none; }
+            .chatbot-window { width: calc(100vw - 24px); right: 12px; bottom: 100px; height: 70vh; }
+            .chatbot-btn { right: 16px; bottom: 20px; width: 58px; height: 58px; font-size: 1.6rem; }
+            .toast { left: 12px; right: 12px; bottom: 90px; }
+        }
+        @media (max-width: 480px) {
+            .topbar { padding: 8px 4%; }
+            .navbar { padding: 0.8rem 4%; }
+            .logo-container { font-size: 1.5rem; }
+            .nav-actions { gap: 12px; }
+            .nav-actions .btn-outline { padding: 0.5rem 1rem !important; font-size: 0.9rem; }
+            .hero h1 { font-size: 2.6rem; }
+            .hero h2 { font-size: 1.2rem; }
+            .hero p { font-size: 1.05rem; }
+            section { padding: 4rem 5%; }
+            .stat-box { padding: 1.5rem 1rem; }
+            .modal-box { padding: 3rem 1.5rem; }
+            .showcase-center { width: 240px; height: 240px; }
+            .showcase-center i { font-size: 6rem; }
+            .showcase-container { overflow: hidden; padding: 2rem 0; }
+            .rfid-demo-box, .reveal[style*="dashed"] { padding: 24px 16px !important; }
+        }
     </style>
 </head>
 <body>
