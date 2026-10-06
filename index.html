@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SICAE | Gestión Inteligente</title>
+    <meta name="description" content="S.I.C.A.E. - Gestión inteligente de asistencia mediante biometría. Pruebe nuestro simulador en línea.">
     <!-- Fuentes y Web -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         :root {
             --primary: #0a2540;
@@ -33,14 +34,13 @@
             justify-content: center;
             align-items: center;
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* Fondo con diseño tecnológico */
+        /* Fondo con diseño tecnológico (fijo, sin desbordar la página) */
         body::before {
             content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
+            position: fixed;
+            inset: 0;
             background: radial-gradient(circle at center, rgba(0, 180, 216, 0.1) 0%, rgba(2, 6, 23, 1) 50%);
             z-index: -1;
             pointer-events: none;
@@ -55,24 +55,8 @@
             animation: fadeIn 1s ease-out forwards;
         }
 
-        /* 1) Título */
-        h1 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 900;
-            line-height: 1.2;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-        }
-        .highlight {
-            background: linear-gradient(135deg, var(--secondary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* 2) Subtítulo */
-        h2 {
+        /* Subtítulo superior (antes h2 antes del h1: orden de encabezados incorrecto) */
+        .eyebrow {
             font-family: 'Poppins', sans-serif;
             font-size: 1.5rem;
             color: var(--secondary);
@@ -82,7 +66,25 @@
             letter-spacing: 2px;
         }
 
-        /* 3 y 4) Propuesta de Valor */
+        /* Título */
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+        .highlight {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        /* Propuesta de Valor */
         .value-prop {
             font-size: 1.2rem;
             color: var(--text-muted);
@@ -96,13 +98,13 @@
             display: flex;
             gap: 15px;
             justify-content: center;
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto 60px auto;
-            position: relative;
         }
-        
+
         .capture-form input {
             flex: 1;
+            min-width: 0;
             padding: 18px 25px;
             border-radius: 30px;
             border: 2px solid rgba(0, 180, 216, 0.3);
@@ -113,6 +115,7 @@
             transition: all 0.3s;
             font-family: 'Inter', sans-serif;
         }
+        .capture-form input::placeholder { color: var(--text-muted); }
 
         .capture-form input:focus {
             border-color: var(--secondary);
@@ -126,6 +129,7 @@
             border: none;
             background: var(--secondary);
             color: #020617;
+            font-family: 'Inter', sans-serif;
             font-weight: 800;
             font-size: 1.1rem;
             cursor: pointer;
@@ -133,13 +137,15 @@
             box-shadow: 0 10px 20px rgba(0, 180, 216, 0.3);
         }
 
-        .capture-form button:hover {
+        .capture-form button:hover:not(:disabled),
+        .capture-form button:focus-visible {
             transform: translateY(-3px);
             background: var(--accent);
             box-shadow: 0 15px 25px rgba(255, 183, 3, 0.4);
         }
+        .capture-form button:disabled { opacity: 0.7; cursor: wait; }
 
-        /* 5, 6 y 7) Testimonios */
+        /* Testimonios */
         .testimonials {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -152,6 +158,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 30px 20px;
             border-radius: 20px;
+            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             transition: all 0.3s;
         }
@@ -175,13 +182,12 @@
             color: var(--text-light);
         }
 
-        /* Mensaje de éxito al enviar correo */
+        /* Mensaje de éxito (sin margen negativo: el formulario ya está oculto) */
         #success-msg {
             display: none;
             color: #10b981;
             font-weight: bold;
-            margin-top: -40px;
-            margin-bottom: 40px;
+            margin: 0 auto 60px auto;
             font-size: 1.1rem;
             animation: fadeIn 0.5s ease-out;
         }
@@ -192,22 +198,27 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+        }
+
         @media (max-width: 768px) {
             h1 { font-size: 2.2rem; }
+            .eyebrow { font-size: 1.2rem; }
             .capture-form { flex-direction: column; }
-            .capture-form button { width: 100%; }
+            .capture-form input, .capture-form button { width: 100%; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        
-        <!-- Puntos 1 y 2: Títulos -->
-        <h2>Biometría inteligente al alcance de todos</h2>
+    <main class="container">
+
+        <!-- Subtítulo y título -->
+        <p class="eyebrow">Biometría inteligente al alcance de todos</p>
         <h1>Gestione de manera inteligente la asistencia en su <span class="highlight">Organización</span></h1>
-        
-        <!-- Puntos 3 y 4: Propuesta de valor -->
+
+        <!-- Propuesta de valor -->
         <p class="value-prop">
             Le invitamos a dar un paso adelante en el registro de asistencias inteligente. Descubra la eficiencia y practicidad de S.I.C.A.E. <br>
             <strong>Automatice y optimice la administración de sus recursos.</strong>
@@ -215,50 +226,59 @@
 
         <!-- Formulario de Captura de Correo -->
         <form class="capture-form" id="emailForm">
-            <input type="email" id="userEmail" placeholder="Ingrese su correo electrónico..." required>
-            <button type="submit"><i class="fa-solid fa-paper-plane"></i> Prueba ya nuestro simulador en línea!</button>
+            <input type="email" id="userEmail" name="email" placeholder="Ingrese su correo electrónico..." aria-label="Correo electrónico" autocomplete="email" required>
+            <button type="submit" id="submitBtn"><i class="fa-solid fa-paper-plane"></i> ¡Pruebe ya nuestro simulador en línea!</button>
         </form>
-        <div id="success-msg"><i class="fa-solid fa-circle-check"></i> ¡Gracias! Te contactaremos a la brevedad.</div>
+        <div id="success-msg" role="status" aria-live="polite"><i class="fa-solid fa-circle-check"></i> ¡Gracias! Redirigiendo al simulador...</div>
 
-        <!-- Puntos 5, 6 y 7: Testimonios -->
-        <div class="testimonials">
-            
+        <!-- Testimonios -->
+        <section class="testimonials" aria-label="Opiniones">
+
             <div class="testimonial-card">
-                <div class="stars">
+                <div class="stars" aria-label="5 estrellas">
                     <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                 </div>
                 <p class="quote">"¡Es excelente!"</p>
             </div>
 
             <div class="testimonial-card">
-                <div class="stars">
+                <div class="stars" aria-label="5 estrellas">
                     <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                 </div>
                 <p class="quote">"¡Qué gran idea!"</p>
             </div>
 
             <div class="testimonial-card">
-                <div class="stars">
+                <div class="stars" aria-label="5 estrellas">
                     <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                 </div>
                 <p class="quote">"Ya quiero probarlo."</p>
             </div>
 
-        </div>
+        </section>
 
-    </div>
+    </main>
 
-    <!-- Script cortito para que el formulario funcione visualmente -->
     <script>
-        document.getElementById('emailForm').addEventListener('submit', function(e) {
-            e.preventDefault(); 
-            document.getElementById('emailForm').style.display = 'none';
-            document.getElementById('success-msg').style.display = 'block'; 
-            
-            // Redirige a la web grande después de 1 segundo y medio
-            setTimeout(() => {
-                window.location.href = "plataforma.html";
-            }, 2500);
+        const REDIRECT_URL = "plataforma.html"; // Debe existir en la misma carpeta
+        const REDIRECT_DELAY = 2500;            // milisegundos
+
+        document.getElementById('emailForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('submitBtn');
+            if (btn.disabled) return;           // evita envíos dobles
+            btn.disabled = true;
+
+            // Guarda el correo en este navegador (ver nota: aún no se envía a ningún servidor)
+            try {
+                localStorage.setItem('sicaeEmail', document.getElementById('userEmail').value.trim());
+            } catch (err) { /* modo privado: se ignora */ }
+
+            this.style.display = 'none';
+            document.getElementById('success-msg').style.display = 'block';
+
+            setTimeout(() => { window.location.href = REDIRECT_URL; }, REDIRECT_DELAY);
         });
     </script>
 
