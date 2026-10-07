@@ -19,7 +19,7 @@
             --text-muted: #475569; --border-light: #e2e8f0; --glass-bg: rgba(255, 255, 255, 0.75); 
             --navbar-scrolled: rgba(10, 37, 64, 0.95);
             --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05); --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1); 
-            --shadow-hover: 0 30px 60px -12px rgba(0, 180, 216, 0.2); --transition-fast: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); --white: #ffffff;
+            --shadow-hover: 0 30px 60px -12px rgba(0, 180, 216, 0.2); --transition-fast: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         [data-theme="dark"] {
             --bg-body: #020617; --bg-card: #0f172a; --heading-color: #f8fafc; --text-main: #cbd5e1; 
@@ -87,6 +87,9 @@
         .navbar.scrolled .nav-links a:hover, .navbar.scrolled .nav-links a.active { color: var(--secondary); }
         
         .nav-actions { display: flex; gap: 20px; align-items: center; }
+        .cart-btn { background: none; border: none; font-size: 1.4rem; color: #ffffff; position: relative; transition: var(--transition-fast); filter: drop-shadow(0 2px 5px rgba(0,0,0,0.4));}
+        .navbar.scrolled .cart-btn { color: #ffffff; filter: none;} .cart-btn:hover { color: var(--accent); transform: scale(1.1); } .navbar.scrolled .cart-btn:hover { color: var(--secondary); }
+        .cart-badge { position: absolute; top: -8px; right: -12px; background: var(--accent); color: var(--primary-solid); font-size: 0.75rem; font-weight: 800; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(255,183,3,0.4); text-shadow: none;}
 
         .btn-main { background: var(--primary-solid); color: #ffffff; padding: 0.9rem 2rem; border-radius: 30px; font-weight: 700; transition: var(--transition-fast); border: none; box-shadow: 0 10px 20px rgba(10, 37, 64, 0.2); position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 10px; z-index: 1; cursor: pointer;}
         .btn-main::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--secondary), var(--primary-light)); z-index: -1; transition: opacity 0.4s; opacity: 0; }
@@ -241,6 +244,13 @@
         .login-form .input-group { position: relative; margin-bottom: 1.5rem;} .login-form .input-group i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.2rem; transition: var(--transition-fast); } .login-form input { width: 100%; padding: 18px 20px 18px 55px; border: 2px solid var(--border-light); border-radius: 14px; font-size: 1.05rem; background: var(--bg-body); color: var(--text-main); transition: var(--transition-fast); outline: none; } .login-form input:focus { border-color: var(--secondary); background: var(--bg-card); box-shadow: 0 0 0 4px rgba(0,180,216,0.1); } .login-form input:focus + i { color: var(--secondary); }
         .video-box { max-width: 1000px; width: 95%; background: transparent; padding: 0; box-shadow: none; border: none;} .video-container { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 24px; overflow: hidden; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border: 2px solid rgba(255,255,255,0.1);}
 
+        /* Cart Offcanvas */
+        .cart-panel { position: fixed; top: 0; right: -450px; width: 450px; height: 100vh; background: var(--bg-card); box-shadow: -10px 0 40px rgba(0,0,0,0.5); z-index: 10000; transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; border-left: 1px solid var(--border-light);} .cart-panel.active { right: 0; }
+        .cart-header { padding: 30px; background: var(--primary-solid); color: #ffffff; display: flex; justify-content: space-between; align-items: center; } .cart-body { flex-grow: 1; padding: 30px; overflow-y: auto; background: var(--bg-body); }
+        .cart-item { display: flex; justify-content: space-between; padding: 20px; background: var(--bg-card); border-radius: 16px; margin-bottom: 15px; align-items: center; box-shadow: var(--shadow-sm); border: 1px solid var(--border-light);} .cart-item-title { font-weight: 700; font-size: 1rem; color: var(--heading-color); margin-bottom: 5px;}
+        .cart-item-remove { color: #ef4444; width: 40px; height: 40px; border-radius: 12px; background: #fee2e2; display: flex; align-items: center; justify-content: center; border: none; transition: var(--transition-fast); cursor: pointer;} .cart-item-remove:hover { background: #ef4444; color: white; transform: scale(1.1); }
+        .cart-footer { padding: 30px; background: var(--bg-card); border-top: 1px solid var(--border-light); box-shadow: 0 -10px 20px rgba(0,0,0,0.02);}
+
         /* Chatbot */
         .chatbot-btn { position: fixed; bottom: 40px; right: 40px; width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(135deg, var(--secondary), var(--primary-solid)); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 15px 30px rgba(0,180,216,0.4); z-index: 9998; transition: var(--transition-fast); border: none; cursor: pointer;} .chatbot-btn:hover { transform: scale(1.1) translateY(-5px); }
         .chatbot-window { position: fixed; bottom: 130px; right: 40px; width: 420px; height: 550px; background: var(--bg-card); border-radius: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); display: flex; flex-direction: column; overflow: hidden; z-index: 9999; opacity: 0; visibility: hidden; transform: translateY(20px) scale(0.95); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid var(--border-light); } .chatbot-window.active { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
@@ -258,15 +268,7 @@
         .cookie-content { display: flex; align-items: center; gap: 20px; color: var(--text-main); font-weight: 500;} .cookie-content i { font-size: 2rem; color: var(--accent); } .cookie-content a { color: var(--secondary); text-decoration: underline; font-weight: 700; cursor: pointer;}
         .toast { position: fixed; bottom: 100px; left: 40px; background: #10b981; color: white; padding: 20px 30px; border-radius: 16px; font-weight: 600; display: flex; align-items: center; gap: 18px; box-shadow: 0 15px 30px rgba(0,0,0,0.3); transform: translateX(-150%); transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 10000; font-size: 1.05rem;} .toast.show { transform: translateX(0); } .toast.error { background: #ef4444; }
 
-        /* --- Correcciones --- */
-.section-title span { background: linear-gradient(135deg, var(--secondary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-#anep-canvas { display: block; }
-.nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
-@media (max-width: 768px) {
-  .nav-toggle { display: inline-block; }
-  .navbar .nav-links.open { display: flex; position: absolute; top: 100%; left: 0; width: 100%; flex-direction: column; gap: 1.2rem; padding: 1.5rem 5%; background: var(--primary-solid); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
-}
-/* Animations */
+        /* Animations */
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-40px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
         .reveal { opacity: 0; transform: translateY(60px) scale(0.95); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); } .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
@@ -283,61 +285,7 @@
         }
         @media (max-width: 768px) {
             .nav-links { display: none; } .hero h1 { font-size: 3rem; } .hero h2 { font-size: 1.5rem; } .section-title { font-size: 2.5rem; }
-            section { padding: 5rem 5%; } .topbar { flex-direction: column; gap: 10px; } .hero-buttons { flex-direction: column; } .cookie-banner { flex-direction: column; gap: 15px; text-align: center; padding: 20px;}
-        }
-
-        /* ===== RESPONSIVE: correcciones móvil / ventana angosta ===== */
-        html { -webkit-text-size-adjust: 100%; }
-        a { text-decoration: none; }
-        .nav-links { list-style: none; }
-        .section-title { line-height: 1.2; }
-        #testimonios .test-card, #testimonios .test-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
-        #testimonios .test-text { color: #e2e8f0; }
-        @media (max-width: 991px) {
-            .navbar .nav-links { display: none; }
-            .navbar .nav-links.open { display: flex; }
-            .nav-toggle { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; }
-            .tabs-sidebar { padding: 0; overflow: hidden; }
-            .tab-btn { padding: 1.1rem 0.4rem; gap: 8px; font-size: 1rem; }
-            .tab-btn.active { color: #ffffff; }
-            .tab-btn i { width: auto !important; }
-            .tab-indicator { background: var(--secondary); }
-            .tabs-content-area { padding: 2rem 1.25rem; }
-            .tab-content { padding: 0; }
-            .tab-content h3 { font-size: 1.8rem; }
-            .tab-content p { font-size: 1.05rem !important; line-height: 1.7 !important; }
-            .section-title { font-size: 2.3rem; margin-bottom: 3rem; }
-            .val-item.active .val-body { max-height: 260px; }
-            .quick-stats { grid-template-columns: 1fr; gap: 2rem; }
-            .q-num { font-size: 3rem; }
-            .footer-logos { flex-wrap: wrap; gap: 1.5rem; font-size: 2.2rem; }
-            .contact-form { padding: 2.5rem 1.5rem; }
-            .accordion-header { padding: 1.2rem 1.2rem; font-size: 1.1rem; gap: 10px; }
-            .teachers-grid { padding: 0 1.2rem 1.5rem; }
-            .faq-text { padding: 0 1.2rem 1.5rem; }
-            .team-grid { grid-template-columns: 1fr; gap: 2rem; }
-            .features-grid, .test-grid, .pricing-grid { grid-template-columns: 1fr; }
-            .price-card.popular, .price-card.popular:hover { transform: none; }
-            .chatbot-window { width: calc(100vw - 24px); right: 12px; bottom: 100px; height: 70vh; }
-            .chatbot-btn { right: 16px; bottom: 20px; width: 58px; height: 58px; font-size: 1.6rem; }
-            .toast { left: 12px; right: 12px; bottom: 90px; }
-        }
-        @media (max-width: 480px) {
-            .topbar { padding: 8px 4%; }
-            .navbar { padding: 0.8rem 4%; }
-            .logo-container { font-size: 1.5rem; }
-            .nav-actions { gap: 12px; }
-            .nav-actions .btn-outline { padding: 0.5rem 1rem !important; font-size: 0.9rem; }
-            .hero h1 { font-size: 2.6rem; }
-            .hero h2 { font-size: 1.2rem; }
-            .hero p { font-size: 1.05rem; }
-            section { padding: 4rem 5%; }
-            .stat-box { padding: 1.5rem 1rem; }
-            .modal-box { padding: 3rem 1.5rem; }
-            .showcase-center { width: 240px; height: 240px; }
-            .showcase-center i { font-size: 6rem; }
-            .showcase-container { overflow: hidden; padding: 2rem 0; }
-            .rfid-demo-box, .reveal[style*="dashed"] { padding: 24px 16px !important; }
+            section { padding: 5rem 5%; } .cart-panel { width: 100%; right: -100%; } .topbar { flex-direction: column; gap: 10px; } .hero-buttons { flex-direction: column; } .cookie-banner { flex-direction: column; gap: 15px; text-align: center; padding: 20px;}
         }
     </style>
 </head>
@@ -450,10 +398,13 @@
             <li><a href="#equipo" class="nav-item" id="nav-team">Equipo</a></li>
         </ul>
         <div class="nav-actions">
-            <a href="#" id="open-login" class="btn-outline magnetic-btn" style="border-color: rgba(255,255,255,0.6); color: #ffffff; padding: 0.6rem 1.5rem;">
+            <a href="#" id="open-login" class="btn-outline magnetic-btn" style="border-color: var(--primary-solid); color: var(--primary-solid); padding: 0.6rem 1.5rem;">
                 <i class="fa-solid fa-user-shield"></i> <span id="nav-portal">Portal</span>
             </a>
-            <button class="nav-toggle" id="nav-toggle" aria-label="Menú"><i class="fa-solid fa-bars"></i></button>
+            <button class="cart-btn magnetic-btn" onclick="toggleCart()">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="cart-badge" id="cart-count">0</span>
+            </button>
         </div>
     </nav>
 
@@ -496,11 +447,11 @@
     <div class="marquee-section">
         <div class="marquee-title" id="marquee-title"></div>
         <div class="marquee-content">
-            <div class="marquee-item"><i class="fa-solid fa-shield-halved"></i> <span id="mq1">Cifrado AES-256</span></div>
+            <div class="marquee-item"><i class="fa-solid fa-shield-check"></i> <span id="mq1">Cifrado AES-256</span></div>
             <div class="marquee-item"><i class="fa-solid fa-building-columns"></i> <span id="mq2">Integración ANEP</span></div>
             <div class="marquee-item"><i class="fa-solid fa-server"></i> <span id="mq3">Soporte LATU</span></div>
             <div class="marquee-item"><i class="fa-solid fa-file-contract"></i> <span id="mq4">Ley N°18331</span></div>
-            <div class="marquee-item"><i class="fa-solid fa-shield-halved"></i> <span>Cifrado AES-256</span></div>
+            <div class="marquee-item"><i class="fa-solid fa-shield-check"></i> <span>Cifrado AES-256</span></div>
             <div class="marquee-item"><i class="fa-solid fa-building-columns"></i> <span>Integración ANEP</span></div>
             <div class="marquee-item"><i class="fa-solid fa-server"></i> <span>Soporte LATU</span></div>
             <div class="marquee-item"><i class="fa-solid fa-file-contract"></i> <span>Ley N°18331</span></div>
@@ -595,7 +546,6 @@
                     </ul>
                 </div>
             </div>
-        </div>
         </section>
 
         <!-- 4. Tecnología & Catálogo B2B (Fondo Gris) -->
@@ -706,7 +656,7 @@
         });
     };
     // Iniciar cuando pasas el ratón o tocas (para demostración rápida)
-    new IntersectionObserver((en, ob) => { if (en[0].isIntersecting) { animarContadores(); ob.disconnect(); } }, { threshold: 0.3 }).observe(document.querySelector('.dashboard-stats'));
+    document.querySelector('.dashboard-stats').addEventListener('mouseenter', animarContadores);
 </script>
             <!-- SIMULADOR RFID CON CÁMARA -->
             <div class="reveal delay-200" style="max-width: 900px; margin: 5rem auto 0; background: var(--bg-body); padding: 40px; border-radius: 30px; border: 2px dashed var(--secondary); text-align: center; box-shadow: var(--shadow-sm); transition: background 0.4s;">
@@ -768,24 +718,24 @@
                         <li><i class="fa-solid fa-check"></i> <span id="feat-1-1">1 Hub Biométrico Central marca VEOQUIERO</span></li>
                         <li><i class="fa-solid fa-check"></i> <span id="feat-1-2">Chip inteligente y de bajo consumo</span></li>
                         <li><i class="fa-solid fa-check"></i> <span id="feat-1-3">Hasta 200 colaboradores</span></li>
-                        <li><i class="fa-solid fa-check"></i> <span id="feat-1-4">Instalación incluida</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-1-4">Instalacion incluida</span></li>
                         <li><i class="fa-solid fa-check"></i> <span id="feat-1-5">Soporte 24/7</span></li>
                     </ul>
-                    <button class="btn-outline magnetic-btn" style="color: var(--text-main); border-color: var(--border-light); width: 100%; justify-content: center;" onclick="selectPlan('Plan Básico')" id="btn-quote-1">Cotizar</button>
+                    <button class="btn-outline magnetic-btn" style="color: var(--text-main); border-color: var(--border-light); width: 100%; justify-content: center;" onclick="addToCart('Plan Básico')" id="btn-quote-1">Cotizar</button>
                 </div>
                 <div class="price-card popular reveal delay-100">
                     <div class="p-tier" id="plan-2">Institucional</div>
                     <p style="color: var(--text-muted); font-size: 0.9rem;" id="plan-2-desc">Ideal para escuelas, liceos y Universidades</p>
                     <ul class="p-features">
-                        <li><i class="fa-solid fa-check"></i> <span id="feat-2-1">Hub Biométrico K14 – ZKTeco</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-2-1">Hub Biométrico k14 - ZKteco</span></li>
                         <li><i class="fa-solid fa-check"></i> <span id="feat-2-2">App Control Parental</span></li>
                         <li><i class="fa-solid fa-check"></i> <span id="feat-2-3">Hasta 2000 Alumnos</span></li>
-                        <li><i class="fa-solid fa-check"></i> <span id="feat-2-4">Gafete QR y lector por proximidad</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-2-4">Gafete Qr y lector por proximidad</span></li>
                         <li><i class="fa-solid fa-check"></i> <span id="feat-2-5">Soporte 24/7</span></li>
-                        <li><i class="fa-solid fa-check"></i> <span id="feat-2-6">Instalación incluida</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-2-6">Instalacion incluida</span></li>
                         <li><i class="fa-solid fa-check"></i> <span id="feat-2-7">Servidor Local Dedicado</span></li>
                     </ul>
-                    <button class="btn-main magnetic-btn" style="width: 100%; justify-content: center;" onclick="selectPlan('Plan Institucional')" id="btn-quote-2">Solicitar Auditoría</button>
+                    <button class="btn-main magnetic-btn" style="width: 100%; justify-content: center;" onclick="addToCart('Plan Institucional')" id="btn-quote-2">Solicitar Auditoría</button>
                 </div>
                 <div class="price-card reveal delay-200">
                     <div class="p-tier" id="plan-3">Intermedio</div>
@@ -795,9 +745,9 @@
                         <li><i class="fa-solid fa-check"></i> <span id="feat-3-2">Chip inteligente y de bajo consumo</span></li>
                         <li><i class="fa-solid fa-check"></i> <span id="feat-3-3">Hasta 600 colaboradores</span></li>
                         <li><i class="fa-solid fa-check"></i> <span id="feat-3-4">Soporte 24/7</span></li>
-                        <li><i class="fa-solid fa-check"></i> <span id="feat-3-5">Instalación incluida</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span id="feat-3-5">Instalacion incluida</span></li>
                     </ul>
-                    <button class="btn-outline magnetic-btn" style="color: var(--text-main); border-color: var(--border-light); width: 100%; justify-content: center;" onclick="selectPlan('Plan Intermedio')" id="btn-quote-3">Contactar Ventas</button>
+                    <button class="btn-outline magnetic-btn" style="color: var(--text-main); border-color: var(--border-light); width: 100%; justify-content: center;" onclick="addToCart('Plan Intermedio')" id="btn-quote-3">Contactar Ventas</button>
                 </div>
             </div>
         </section>
@@ -880,7 +830,7 @@
                 </div>
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleFAQ(this)"><span id="faq-3-q">¿La App para padres tiene algún costo extra?</span><div class="icon-toggle"><i class="fa-solid fa-plus"></i></div></div>
-                    <div class="accordion-content"><div class="faq-text" id="faq-3-a">No. Las licencias de la aplicación móvil Parent Connect están incluidas de forma ilimitada en cualquiera de nuestros planes institucionales.</div></div>
+                    <div class="accordion-content"><div class="faq-text" id="faq-3-a">No. Las licencias de la aplicación móvil Parent Connect están incluidas de forma ilimitada en nuestro plan institucional académico.</div></div>
                 </div>
             </div>
         </section>
@@ -912,7 +862,7 @@
         <!-- Footer -->
         <footer>
             <div class="footer-logos">
-                <i class="fa-solid fa-school"></i><i class="fa-solid fa-microchip"></i><i class="fa-solid fa-fingerprint"></i><i class="fa-solid fa-satellite-dish"></i><i class="fa-solid fa-shield-halved"></i>
+                <i class="fa-solid fa-school"></i><i class="fa-solid fa-microchip"></i><i class="fa-solid fa-fingerprint"></i><i class="fa-solid fa-satellite-dish"></i><i class="fa-solid fa-shield-check"></i>
             </div>
             <div style="max-width: 800px; margin: 0 auto;">
                 <h3 style="font-size: 2.2rem; margin-bottom: 10px; font-weight: 900; letter-spacing: 2px; color: #ffffff;">S.I.C.A.E. S.A.S.</h3>
@@ -957,7 +907,7 @@
     <div class="modal-overlay" id="webcam-modal">
         <div class="modal-box" style="text-align: center;">
             <button class="close-btn" id="close-webcam"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="color: var(--heading-color); margin-bottom:15px;" id="webcam-modal-title"><i class="fa-solid fa-camera"></i> Escaneo Facial VIP</h3>
+            <h3 style="color: var(--heading-color); margin-bottom:15px;" id="webcam-modal-title"><i class="fa-solid fa-face-viewfinder"></i> Escaneo Facial VIP</h3>
             <p style="color: var(--text-muted); margin-bottom: 20px;" id="webcam-modal-desc">Posiciona tu rostro en el centro del cuadro.</p>
             <video id="webcam-video" width="100%" autoplay playsinline style="border-radius:15px; border:2px dashed var(--secondary); box-shadow:0 0 20px rgba(0,180,216,0.3);"></video><canvas id="webcam-canvas" style="display:none;"></canvas>
             <button id="take-snap-btn" class="btn-main magnetic-btn" style="margin-top:20px; width:100%; justify-content:center;"><i class="fa-solid fa-camera"></i> <span id="btn-snap-text">Generar Credencial</span></button>
@@ -998,6 +948,18 @@
         </div>
     </div>
 
+    <!-- Cart Offcanvas -->
+    <div class="cart-panel" id="cart-panel">
+        <div class="cart-header"><h3 style="font-family: 'Poppins';"><i class="fa-solid fa-file-invoice-dollar" style="margin-right: 10px;"></i> <span id="cart-title-text">Cotización B2B</span></h3><button class="close-cart" onclick="toggleCart()"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="cart-body" id="cart-body">
+            <div class="cart-empty" id="cart-empty"><i class="fa-solid fa-server" style="font-size: 4rem; margin-bottom: 20px; color: var(--text-muted);"></i><p style="font-size: 1.1rem; color: var(--text-muted); font-weight: 500;" id="cart-empty-text">No hay hardware seleccionado.</p></div>
+        </div>
+        <div class="cart-footer">
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; text-align: center; line-height: 1.5;" id="cart-footer-text">Seleccione la infraestructura necesaria.</p>
+            <button class="btn-main magnetic-btn" style="width: 100%; justify-content: center;" onclick="alert('Iniciando contacto. Serás redirigido.')" id="btn-cart-submit">Solicitar Auditoría</button>
+        </div>
+    </div>
+
     <!-- FAB & Cookie -->
         <div class="cookie-banner" id="cookie-banner">
         <div class="cookie-content"><i class="fa-solid fa-cookie-bite"></i><p id="cookie-text">Utilizamos cookies para mejorar la experiencia de usuario. <a href="#">Política de Privacidad</a></p></div>
@@ -1021,9 +983,8 @@
         }
 
                // 3. MODO BLACKOUT & MODO DIOS (Teclado)
-        const qrModal = null; let secretKeys = []; const godCode = ['a','d','m','i','n'];
+        let secretKeys = []; const godCode = ['a','d','m','i','n'];
         window.addEventListener('keydown', (e) => {
-            const _t = e.target; if (_t.tagName === 'INPUT' || _t.tagName === 'TEXTAREA' || _t.tagName === 'SELECT' || _t.isContentEditable || e.ctrlKey || e.metaKey || e.altKey) return;
             if(e.key === 'ArrowRight' && qrModal && qrModal.classList.contains('active')) {
                 qrModal.classList.remove('active'); playBeep(1000, 'sine', 0.3); showToast("NUEVO DISPOSITIVO VINCULADO: Dispositivo del espectador", "success"); setTimeout(() => { showToast("Transfiriendo Demo de App Parent Connect...", "success"); }, 2000);
             }
@@ -1086,7 +1047,7 @@
         const ddosBtn = document.getElementById('btn-ddos'); const ddosOverlay = document.getElementById('ddos-overlay'); const ddosCanvas = document.getElementById('ddos-canvas'); const ddosCtx = ddosCanvas ? ddosCanvas.getContext('2d') : null; const ddosMsg = document.getElementById('ddos-message'); const ddosShield = document.getElementById('ddos-shield'); let ddosInterval;
         if(ddosBtn) {
             ddosBtn.addEventListener('click', () => {
-                if (ddosOverlay.style.display === 'flex') return; ddosOverlay.style.display = 'flex'; ddosMsg.style.display = 'block'; ddosShield.style.display = 'none';
+                ddosOverlay.style.display = 'flex'; ddosMsg.style.display = 'block'; ddosShield.style.display = 'none';
                 if(ddosCtx) {
                     ddosCanvas.width = window.innerWidth; ddosCanvas.height = window.innerHeight; const chars = '01#@%&'.split(''); const fontSize = 16; const drops = Array.from({length: ddosCanvas.width / fontSize}).fill(1);
                     ddosInterval = setInterval(() => { ddosCtx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ddosCtx.fillRect(0, 0, ddosCanvas.width, ddosCanvas.height); ddosCtx.fillStyle = '#ef4444'; ddosCtx.font = fontSize + 'px monospace'; for(let i=0; i<drops.length; i++) { ddosCtx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fontSize, drops[i] * fontSize); if(drops[i] * fontSize > ddosCanvas.height && Math.random() > 0.975) drops[i] = 0; drops[i]++; } }, 30);
@@ -1104,13 +1065,13 @@
                 const interactables = document.querySelectorAll('a, button, input, textarea, select, .magnetic-btn, .accordion-header, .val-item, .marquee-item, .fingerprint-btn, .rfid-card');
         interactables.forEach(el => { el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover')); el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover')); });
         const magneticBtns = document.querySelectorAll('.magnetic-btn');
-        magneticBtns.forEach(btn => { btn.addEventListener('mousemove', (e) => { const rect = btn.getBoundingClientRect(); const x = e.clientX - rect.left - (rect.width / 2); const y = e.clientY - rect.top - (rect.height / 2); btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) scale(1.05)`; }); btn.addEventListener('mouseleave', () => btn.style.transform = ''); });
+        magneticBtns.forEach(btn => { btn.addEventListener('mousemove', (e) => { const rect = btn.getBoundingClientRect(); const x = e.clientX - rect.left - (rect.width / 2); const y = e.clientY - rect.top - (rect.height / 2); btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) scale(1.05)`; }); btn.addEventListener('mouseleave', () => btn.style.transform = `translate(0px, 0px) scale(1)`); });
 
-        window.addEventListener('DOMContentLoaded', () => { setTimeout(() => { const preloader = document.getElementById('preloader'); preloader.style.opacity = '0'; setTimeout(() => preloader.style.visibility = 'hidden', 800); if (!localStorage.getItem('cookiesAccepted')) setTimeout(() => { document.getElementById('cookie-banner').classList.add('show'); }, 2000); }, 1800); });
+        window.addEventListener('DOMContentLoaded', () => { setTimeout(() => { const preloader = document.getElementById('preloader'); preloader.style.opacity = '0'; setTimeout(() => preloader.style.visibility = 'hidden', 800); setTimeout(() => { document.getElementById('cookie-banner').classList.add('show'); }, 2000); }, 1800); });
         function acceptCookies() { document.getElementById('cookie-banner').classList.remove('show'); localStorage.setItem('cookiesAccepted', 'true'); }
         const progressBar = document.getElementById('scroll-progress'); const navbar = document.getElementById('navbar'); const fab = document.getElementById('fab-top'); const sections = document.querySelectorAll('section'); const navItems = document.querySelectorAll('.nav-item');
-        window.addEventListener('scroll', () => { const winScroll = document.body.scrollTop || document.documentElement.scrollTop; const height = document.documentElement.scrollHeight - document.documentElement.clientHeight; progressBar.style.width = (winScroll / height) * 100 + "%"; if (winScroll > 50) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); if (fab) { if (winScroll > 500) fab.classList.add('visible'); else fab.classList.remove('visible'); } let current = ''; sections.forEach(section => { if (scrollY >= (section.offsetTop - 300)) current = section.getAttribute('id'); }); navItems.forEach(item => { item.classList.remove('active'); if (item.getAttribute('href').substring(1) === current) item.classList.add('active'); }); });
-        document.querySelectorAll('.btn-main').forEach(btn => { btn.addEventListener('click', function(e) { let _r = this.getBoundingClientRect(); let x = e.clientX - _r.left; let y = e.clientY - _r.top; let ripples = document.createElement('span'); ripples.style.left = x + 'px'; ripples.style.top = y + 'px'; ripples.classList.add('ripple'); this.appendChild(ripples); setTimeout(() => ripples.remove(), 600); }); });
+        window.addEventListener('scroll', () => { const winScroll = document.body.scrollTop || document.documentElement.scrollTop; const height = document.documentElement.scrollHeight - document.documentElement.clientHeight; progressBar.style.width = (winScroll / height) * 100 + "%"; if (winScroll > 50) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); if (winScroll > 500) fab.classList.add('visible'); else fab.classList.remove('visible'); let current = ''; sections.forEach(section => { if (scrollY >= (section.offsetTop - 300)) current = section.getAttribute('id'); }); navItems.forEach(item => { item.classList.remove('active'); if (item.getAttribute('href').substring(1) === current) item.classList.add('active'); }); });
+        document.querySelectorAll('.btn-main').forEach(btn => { btn.addEventListener('click', function(e) { let x = e.clientX - e.target.getBoundingClientRect().left; let y = e.clientY - e.target.getBoundingClientRect().top; let ripples = document.createElement('span'); ripples.style.left = x + 'px'; ripples.style.top = y + 'px'; ripples.classList.add('ripple'); this.appendChild(ripples); setTimeout(() => ripples.remove(), 600); }); });
 
         const typeTarget = document.getElementById('typewriter'); const texts = [ "Arquitectura en la nube.", "Tecnología biométrica implementada.", "Cifrado de extremo a extremo." ]; let textIndex = 0, charIndex = 0, isDeleting = false;
         function typeEffect() { const currentText = texts[textIndex]; if (isDeleting) { typeTarget.textContent = currentText.substring(0, charIndex - 1); charIndex--; } else { typeTarget.textContent = currentText.substring(0, charIndex + 1); charIndex++; } let typingSpeed = isDeleting ? 30 : 80; if (!isDeleting && charIndex === currentText.length) { typingSpeed = 2000; isDeleting = true; } else if (isDeleting && charIndex === 0) { isDeleting = false; textIndex = (textIndex + 1) % texts.length; typingSpeed = 500; } setTimeout(typeEffect, typingSpeed); } setTimeout(typeEffect, 2800); 
@@ -1134,15 +1095,15 @@
         function activateRFID() { playBeep(); if(readerLight) readerLight.classList.add('granted'); if(dropReader) dropReader.style.borderColor = '#10b981'; if(rfidResult) rfidResult.innerHTML = '✔️ PRESENTE - ' + new Date().toLocaleTimeString(); showToast("Registro RFID insertado en Base de Datos.", "success"); setTimeout(() => { if(readerLight) readerLight.classList.remove('granted'); if(dropReader) dropReader.style.borderColor = 'var(--border-light)'; if(rfidResult) rfidResult.innerHTML = ''; }, 3500); }
 
         // 10. ESPECTROGRAMA DE VOZ
-        const voiceModal = document.getElementById('voice-auth-modal'); const voiceCanvas = document.getElementById('voice-canvas'); const voiceCtx = voiceCanvas ? voiceCanvas.getContext('2d') : null; const voiceStatus = document.getElementById('voice-status'); let voiceStream, audioCtx, analyser, dataArray, bufferLength, voiceAnimationId, authProgress = 0;
-        document.getElementById('open-voice').addEventListener('click', async (e) => { e.preventDefault(); voiceModal.classList.add('active'); voiceStatus.innerText = "Escuchando señal de audio..."; voiceStatus.style.color = "var(--text-main)"; authProgress = 0; try { const stream = await navigator.mediaDevices.getUserMedia({ audio: true }); const AudioContext = window.AudioContext || window.webkitAudioContext; voiceStream = stream; audioCtx = new AudioContext(); const source = audioCtx.createMediaStreamSource(stream); analyser = audioCtx.createAnalyser(); analyser.fftSize = 256; source.connect(analyser); bufferLength = analyser.frequencyBinCount; dataArray = new Uint8Array(bufferLength); drawWaveform(); } catch (err) { voiceStatus.innerText = "Error: Permiso de micrófono denegado."; voiceStatus.style.color = "#ef4444"; drawMockWaveform(); } });
-        document.getElementById('close-voice').addEventListener('click', () => { voiceModal.classList.remove('active'); if(voiceAnimationId) cancelAnimationFrame(voiceAnimationId); if(audioCtx) audioCtx.close(); if(voiceStream) voiceStream.getTracks().forEach(t => t.stop()); });
+        const voiceModal = document.getElementById('voice-auth-modal'); const voiceCanvas = document.getElementById('voice-canvas'); const voiceCtx = voiceCanvas ? voiceCanvas.getContext('2d') : null; const voiceStatus = document.getElementById('voice-status'); let audioCtx, analyser, dataArray, bufferLength, voiceAnimationId, authProgress = 0;
+        document.getElementById('open-voice').addEventListener('click', async (e) => { e.preventDefault(); voiceModal.classList.add('active'); voiceStatus.innerText = "Escuchando señal de audio..."; voiceStatus.style.color = "var(--text-main)"; authProgress = 0; try { const stream = await navigator.mediaDevices.getUserMedia({ audio: true }); const AudioContext = window.AudioContext || window.webkitAudioContext; audioCtx = new AudioContext(); const source = audioCtx.createMediaStreamSource(stream); analyser = audioCtx.createAnalyser(); analyser.fftSize = 256; source.connect(analyser); bufferLength = analyser.frequencyBinCount; dataArray = new Uint8Array(bufferLength); drawWaveform(); } catch (err) { voiceStatus.innerText = "Error: Permiso de micrófono denegado."; voiceStatus.style.color = "#ef4444"; drawMockWaveform(); } });
+        document.getElementById('close-voice').addEventListener('click', () => { voiceModal.classList.remove('active'); if(voiceAnimationId) cancelAnimationFrame(voiceAnimationId); if(audioCtx) audioCtx.close(); });
         function drawWaveform() { if(!voiceCtx) return; voiceAnimationId = requestAnimationFrame(drawWaveform); analyser.getByteTimeDomainData(dataArray); voiceCtx.fillStyle = '#0a2540'; voiceCtx.fillRect(0, 0, voiceCanvas.width, voiceCanvas.height); voiceCtx.lineWidth = 4; voiceCtx.strokeStyle = '#00b4d8'; voiceCtx.beginPath(); let sliceWidth = voiceCanvas.width * 1.0 / bufferLength; let x = 0; let volumeSum = 0; for(let i = 0; i < bufferLength; i++) { let v = dataArray[i] / 128.0; let y = v * voiceCanvas.height / 2; if(i === 0) voiceCtx.moveTo(x, y); else voiceCtx.lineTo(x, y); x += sliceWidth; volumeSum += Math.abs(128 - dataArray[i]); } voiceCtx.lineTo(voiceCanvas.width, voiceCanvas.height / 2); voiceCtx.stroke(); if(volumeSum > 1000 && authProgress < 100) { authProgress += 0.5; voiceStatus.innerText = `Analizando patrón vocal... ${Math.floor(authProgress)}%`; voiceStatus.style.color = "var(--secondary)"; } else if (authProgress >= 100) { voiceStatus.innerText = "PATRÓN ACEPTADO. Juez validado."; voiceStatus.style.color = "#10b981"; voiceCtx.strokeStyle = '#10b981'; if(authProgress === 100) { playBeep(); authProgress = 101; } } }
         function drawMockWaveform() { if(!voiceCtx) return; let offset = 0; function renderMock() { voiceAnimationId = requestAnimationFrame(renderMock); voiceCtx.fillStyle = '#0a2540'; voiceCtx.fillRect(0, 0, voiceCanvas.width, voiceCanvas.height); voiceCtx.lineWidth = 4; voiceCtx.strokeStyle = '#ef4444'; voiceCtx.beginPath(); for(let x = 0; x < voiceCanvas.width; x++) { let y = Math.sin((x + offset) * 0.05) * 20 + voiceCanvas.height / 2; if(x === 0) voiceCtx.moveTo(x, y); else voiceCtx.lineTo(x, y); } voiceCtx.stroke(); offset += 5; } renderMock(); }
 
         // 11. MAPA ANEP DASHBOARD
         const anepModal = document.getElementById('anep-map-modal'); const anepCanvas = document.getElementById('anep-canvas'); const anepCtx = anepCanvas ? anepCanvas.getContext('2d') : null; const anepCounter = document.getElementById('anep-counter-live'); const anepLogs = document.getElementById('anep-logs'); let anepAnimationId; let netParticles = [];
-        document.getElementById('open-anep').addEventListener('click', () => { anepModal.classList.add('active'); if(anepCanvas) { anepCanvas.width = anepCanvas.parentElement.clientWidth; anepCanvas.height = anepCanvas.parentElement.clientHeight; initAnepMap(); startAnepData(); } });
+        document.getElementById('open-anep').addEventListener('click', () => { anepModal.classList.add('active'); if(anepCanvas) { anepCanvas.width = anepModal.clientWidth; anepCanvas.height = anepModal.clientHeight; initAnepMap(); startAnepData(); } });
         document.getElementById('close-anep').addEventListener('click', () => { anepModal.classList.remove('active'); if(anepAnimationId) cancelAnimationFrame(anepAnimationId); if(anepCounter) anepCounter.innerText = "0"; if(anepLogs) anepLogs.innerHTML = ""; });
         function initAnepMap() { netParticles = []; for(let i=0; i<80; i++) netParticles.push({ x: Math.random() * anepCanvas.width, y: Math.random() * anepCanvas.height, vx: (Math.random() - 0.5) * 2, vy: (Math.random() - 0.5) * 2, active: false }); }
         function drawAnepMap() { if(!anepCtx) return; anepCtx.clearRect(0, 0, anepCanvas.width, anepCanvas.height); netParticles.forEach(p => { p.x += p.vx; p.y += p.vy; if(p.x < 0 || p.x > anepCanvas.width) p.vx *= -1; if(p.y < 0 || p.y > anepCanvas.height) p.vy *= -1; anepCtx.beginPath(); anepCtx.arc(p.x, p.y, p.active ? 6 : 2, 0, Math.PI * 2); anepCtx.fillStyle = p.active ? '#10b981' : '#00b4d8'; anepCtx.fill(); if(p.active) { anepCtx.shadowBlur = 15; anepCtx.shadowColor = '#10b981'; } else { anepCtx.shadowBlur = 0; } }); anepCtx.lineWidth = 0.5; for(let i=0; i<netParticles.length; i++) { for(let j=i+1; j<netParticles.length; j++) { let d = Math.hypot(netParticles[i].x - netParticles[j].x, netParticles[i].y - netParticles[j].y); if(d < 150) { anepCtx.beginPath(); anepCtx.strokeStyle = `rgba(0, 180, 216, ${1 - d/150})`; if(netParticles[i].active || netParticles[j].active) anepCtx.strokeStyle = `rgba(16, 185, 129, ${1 - d/150})`; anepCtx.moveTo(netParticles[i].x, netParticles[i].y); anepCtx.lineTo(netParticles[j].x, netParticles[j].y); anepCtx.stroke(); } } } anepAnimationId = requestAnimationFrame(drawAnepMap); }
@@ -1172,8 +1133,8 @@
         }
         window.addEventListener('resize', () => { const activeTab = document.querySelector('.tab-btn.active'); if(!activeTab) return; const index = Array.from(document.querySelectorAll('.tab-btn')).indexOf(activeTab); const indicator = document.getElementById('tab-indicator'); if(window.innerWidth > 991) indicator.style.transform = `translateY(${index * 100}%)`; else indicator.style.transform = `translateX(${index * 100}%)`; });
         function previewImage(event, imgId, name) { const reader = new FileReader(); reader.onload = function(){ document.getElementById(imgId).src = reader.result; document.getElementById(imgId).style.display = 'block'; showToast(`Perfil neural de ${name} sincronizado.`, "success"); }; if(event.target.files[0]) reader.readAsDataURL(event.target.files[0]); }
-        function toggleAccordion(element) { const content = element.nextElementSibling; const items = content.querySelectorAll('.teacher-item'); element.classList.toggle('active'); const icon = element.querySelector('.icon-toggle i'); if (content.style.maxHeight) { content.style.maxHeight = null; if(icon) icon.className = "fa-solid fa-chevron-down"; items.forEach(item => { item.style.opacity = '0'; item.style.transform = 'translateY(15px)'; }); } else { content.style.maxHeight = content.scrollHeight + "px"; if(icon) icon.className = "fa-solid fa-chevron-down"; items.forEach((item, i) => { setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 60 * i); }); } }
-        function toggleFAQ(element) { const content = element.nextElementSibling; const text = content.querySelector('.faq-text'); element.classList.toggle('active'); const icon = element.querySelector('.icon-toggle i'); if (content.style.maxHeight) { content.style.maxHeight = null; icon.className = "fa-solid fa-plus";  text.style.opacity = '0'; text.style.transform = 'translateY(15px)'; } else { content.style.maxHeight = content.scrollHeight + "px"; icon.className = "fa-solid fa-minus";  setTimeout(() => { text.style.opacity = '1'; text.style.transform = 'translateY(0)'; }, 150); } }
+        function toggleAccordion(element) { const content = element.nextElementSibling; const items = content.querySelectorAll('.teacher-item'); element.classList.toggle('active'); const icon = element.querySelector('.icon-toggle i'); if (content.style.maxHeight) { content.style.maxHeight = null; if(icon) icon.className = "fa-solid fa-chevron-down"; items.forEach(item => { item.style.opacity = '0'; item.style.transform = 'translateY(15px)'; }); } else { content.style.maxHeight = content.scrollHeight + "px"; if(icon) icon.className = "fa-solid fa-chevron-up"; items.forEach((item, i) => { setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 60 * i); }); } }
+        function toggleFAQ(element) { const content = element.nextElementSibling; const text = content.querySelector('.faq-text'); element.classList.toggle('active'); const icon = element.querySelector('.icon-toggle i'); if (content.style.maxHeight) { content.style.maxHeight = null; icon.className = "fa-solid fa-plus"; icon.style.transform = "rotate(0deg)"; text.style.opacity = '0'; text.style.transform = 'translateY(15px)'; } else { content.style.maxHeight = content.scrollHeight + "px"; icon.className = "fa-solid fa-minus"; icon.style.transform = "rotate(180deg)"; setTimeout(() => { text.style.opacity = '1'; text.style.transform = 'translateY(0)'; }, 150); } }
         function toggleValue(element) { const allItems = document.querySelectorAll('.val-item'); allItems.forEach(item => { if(item !== element) item.classList.remove('active'); }); element.classList.toggle('active'); }
 
         // 14. RED NEURONAL DEL INICIO
@@ -1183,16 +1144,14 @@
         class ParticleNet { constructor() { this.x = Math.random() * canvasNet.width; this.y = Math.random() * canvasNet.height; this.size = Math.random() * 2 + 1; this.speedX = Math.random() * 1 - 0.5; this.speedY = Math.random() * 1 - 0.5; } update() { this.x += this.speedX; this.y += this.speedY; if(this.x < 0 || this.x > canvasNet.width) this.speedX *= -1; if(this.y < 0 || this.y > canvasNet.height) this.speedY *= -1; } draw() { ctxNet.fillStyle = 'rgba(0, 180, 216, 0.8)'; ctxNet.beginPath(); ctxNet.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctxNet.fill(); } }
         function initParticlesNet() { particlesNetArray = []; let numberOfParticles = (canvasNet.height * canvasNet.width) / 12000; for(let i=0; i<numberOfParticles; i++) particlesNetArray.push(new ParticleNet()); }
         function animateParticlesNet() { ctxNet.clearRect(0, 0, canvasNet.width, canvasNet.height); for(let i=0; i<particlesNetArray.length; i++) { particlesNetArray[i].update(); particlesNetArray[i].draw(); for (let j = i; j < particlesNetArray.length; j++){ let dx = particlesNetArray[i].x - particlesNetArray[j].x; let dy = particlesNetArray[i].y - particlesNetArray[j].y; let distance = Math.sqrt(dx * dx + dy * dy); if (distance < 100){ ctxNet.beginPath(); ctxNet.strokeStyle = `rgba(0, 180, 216, ${1 - distance/100})`; ctxNet.lineWidth = 0.5; ctxNet.moveTo(particlesNetArray[i].x, particlesNetArray[i].y); ctxNet.lineTo(particlesNetArray[j].x, particlesNetArray[j].y); ctxNet.stroke(); ctxNet.closePath(); } } if(mouseNet.x != null) { let dxMouse = particlesNetArray[i].x - mouseNet.x; let dyMouse = particlesNetArray[i].y - mouseNet.y; let distanceMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse); if (distanceMouse < mouseNet.radius) { ctxNet.beginPath(); ctxNet.strokeStyle = `rgba(255, 183, 3, ${1 - distanceMouse/mouseNet.radius})`; ctxNet.lineWidth = 1; ctxNet.moveTo(particlesNetArray[i].x, particlesNetArray[i].y); ctxNet.lineTo(mouseNet.x, mouseNet.y); ctxNet.stroke(); ctxNet.closePath(); } } } requestAnimationFrame(animateParticlesNet); }
-        initParticlesNet(); animateParticlesNet(); window.addEventListener('resize', () => { canvasNet.width = window.innerWidth; canvasNet.height = window.innerHeight; initParticlesNet();}); document.addEventListener('mouseleave', () => { mouseNet.x = null; mouseNet.y = null; });
+        initParticlesNet(); animateParticlesNet(); window.addEventListener('resize', () => { canvasNet.width = window.innerWidth; canvasNet.height = window.innerHeight; initParticlesNet();}); window.addEventListener('mouseout', () => { mouseNet.x = null; mouseNet.y = null; });
 
-        // 15. PLANES: llevar al formulario de contacto
-        function selectPlan(planName) {
-            const target = document.getElementById('contacto');
-            if (target) target.scrollIntoView({ behavior: 'smooth' });
-            const msg = document.getElementById('ph-4');
-            if (msg && !msg.value.trim()) msg.value = 'Me interesa el ' + planName + '.';
-            showToast('Complete el formulario y le enviaremos la cotización.', 'success');
-        }
+        // 15. CARRITO B2B
+        let cart = []; const cartPanel = document.getElementById('cart-panel'); const cartCount = document.getElementById('cart-count'); const cartBody = document.getElementById('cart-body'); const cartEmpty = document.getElementById('cart-empty');
+        function toggleCart() { cartPanel.classList.toggle('active'); }
+        function addToCart(productName) { cart.push(productName); updateCartUI(); const btn = document.querySelector('.cart-btn'); btn.style.transform = 'scale(1.4)'; setTimeout(() => btn.style.transform = 'scale(1)', 200); if(!cartPanel.classList.contains('active')) toggleCart(); }
+        function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
+        function updateCartUI() { cartCount.innerText = cart.length; if(cart.length === 0) { cartBody.innerHTML = ''; cartBody.appendChild(cartEmpty); cartEmpty.style.display = 'block'; return; } cartEmpty.style.display = 'none'; cartBody.innerHTML = ''; cart.forEach((item, index) => { const div = document.createElement('div'); div.className = 'cart-item'; div.innerHTML = `<div><div class="cart-item-title">${item}</div><small style="color: var(--text-muted);">Hardware B2B</small></div><button class="cart-item-remove" onclick="removeFromCart(${index})"><i class="fa-solid fa-trash"></i></button>`; cartBody.appendChild(div); }); }
 
         // 16. CHATBOT Y VOZ
         const chatWindow = document.getElementById('chatbot-window'); const chatBody = document.getElementById('chat-body'); const chatInput = document.getElementById('chat-input'); const typingIndicator = document.getElementById('typing-indicator'); const micBtn = document.getElementById('mic-btn');
@@ -1224,7 +1183,7 @@
             recognition.onspeechend = function() { recognition.stop(); };
             recognition.onend = function() { micBtn.style.color = 'var(--text-muted)'; chatInput.placeholder = "Ingresa un prompt..."; };
             recognition.onerror = function(event) { micBtn.style.color = 'var(--text-muted)'; chatInput.placeholder = "Error de micro. Escriba."; setTimeout(() => { chatInput.placeholder = "Ingresa un prompt..."; }, 3000); };
-            micBtn.addEventListener('click', () => { try { recognition.start(); } catch(e) {} });
+            micBtn.addEventListener('click', () => { recognition.start(); });
         } else { micBtn.style.display = 'none'; }
 
         // 17. TRADUCTOR MULTI-IDIOMA TOTAL
@@ -1252,7 +1211,7 @@
                 "val-5": "Calidad Superior", "val-5-desc": "Aseguramos la máxima durabilidad, precisión y excelencia en todos nuestros dispositivos biométricos y servicios asociados.",
                 "val-6": "Fiabilidad y Empatía", "val-6-desc": "Generamos confianza absoluta a través de la empatía, comprendiendo las necesidades de las familias y la institución.",
                 "val-7": "Inclusión Universal", "val-7-desc": "Garantizamos que nuestra tecnología sea accesible para todos los alumnos mediante biometría vocal e interfaces adaptables.",
-                "tech-title": "Infraestructura <span>Hardware & Software</span>", "btn-qr-text": "Vincular Celular",
+                "tech-title": "Infraestructura <span>Hardware</span>", "btn-qr-text": "Vincular Celular",
 
                 "prod1-title": "Hub Biométrico", "prod1-desc": "Terminal de alta velocidad para escaneo dactilar. Procesamiento neural para registro masivo en accesos principales.",
                 "prod2-title": "Nodos de Aula (RFID)", "prod2-desc": "Lectores de proximidad para instalación en salones. Pase de lista instantáneo por aproximación de gafete.",
@@ -1277,7 +1236,7 @@
                 "team-title": "Equipo de <span>Desarrollo</span>", "role-1": "Desarrollador de Software", "role-2": "Administrativa/R.R.H.H.", "role-3": "Marketing/Relaciones publicas",
                 "upload-text-1": "Upload Avatar", "upload-text-2": "Upload Avatar", "upload-text-3": "Upload Avatar",
                 "accordion-title": "Plantel Docente 3°DC",
-                "subj-1": "Act. Económicas", "subj-2": "APT", "subj-3": "Ges. Talento Humano", "subj-4": "Ges. Empresarial", "subj-5": "Ges. Inventarios", "subj-6": "Inglés Técnico", "subj-7": "Lógicas Territoriales", "subj-8": "Mark. Digital", "subj-9": "Mat. Aplicada", "subj-10": "Pensamiento Filosófico", "subj-11": "Negociación", "subj-12": "UTU LAB",
+                "subj-1": "Act. Económicas", "subj-2": "APT", "subj-3": "Ges. Talento Humano", "subj-4": "Ges. Empresarial", "subj-5": "Ges. Inventarios", "subj-6": "Inglés Técnico", "subj-7": "Lógicas Terr.", "subj-8": "Mark. Digital", "subj-9": "Mat. Aplicada", "subj-10": "Pensamiento Filosófico", "subj-11": "Negociación", "subj-12": "UTU LAB",
                 "faq-title": "Preguntas <span>Frecuentes</span>",
                 "faq-1-q": "¿Qué sucede si se corta el suministro eléctrico?", "faq-1-a": "Nuestros Hubs Biométricos cuentan con una batería de respaldo interna (UPS) que garantiza hasta 6 horas de autonomía continua, asegurando que ningún registro se pierda.",
                 "faq-2-q": "¿Cómo se protegen las huellas dactilares de los alumnos?", "faq-2-a": "SICAE no guarda imágenes de las huellas. El escáner convierte la huella en un código matemático cifrado (Hash) irreversible. Es imposible reconstruir la huella a partir de este código.",
@@ -1287,6 +1246,7 @@
                 "contact-sub2": "Solicitar Demo", "btn-submit": "Enviar Solicitud Segura",
                 "ph-1": "Institución / Empresa", "ph-2": "Correo corporativo", "ph-3": "Volumen de alumnos", "ph-4": "Especificaciones técnicas requeridas...",
                 "footer-desc-1": "ANEP • Escuela Técnica Las Piedras 2", "footer-desc-2": "BTP Comercio y Ventas • Grupo: 3°DC • Año: 2026", "footer-rights": "&copy; SICAE todos los derechos reservados. Creado con fines pedagógicos.",
+                "cart-title-text": "Cotización B2B", "cart-empty-text": "No hay hardware seleccionado.", "cart-footer-text": "Seleccione la infraestructura necesaria.", "btn-cart-submit": "Solicitar Auditoría",
                 "chat-title": "SICAE AI Assistant", "chat-welcome": "¡Hola! Bienvenido a la plataforma SICAE. 👋 Soy la IA de soporte. ¿En qué te ayudo?",
                 "cookie-text": "Utilizamos cookies para mejorar la experiencia de usuario. <a href='#'>Política de Privacidad</a>", "cookie-btn": "Aceptar Cookies",
                 "login-title": "Acceso Administrativo", "login-desc": "Ingrese sus credenciales", "login-ph1": "Correo institucional", "login-ph2": "Contraseña", "btn-login-submit": "Autenticar",
@@ -1320,7 +1280,7 @@
                 "val-5": "Superior Quality", "val-5-desc": "We ensure maximum durability, precision, and excellence in all our biometric devices and associated services.",
                 "val-6": "Reliability and Empathy", "val-6-desc": "We generate absolute trust through empathy, understanding the needs of families and the institution.",
                 "val-7": "Universal Inclusion", "val-7-desc": "We guarantee that our technology is accessible to all students through vocal biometrics and adaptable interfaces.",
-                "tech-title": "Infrastructure <span>Hardware & Software</span>", "btn-qr-text": "Link Smartphone",
+                "tech-title": "Hardware <span>Infrastructure</span>", "btn-qr-text": "Link Smartphone",
                 "prod1-title": "Biometric Hub", "prod1-desc": "High-speed terminal for fingerprint scanning. Neural processing for massive registration at main entrances.",
                 "prod2-title": "Classroom Nodes (RFID)", "prod2-desc": "Proximity readers for installation in classrooms. Instant roll call by approaching the badge.",
                 "prod3-title": "Parental Control App", "prod3-desc": "iOS/Android mobile application for guardians. Encrypted push notifications of entries, exits, and absences.",
@@ -1353,6 +1313,7 @@
                 "contact-sub2": "Request Demo", "btn-submit": "Send Secure Request",
                 "ph-1": "Institution / Company", "ph-2": "Corporate Email", "ph-3": "Volume of students", "ph-4": "Technical specifications required...",
                 "footer-desc-1": "ANEP • Escuela Técnica Las Piedras 2", "footer-desc-2": "BTP Commerce and Sales • Group: 3°DC • Year: 2026", "footer-rights": "&copy; SICAE all rights reserved. Created for pedagogical purposes.",
+                "cart-title-text": "B2B Quotation", "cart-empty-text": "No hardware selected.", "cart-footer-text": "Select the required infrastructure.", "btn-cart-submit": "Request Audit",
                 "chat-title": "SICAE AI Assistant", "chat-welcome": "Hello! Welcome to the SICAE platform. 👋 I'm the support AI. How can I help you?",
                 "cookie-text": "We use cookies to improve user experience. <a href='#'>Privacy Policy</a>", "cookie-btn": "Accept Cookies",
                 "login-title": "Administrative Access", "login-desc": "Enter your credentials", "login-ph1": "Institutional Email", "login-ph2": "Password", "btn-login-submit": "Authenticate",
@@ -1363,7 +1324,7 @@
             },
             pt: {
                 "topbar-contact": "Contate-nos",
-                "nav-home": "Início", "nav-data": "Ideia", "nav-team": "Equipe", "nav-core": "Institucional", "nav-tech": "Hardware", "nav-arch": "Arquitetura", "nav-plans": "Planos", "nav-faq-link": "FAQ", "nav-portal": "Portal",
+                "nav-home": "Início", "nav-data": "Idea", "nav-core": "Institucional", "nav-tech": "Hardware", "nav-arch": "Arquitetura", "nav-plans": "Planos", "nav-faq-link": "FAQ", "nav-portal": "Portal",
                 "marquee-title": "", "mq1": "Criptografia AES-256", "mq2": "Integração ANEP", "mq3": "Suporte LATU", "mq4": "Lei N°18331",
                 "hero-badge": "<i class='fa-solid fa-microchip' style='margin-right: 8px;'></i> ANEP • UTU Las Piedras 2 • 3°DC",
                 "hero-title": "<span class='text-gradient'>S.I.C.A.E.</span>",
@@ -1386,7 +1347,7 @@
                 "val-5": "Qualidade Superior", "val-5-desc": "Garantimos a máxima durabilidade, precisão e excelência em todos os nossos dispositivos biométricos e serviços associados.",
                 "val-6": "Confiabilidade e Empatia", "val-6-desc": "Geramos confiança absoluta através da empatia, compreendendo as necessidades das famílias e da instituição.",
                 "val-7": "Inclusão Universal", "val-7-desc": "Garantimos que a nossa tecnologia seja acessível a todos os alunos através de biometria vocal e interfaces adaptáveis.",
-                "tech-title": "Infraestrutura <span>Hardware & Software</span>", "btn-qr-text": "Vincular Celular",
+                "tech-title": "Infraestrutura de <span>Hardware</span>", "btn-qr-text": "Vincular Celular",
                 "prod1-title": "Hub Biométrico", "prod1-desc": "Terminal de alta velocidade para digitalização de impressões digitais. Processamento neural para registro massivo em acessos principais.",
                 "prod2-title": "Nós de Sala (RFID)", "prod2-desc": "Leitores de proximidade para instalação em salas. Chamada instantânea por aproximação do crachá.",
                 "prod3-title": "App Controle Parental", "prod3-desc": "Aplicativo móvel iOS/Android para responsáveis. Notificações push criptografadas de entradas, saídas e ausências.",
@@ -1419,6 +1380,7 @@
                 "contact-sub2": "Solicitar Demo", "btn-submit": "Enviar Solicitação Segura",
                 "ph-1": "Instituição / Empresa", "ph-2": "E-mail Corporativo", "ph-3": "Volume de alunos", "ph-4": "Especificações técnicas exigidas...",
                 "footer-desc-1": "ANEP • Escola Técnica Las Piedras 2", "footer-desc-2": "BTP Comércio e Vendas • Grupo: 3°DC • Ano: 2026", "footer-rights": "&copy; SICAE todos os direitos reservados. Criado para fins pedagógicos.",
+                "cart-title-text": "Cotação B2B", "cart-empty-text": "Nenhum hardware selecionado.", "cart-footer-text": "Selecione a infraestrutura necessária.", "btn-cart-submit": "Solicitar Auditoria",
                 "chat-title": "SICAE AI Assistant", "chat-welcome": "Olá! Bem-vindo à plataforma SICAE. 👋 Sou a IA de suporte. Como posso ajudar?",
                 "cookie-text": "Usamos cookies para melhorar a experiência do usuário. <a href='#'>Política de Privacidade</a>", "cookie-btn": "Aceitar Cookies",
                 "login-title": "Acesso Administrativo", "login-desc": "Insira suas credenciais", "login-ph1": "E-mail Institucional", "login-ph2": "Senha", "btn-login-submit": "Autenticar",
@@ -1440,7 +1402,7 @@
                     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                         el.placeholder = text[id];
                     } else {
-                        el.innerHTML = text[id]; if (el.hasAttribute('data-text')) el.setAttribute('data-text', el.textContent);
+                        el.innerHTML = text[id];
                     }
                 }
             }
@@ -1508,12 +1470,5 @@
             }
         });
     </script>
-<script>
-(function(){ const b = document.getElementById('nav-toggle'), m = document.querySelector('.nav-links');
-  if (!b || !m) return;
-  b.addEventListener('click', () => m.classList.toggle('open'));
-  m.querySelectorAll('a').forEach(a => a.addEventListener('click', () => m.classList.remove('open')));
-})();
-</script>
 </body>
 </html>
